@@ -1,0 +1,6 @@
+
+{
+  "name": "Meeting Minutes Generator",
+  "description": "An application that transcribes meeting audio recordings into structured minutes, generates an executive summary, and allows users to download the report as a PDF.",
+  "requestFramePermissions": []
+}
