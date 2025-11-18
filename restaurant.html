@@ -4,244 +4,161 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Finder (ค้นหาร้านอาหาร)</title>
-    <!-- โหลด Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- เพิ่ม Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- Custom Font & Base --- */
+        /* --- Design System --- */
         body {
             font-family: 'Inter', 'Noto Sans Thai', sans-serif;
-            /* Dynamic Background */
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); /* Food Background */
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            position: relative;
-        }
-        /* Overlay เพื่อให้อ่านง่ายขึ้น */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(5px);
-            z-index: -1;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
         }
 
-        /* --- Animations --- */
-        @keyframes slideUpFade {
-            from { opacity: 0; transform: translateY(30px); }
+        /* Glass Panel */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Animations */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .animate-entry { animation: slideIn 0.5s ease-out forwards; }
 
-        @keyframes pulse-subtle {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+        /* Loading Spinner */
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #3b82f6;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
         }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .animate-slide-up {
-            animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0; /* เริ่มต้นซ่อนไว้ก่อน */
-        }
-
-        /* --- Loader --- */
-        .loader-dots div {
-            animation-timing-function: cubic-bezier(0, 1, 1, 0);
-        }
-        .loader-dots div:nth-child(1) { left: 8px; animation: loader-dots1 0.6s infinite; }
-        .loader-dots div:nth-child(2) { left: 8px; animation: loader-dots2 0.6s infinite; }
-        .loader-dots div:nth-child(3) { left: 32px; animation: loader-dots2 0.6s infinite; }
-        .loader-dots div:nth-child(4) { left: 56px; animation: loader-dots3 0.6s infinite; }
-        @keyframes loader-dots1 { 0% { transform: scale(0); } 100% { transform: scale(1); } }
-        @keyframes loader-dots3 { 0% { transform: scale(1); } 100% { transform: scale(0); } }
-        @keyframes loader-dots2 { 0% { transform: translate(0, 0); } 100% { transform: translate(24px, 0); } }
-
-        /* --- Custom Utilities --- */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        
-        .star-filled { color: #F59E0B; text-shadow: 0 0 2px rgba(245, 158, 11, 0.4); }
-        .star-empty { color: #E5E7EB; }
+        .star-filled { color: #fbbf24; }
+        .star-empty { color: #e5e7eb; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center py-10 px-4">
+<body>
 
-    <!-- Main Container -->
-    <div class="glass-panel w-full max-w-3xl rounded-3xl shadow-2xl p-6 md:p-10 transition-all duration-500">
+    <div class="glass-card w-full max-w-2xl rounded-3xl p-6 md:p-10 mt-4 md:mt-10">
         
         <!-- Header -->
-        <header class="text-center mb-8">
-            <div class="inline-block p-3 rounded-full bg-blue-50 mb-4 shadow-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="text-blue-600" viewBox="0 0 16 16">
-                    <path d="M11.5 4a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0M8 0a4 4 0 1 0 0 8 4 4 0 0 0 0-8"/>
-                    <path d="M11.793 9.176a.5.5 0 0 1-.606.065L8.23 11.23a.5.5 0 0 0-.23 0L4.813 9.241a.5.5 0 0 1-.606-.065C3.393 9.53 3 10.137 3 10.846V15.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-4.654c0-.709-.393-1.316-.957-1.67zM8 12.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
-                </svg>
-            </div>
-            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 tracking-tight mb-2">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-800 mb-2">
                 Restaurant <span class="text-blue-600">Finder</span>
             </h1>
-            <p class="text-gray-500 text-lg">ค้นหาร้านเด็ด เรตติ้งปัง (4.0+) ในระยะ 10 กม.</p>
-        </header>
-
-        <!-- Search Area -->
-        <div class="relative mb-10 group z-10">
-            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 group-focus-within:text-blue-500 transition-colors duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </div>
-            <input type="text" id="locationInput" 
-                   class="w-full pl-12 pr-32 py-4 bg-white border-2 border-gray-200 rounded-2xl text-lg placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 shadow-sm"
-                   placeholder="ระบุพิกัดความหิว..."
-                   autocomplete="off">
-            
-            <div class="absolute inset-y-0 right-0 flex items-center pr-2">
-                <button id="searchButton" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center gap-2">
-                    <span>ค้นหา</span>
-                </button>
-            </div>
+            <p class="text-gray-500">ค้นหาร้านเด็ด เรตติ้งปัง (4.0+) ในระยะ 10 กม.</p>
         </div>
 
-        <!-- Results Container -->
-        <div id="resultsContainer" class="min-h-[200px]">
+        <!-- Search Box -->
+        <div class="relative mb-8 group">
+            <input type="text" id="locationInput" 
+                   class="w-full pl-12 pr-32 py-4 bg-gray-50 border-2 border-gray-100 rounded-2xl text-lg focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-50 transition-all outline-none"
+                   placeholder="เช่น สยาม, อารีย์, ทองหล่อ..." 
+                   autocomplete="off">
             
-            <!-- Loading State (CSS Animation) -->
-            <div id="loadingIndicator" class="hidden flex-col items-center justify-center py-12">
-                <div class="loader-dots relative w-20 h-20"><div></div><div></div><div></div><div></div></div>
-                <p class="text-gray-500 font-medium mt-4 animate-pulse">กำลังคัดสรรร้านที่ดีที่สุด...</p>
+            <div class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
             </div>
 
-            <!-- Error State -->
-            <div id="errorMessages" class="hidden bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-r-lg shadow-sm mb-6" role="alert"></div>
+            <button id="searchButton" class="absolute right-2 top-2 bottom-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 rounded-xl transition-colors flex items-center gap-2">
+                <span>ค้นหา</span>
+            </button>
+        </div>
 
-            <!-- Initial State (Empty) -->
-            <div id="initialState" class="flex flex-col items-center justify-center text-gray-400 py-10">
-                <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" alt="Food Icon" class="w-24 h-24 opacity-20 mb-4 grayscale">
-                <p class="text-lg font-light">รอรับคำสั่งความอร่อยจากคุณ...</p>
-                <div class="flex gap-2 mt-4 text-sm text-gray-400">
-                    <span class="bg-gray-100 px-3 py-1 rounded-full cursor-pointer hover:bg-blue-50 hover:text-blue-500 transition-colors" onclick="setLocation('สยามพารากอน')">📍 สยาม</span>
-                    <span class="bg-gray-100 px-3 py-1 rounded-full cursor-pointer hover:bg-blue-50 hover:text-blue-500 transition-colors" onclick="setLocation('ทองหล่อ')">📍 ทองหล่อ</span>
-                    <span class="bg-gray-100 px-3 py-1 rounded-full cursor-pointer hover:bg-blue-50 hover:text-blue-500 transition-colors" onclick="setLocation('อารีย์')">📍 อารีย์</span>
+        <!-- Status Area -->
+        <div id="statusContainer" class="min-h-[100px]">
+            
+            <!-- Loading -->
+            <div id="loadingState" class="hidden flex-col items-center justify-center py-8 text-gray-500">
+                <div class="loader mb-3"></div>
+                <span class="animate-pulse font-medium">กำลังสอบถาม AI...</span>
+            </div>
+
+            <!-- Error -->
+            <div id="errorState" class="hidden p-4 mb-4 text-sm text-red-700 bg-red-50 rounded-xl border border-red-100 flex items-start gap-3">
+                <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                <div>
+                    <span class="font-bold block mb-1">เกิดข้อผิดพลาด!</span>
+                    <span id="errorMessageText"></span>
                 </div>
             </div>
 
-            <!-- Result List -->
-            <div id="restaurantList" class="grid grid-cols-1 gap-5">
-                <!-- Cards will be injected here -->
+            <!-- Results List -->
+            <div id="resultList" class="space-y-4"></div>
+            
+            <!-- Empty State -->
+            <div id="emptyState" class="text-center py-8 text-gray-400">
+                <p>พิมพ์สถานที่แล้วกดค้นหาได้เลยครับ</p>
             </div>
-
         </div>
 
-        <!-- Footer Credit -->
-        <div class="mt-10 pt-6 border-t border-gray-200 text-center flex flex-col items-center justify-center">
-            <p class="text-gray-400 text-xs uppercase tracking-widest font-semibold mb-1">Designed & Developed</p>
-            <div class="bg-gray-100 text-gray-600 px-4 py-1 rounded-full text-sm font-medium shadow-inner">
-                Coding by Arnon Arpaket
-            </div>
+        <!-- Credits -->
+        <div class="mt-10 pt-6 border-t border-gray-100 text-center">
+            <span class="inline-block bg-gray-100 rounded-full px-4 py-1 text-xs font-bold text-gray-500 tracking-wide uppercase">
+                Designed & Developed
+            </span>
+            <p class="text-gray-500 text-sm font-medium mt-2">Coding by Arnon Arpaket</p>
         </div>
 
     </div>
 
     <script>
+        // ==========================================
+        // 🔑 ส่วนสำคัญ: ใส่ API KEY ของคุณที่นี่ 🔑
+        // ==========================================
+        // ไปที่ https://aistudio.google.com/app/apikey เพื่อขอ Key
+        const apiKey = "AIzaSyA3_P4a9p7U0ra3g276omRsMOpJQ3_34-g"; // <---- ลบข้อความแล้วใส่ Key ของคุณ เช่น "AIzaSy..."
+        // ==========================================
+
         const locationInput = document.getElementById('locationInput');
         const searchButton = document.getElementById('searchButton');
-        const resultsContainer = document.getElementById('resultsContainer');
-        const loadingIndicator = document.getElementById('loadingIndicator');
-        const errorMessages = document.getElementById('errorMessages');
-        const initialState = document.getElementById('initialState');
-        const restaurantList = document.getElementById('restaurantList');
+        const resultList = document.getElementById('resultList');
+        const loadingState = document.getElementById('loadingState');
+        const errorState = document.getElementById('errorState');
+        const emptyState = document.getElementById('emptyState');
+        const errorMessageText = document.getElementById('errorMessageText');
 
-        // API Key เดิม
-        const apiKey = "AIzaSyA3_P4a9p7U0ra3g276omRsMOpJQ3_34-g"; 
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-
-        // --- Typing Effect for Placeholder ---
-        const placeholders = ["วันนี้กินไรดีแถวอโศก...", "ร้านอาหารญี่ปุ่น ทองหล่อ...", "คาเฟ่ชิคๆ อารีย์...", "ร้านส้มตำ รัชดา..."];
-        let placeholderIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
-
-        function typePlaceholder() {
-            const currentTxt = placeholders[placeholderIndex];
-            
-            if (isDeleting) {
-                locationInput.setAttribute("placeholder", currentTxt.substring(0, charIndex - 1));
-                charIndex--;
-            } else {
-                locationInput.setAttribute("placeholder", currentTxt.substring(0, charIndex + 1));
-                charIndex++;
-            }
-
-            let typeSpeed = isDeleting ? 50 : 100;
-
-            if (!isDeleting && charIndex === currentTxt.length) {
-                isDeleting = true;
-                typeSpeed = 2000; // Pause at end
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                placeholderIndex = (placeholderIndex + 1) % placeholders.length;
-                typeSpeed = 500;
-            }
-
-            setTimeout(typePlaceholder, typeSpeed);
-        }
-        // Start typing effect on load
-        window.addEventListener('load', typePlaceholder);
-
-        // --- Helper for Quick Search Tags ---
-        window.setLocation = (loc) => {
-            locationInput.value = loc;
-            locationInput.focus();
-            findRestaurants();
-        };
-
-
-        // --- Main Logic ---
-        async function fetchWithBackoff(url, options, retries = 4, delay = 1000) {
-            try {
-                const response = await fetch(url, options);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                return await response.json();
-            } catch (error) {
-                if (retries > 0) {
-                    await new Promise(resolve => setTimeout(resolve, delay));
-                    return fetchWithBackoff(url, options, retries - 1, delay * 2);
-                } else {
-                    throw error;
-                }
-            }
-        }
 
         async function findRestaurants() {
             const location = locationInput.value.trim();
             if (!location) {
-                // Shake animation for error
-                locationInput.classList.add('ring-4', 'ring-red-200', 'border-red-400');
-                setTimeout(() => locationInput.classList.remove('ring-4', 'ring-red-200', 'border-red-400'), 500);
+                locationInput.focus();
                 return;
             }
 
-            showLoading(true);
-            displayError(null);
+            // UI Reset
+            toggleLoading(true);
+            showError(null);
+            resultList.innerHTML = '';
+            emptyState.classList.add('hidden');
 
-            const systemPrompt = `คุณคือ "Local Restaurant Scout" 
-                ข้อกำหนดสำคัญ:
-                1. ค้นหาร้านอาหารเรตติ้ง 4.0 - 5.0 ดาว ในระยะ 10 กม.
-                2. **คัดกรองเฉพาะร้านที่เปิดให้บริการเท่านั้น** (ห้ามร้านที่ปิดถาวร/ชั่วคราว)
-                3. ส่งคืน JSON array
-                4. เน้นชื่อร้านที่ถูกต้องแม่นยำ
+            // Prompt Engineering
+            const systemPrompt = `
+                Role: Local Restaurant Scout (ผู้เชี่ยวชาญร้านอาหารในไทย)
+                Task: ค้นหาร้านอาหารเรตติ้ง 4.0-5.0 ดาว ในระยะ 10 กม. จากสถานที่ที่ระบุ
+                Constraints:
+                1. คัดกรองเฉพาะร้านที่ "เปิดให้บริการ" (ห้ามเอาร้านปิดถาวร/ปิดชั่วคราวมา)
+                2. ขอชื่อร้านที่ถูกต้องแม่นยำ เพื่อให้เอาไปค้น Google Maps ต่อได้
+                3. ขอ 5-6 ร้านที่หลากหลาย (คาเฟ่, อาหารจานหลัก)
+                Format: JSON Array เท่านั้น
             `;
 
-            const userQuery = `ค้นหาร้านอาหารเด็ดๆ 5-8 แห่ง แถว "${location}" (ไม่เอาร้านปิด)`;
+            const userQuery = `ขอรายชื่อร้านอาหารแถว "${location}"`;
 
             const payload = {
                 contents: [{ parts: [{ text: userQuery }] }],
@@ -265,117 +182,110 @@
             };
 
             try {
-                const result = await fetchWithBackoff(apiUrl, {
+                const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
-                const candidate = result.candidates?.[0];
-                if (candidate && candidate.content?.parts?.[0]?.text) {
-                    const jsonResponse = JSON.parse(candidate.content.parts[0].text);
-                    displayResults(jsonResponse);
-                } else {
-                    throw new Error("AI ไม่สามารถประมวลผลข้อมูลได้ในขณะนี้");
+                // --- 🛡️ ดักจับ Error 403/400 ---
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    console.error("API Error Details:", errorData);
+
+                    if (response.status === 403) {
+                        throw new Error("API Key ถูกปฏิเสธ (403): กรุณาตรวจสอบว่า Key ถูกต้อง และไม่ได้จำกัดการใช้งานบนเว็บไซต์นี้ (Referrer restrictions)");
+                    } else if (response.status === 400) {
+                        throw new Error("คำขอไม่ถูกต้อง (400): ตรวจสอบรูปแบบข้อมูล หรือ API Key อาจไม่รองรับ Model นี้");
+                    } else {
+                        throw new Error(`HTTP Error: ${response.status} - ${response.statusText}`);
+                    }
                 }
 
+                const data = await response.json();
+                const restaurants = JSON.parse(data.candidates[0].content.parts[0].text);
+                renderResults(restaurants);
+
             } catch (error) {
-                console.error('Error:', error);
-                displayError(`ขออภัย เกิดข้อขัดข้อง: ${error.message}`);
+                console.error(error);
+                // แสดงข้อความ Error ที่เข้าใจง่าย
+                if (error.message.includes("API Key")) {
+                    showError("⚠️ ปัญหาที่ API Key: ระบบไม่อนุญาตให้เข้าถึง กรุณาตรวจสอบ Key ในไฟล์โค้ด หรือการตั้งค่า Domain Restriction ใน Google Cloud");
+                } else {
+                    showError(`เกิดข้อผิดพลาด: ${error.message}`);
+                }
             } finally {
-                showLoading(false);
+                toggleLoading(false);
             }
         }
 
-        function displayResults(restaurants) {
-            restaurantList.innerHTML = '';
-            
+        function renderResults(restaurants) {
             if (!restaurants || restaurants.length === 0) {
-                displayError("ไม่พบร้านอาหารที่ตรงเงื่อนไขในบริเวณนี้");
+                showError("ไม่พบข้อมูลร้านอาหารในบริเวณนี้");
                 return;
             }
 
-            restaurants.forEach((restaurant, index) => {
+            restaurants.forEach((r, index) => {
                 const card = document.createElement('div');
-                // Styling Classes
-                card.className = "bg-white rounded-2xl p-5 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 animate-slide-up";
-                // Stagger Animation Delay
+                card.className = "bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-all animate-entry";
                 card.style.animationDelay = `${index * 0.1}s`;
 
-                const searchLink = `https://www.google.com/search?q=${encodeURIComponent(restaurant.name + ' รีวิว')}`;
-                const directionLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(restaurant.name)}`;
+                const searchLink = `https://www.google.com/search?q=${encodeURIComponent(r.name + ' รีวิว')}`;
+                const mapLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(r.name)}`;
 
                 card.innerHTML = `
-                    <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
-                        <div class="flex-grow">
+                    <div class="flex flex-col sm:flex-row justify-between gap-4">
+                        <div>
                             <div class="flex items-center gap-2 mb-1">
-                                <span class="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-1 rounded-md uppercase tracking-wide">${restaurant.type || 'General'}</span>
-                                <div class="flex items-center text-yellow-500 text-sm font-bold">
-                                    <span>★</span>
-                                    <span class="ml-1 text-gray-700">${(restaurant.rating || 0).toFixed(1)}</span>
+                                <span class="bg-blue-50 text-blue-600 text-xs font-bold px-2 py-1 rounded uppercase">${r.type}</span>
+                                <div class="flex items-center text-sm font-bold text-gray-700">
+                                    <span class="star-filled mr-1">★</span>${r.rating.toFixed(1)}
                                 </div>
                             </div>
-                            <h3 class="text-xl font-bold text-gray-800 mb-1">${restaurant.name}</h3>
-                            <p class="text-gray-500 text-sm flex items-start gap-1">
-                                <svg class="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                ${restaurant.address}
-                            </p>
+                            <h3 class="text-lg font-bold text-gray-800 leading-tight">${r.name}</h3>
+                            <p class="text-sm text-gray-500 mt-1">${r.address}</p>
                         </div>
-                        
-                        <div class="flex sm:flex-col gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-                            <a href="${searchLink}" target="_blank" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-gray-50 hover:bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-semibold transition-colors border border-gray-200">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                รีวิว
+                        <div class="flex sm:flex-col gap-2 shrink-0">
+                            <a href="${searchLink}" target="_blank" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-600 rounded-xl text-sm font-semibold transition-colors">
+                                ดูรีวิว
                             </a>
-                            <a href="${directionLink}" target="_blank" class="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-md hover:shadow-lg transition-all">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 7m0 13V7"></path></svg>
-                                นำทาง
+                            <a href="${mapLink}" target="_blank" class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold shadow hover:shadow-lg transition-all">
+                                นำทาง 🚀
                             </a>
                         </div>
                     </div>
                 `;
-                restaurantList.appendChild(card);
+                resultList.appendChild(card);
             });
-            
-            // Smooth Scroll to results
-            setTimeout(() => {
-                restaurantList.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
         }
 
-        function showLoading(isLoading) {
-            if (isLoading) {
-                loadingIndicator.classList.remove('hidden');
-                loadingIndicator.classList.add('flex');
-                initialState.classList.add('hidden');
-                restaurantList.innerHTML = '';
+        function toggleLoading(show) {
+            if (show) {
+                loadingState.classList.remove('hidden');
+                loadingState.classList.add('flex');
                 searchButton.disabled = true;
-                searchButton.classList.add('opacity-75', 'cursor-not-allowed');
-                searchButton.innerHTML = `<svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> กำลังหา...`;
+                searchButton.classList.add('opacity-70', 'cursor-not-allowed');
             } else {
-                loadingIndicator.classList.add('hidden');
-                loadingIndicator.classList.remove('flex');
+                loadingState.classList.add('hidden');
+                loadingState.classList.remove('flex');
                 searchButton.disabled = false;
-                searchButton.classList.remove('opacity-75', 'cursor-not-allowed');
-                searchButton.innerHTML = `<span>ค้นหา</span>`;
+                searchButton.classList.remove('opacity-70', 'cursor-not-allowed');
             }
         }
 
-        function displayError(message) {
-            if (message) {
-                errorMessages.classList.remove('hidden');
-                errorMessages.innerHTML = `<div class="flex items-center gap-2"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> ${message}</div>`;
-                initialState.classList.add('hidden');
+        function showError(msg) {
+            if (msg) {
+                errorState.classList.remove('hidden');
+                errorMessageText.textContent = msg;
             } else {
-                errorMessages.classList.add('hidden');
+                errorState.classList.add('hidden');
             }
         }
 
         searchButton.addEventListener('click', findRestaurants);
-        locationInput.addEventListener('keypress', function(e) {
+        locationInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') findRestaurants();
         });
-
     </script>
 </body>
 </html>
