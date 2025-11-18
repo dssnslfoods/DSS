@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Finder (ค้นหาร้านอาหาร)</title>
+    <!-- โหลด Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- เพิ่ม Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* กำหนด Font หลัก */
+        body {
+            font-family: 'Inter', 'Noto Sans Thai', sans-serif;
+            background: linear-gradient(to right bottom, #89CFF0, #A7D7E0, #D0E0E3); /* Light Blue Gradient */
+            background-attachment: fixed;
+        }
+
+        /* Animation สำหรับ Loading Spinner */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #6366f1; /* Indigo 500 */
+            border-radius: 50%;
+            width: 2.5rem;
+            height: 2.5rem;
+            animation: spin 1s linear infinite;
+        }
+        .star-filled { color: #facc15; } /* Yellow 400 */
+        .star-empty { color: #d1d5db; } /* Gray 300 */
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl p-6 md:p-8 transform transition-all duration-300 hover:scale-[1.01]">
+        
+        <h1 class="text-3xl md:text-4xl font-extrabold text-blue-700 text-center mb-4 flex items-center justify-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="text-red-500" viewBox="0 0 16 16">
+                <path d="M11.5 4a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0M8 0a4 4 0 1 0 0 8 4 4 0 0 0 0-8"/>
+                <path d="M11.793 9.176a.5.5 0 0 1-.606.065L8.23 11.23a.5.5 0 0 0-.23 0L4.813 9.241a.5.5 0 0 1-.606-.065C3.393 9.53 3 10.137 3 10.846V15.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-4.654c0-.709-.393-1.316-.957-1.67zM8 12.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+            </svg>
+            <span>ค้นหาร้านอาหารใกล้คุณ</span>
+        </h1>
+        <p class="text-gray-600 text-center mb-8 text-lg">
+            ป้อนตำแหน่งของคุณ เพื่อค้นหาร้านอาหารเรตติ้งดี (4.0-5.0 ดาว) ในระยะ 10 กม.
+        </p>
+
+        <!-- ช่องค้นหา -->
+        <div class="flex flex-col sm:flex-row gap-3 mb-6">
+            <input type="text" id="locationInput" placeholder="เช่น สยาม, อโศก, หรือ บางนา" 
+                   class="flex-grow w-full px-5 py-3 border-2 border-gray-300 rounded-xl focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-500 transition duration-300 text-lg"
+                   value=""
+                   aria-label="ป้อนตำแหน่งที่ต้องการค้นหา">
+            <button id="searchButton" 
+                    class="w-full sm:w-auto bg-blue-600 text-white font-bold px-7 py-3 rounded-xl 
+                           hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 
+                           transition duration-300 flex items-center justify-center gap-2 text-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
+                <span>ค้นหา</span>
+            </button>
+        </div>
+
+        <!-- ผลลัพธ์ -->
+        <div id="resultsContainer" class="mt-8">
+            
+            <!-- Loading -->
+            <div id="loadingIndicator" class="hidden flex-col items-center justify-center text-gray-600 p-12 bg-blue-50 rounded-lg shadow-inner">
+                <div class="loader mb-5"></div>
+                <p class="text-xl font-medium">กำลังค้นหาร้านอาหารดีๆ ให้คุณ... </p>
+                <p class="text-md text-gray-500 mt-2">โปรดรอสักครู่</p>
+            </div>
+
+            <!-- Error -->
+            <div id="errorMessages" class="hidden bg-red-50 border border-red-300 text-red-700 px-5 py-4 rounded-lg text-lg font-medium"></div>
+
+            <!-- Initial State -->
+            <div id="initialState" class="text-center text-gray-400 p-10 bg-gray-50 rounded-lg shadow-inner">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="mx-auto mb-6 text-gray-300" viewBox="0 0 16 16">
+                    <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                    <path d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-.5.5h-5a.5.5 0 0 1-.5-.5v-5zM1 4v3.5A1.5 1.5 0 0 1 2.5 9H6v1.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 .5-.5V9h3.5A1.5 1.5 0 0 1 15 7.5V4H1z"/>
+                </svg>
+                <p class="text-xl font-medium">ไม่มีข้อมูลที่แสดง</p>
+                <p class="text-md text-gray-500 mt-2">กรุณาป้อนตำแหน่งเพื่อเริ่มค้นหา</p>
+            </div>
+
+            <!-- List -->
+            <div id="restaurantList" class="space-y-5"></div>
+
+        </div>
+    </div>
+
+    <script>
+        const locationInput = document.getElementById('locationInput');
+        const searchButton = document.getElementById('searchButton');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const errorMessages = document.getElementById('errorMessages');
+        const initialState = document.getElementById('initialState');
+        const restaurantList = document.getElementById('restaurantList');
+
+        // ใช้ API Key ที่คุณกอล์ฟให้มา
+        const apiKey = "AIzaSyA3_P4a9p7U0ra3g276omRsMOpJQ3_34-g"; 
+
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+        async function fetchWithBackoff(url, options, retries = 4, delay = 1000) {
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                if (retries > 0) {
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    return fetchWithBackoff(url, options, retries - 1, delay * 2);
+                } else {
+                    throw error;
+                }
+            }
+        }
+
+        async function findRestaurants() {
+            const location = locationInput.value.trim();
+            if (!location) {
+                displayError("กรุณาป้อนตำแหน่งที่ต้องการค้นหาครับ");
+                return;
+            }
+
+            showLoading(true);
+            displayError(null);
+
+            // ตัดเรื่องการขอ URL ออกจาก Prompt เพื่อลดภาระ AI และลดความผิดพลาด
+            const systemPrompt = `คุณคือ "Local Restaurant Scout" (นักสำรวจร้านอาหารท้องถิ่น)
+                
+                ข้อกำหนดสำคัญ:
+                1. กรองผลลัพธ์ให้ตรงตามเงื่อนไขที่ผู้ใช้ร้องขอเท่านั้น
+                2. ค้นหาร้านอาหารที่มีคะแนนรีวิวระหว่าง 4.0 ถึง 5.0 ดาวเท่านั้น
+                3. ค้นหาร้านอาหารที่อยู่ในระยะไม่เกิน 10 กิโลเมตร จากตำแหน่งที่ระบุ
+                4. ส่งคืนผลลัพธ์ในรูปแบบ JSON ที่กำหนดไว้เท่านั้น
+                5. เน้นความถูกต้องของชื่อร้าน เพื่อให้นำไปค้นหาต่อได้ง่าย
+            `;
+
+            const userQuery = `ค้นหาร้านอาหาร 5-10 แห่ง ใกล้ "${location}"`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "ARRAY",
+                        items: {
+                            type: "OBJECT",
+                            properties: {
+                                "name": { "type": "STRING", "description": "ชื่อร้านอาหาร" },
+                                "rating": { "type": "NUMBER", "description": "คะแนนรีวิว (เช่น 4.5)" },
+                                "type": { "type": "STRING", "description": "ประเภทอาหาร" },
+                                "address": { "type": "STRING", "description": "ที่อยู่โดยย่อ หรือ ย่าน" }
+                                // ตัดฟิลด์ url ออก เพราะเราจะสร้าง link ค้นหาเอง
+                            },
+                            required: ["name", "rating", "type", "address"]
+                        }
+                    }
+                }
+            };
+
+            try {
+                const result = await fetchWithBackoff(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const candidate = result.candidates?.[0];
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    const jsonResponse = JSON.parse(candidate.content.parts[0].text);
+                    displayResults(jsonResponse);
+                } else {
+                    throw new Error("ไม่ได้รับข้อมูลที่ถูกต้องจาก AI");
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                displayError(`เกิดข้อผิดพลาด: ${error.message}`);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function displayResults(restaurants) {
+            restaurantList.innerHTML = '';
+            if (!restaurants || restaurants.length === 0) {
+                displayError("ไม่พบร้านอาหารที่ตรงตามเงื่อนไข");
+                return;
+            }
+
+            restaurants.forEach(restaurant => {
+                const card = document.createElement('div');
+                card.className = "bg-white border border-gray-200 rounded-xl p-5 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-blue-300";
+                
+                // Link ค้นหารีวิว
+                const searchLink = `https://www.google.com/search?q=${encodeURIComponent(restaurant.name + ' รีวิว')}`;
+                
+                // Link นำทาง (Google Maps Direction)
+                // ไม่ระบุ origin เพื่อให้ Google Maps ใช้ Current Location อัตโนมัติ
+                const directionLink = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(restaurant.name)}`;
+
+                card.innerHTML = `
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
+                        <h3 class="text-xl font-bold text-blue-700 leading-tight">${restaurant.name || 'ไม่ทราบชื่อ'}</h3>
+                        <div class="flex items-center gap-1 text-lg font-bold mt-1 sm:mt-0 ml-0 sm:ml-4 flex-shrink-0">
+                            ${renderStars(restaurant.rating || 0)}
+                            <span class="text-gray-700 ml-1">${(restaurant.rating || 0).toFixed(1)}</span>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 mb-1 text-base">${restaurant.type || 'ไม่ระบุประเภท'}</p>
+                    <p class="text-gray-500 text-sm">${restaurant.address || 'ไม่ระบุที่อยู่'}</p>
+                    
+                    <div class="mt-4 flex flex-wrap gap-3">
+                        <!-- ปุ่มดูรีวิว -->
+                        <a href="${searchLink}" target="_blank" 
+                           class="inline-flex items-center gap-2 bg-indigo-100 text-indigo-700 border border-indigo-200 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-indigo-200 hover:text-indigo-800 transition-colors duration-200">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                            <span>ดูรีวิว</span>
+                        </a>
+
+                        <!-- ปุ่มนำทาง (ใหม่) -->
+                        <a href="${directionLink}" target="_blank" 
+                           class="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-green-700 shadow-sm hover:shadow transition-all duration-200">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6"/>
+                            </svg>
+                            <span>นำทาง</span>
+                        </a>
+                    </div>
+                `;
+                restaurantList.appendChild(card);
+            });
+        }
+
+        function renderStars(rating) {
+            let stars = '';
+            const fullStars = Math.floor(rating);
+            const halfStar = (rating % 1) >= 0.5 ? 1 : 0;
+            const emptyStars = 5 - fullStars - halfStar;
+            for (let i = 0; i < fullStars; i++) stars += `<span class="star-filled">★</span>`;
+            if (halfStar) stars += `<span class="star-filled">★</span>`;
+            for (let i = 0; i < emptyStars; i++) stars += `<span class="star-empty">★</span>`;
+            return stars;
+        }
+
+        function showLoading(isLoading) {
+            if (isLoading) {
+                loadingIndicator.classList.remove('hidden');
+                loadingIndicator.classList.add('flex');
+                initialState.classList.add('hidden');
+                restaurantList.innerHTML = '';
+                searchButton.disabled = true;
+                searchButton.classList.add('opacity-50', 'cursor-not-allowed');
+                searchButton.querySelector('span').innerText = 'กำลังค้นหา...';
+            } else {
+                loadingIndicator.classList.add('hidden');
+                loadingIndicator.classList.remove('flex');
+                searchButton.disabled = false;
+                searchButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                searchButton.querySelector('span').innerText = 'ค้นหา';
+            }
+        }
+
+        function displayError(message) {
+            if (message) {
+                errorMessages.classList.remove('hidden');
+                errorMessages.textContent = message;
+                initialState.classList.add('hidden');
+            } else {
+                errorMessages.classList.add('hidden');
+                errorMessages.textContent = '';
+            }
+        }
+
+        searchButton.addEventListener('click', findRestaurants);
+        locationInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') findRestaurants();
+        });
+
+    </script>
+</body>
+</html>
