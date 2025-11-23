@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSL - Candidate Analytics Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #f1f5f9; }
+        
+        /* Layout Utilities */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Animations */
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .animate-slide-in { animation: slideInRight 0.5s ease-out forwards; }
+        
+        /* Stamp Effect for Recommendation */
+        .stamp {
+            transform: rotate(-12deg);
+            mask-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1IiBoZWlnaHQ9IjUiPgo8cmVjdCB3aWR0aD0iNSIgaGVpZ2h0PSI1IiBmaWxsPSJ3aGl0ZSIvPgo8Y2lyY2xlIGN4PSIyIiBjeT0iMiIgcj0iMiIgZmlsbD0iYmxhY2siLz4KPC9zdmc+');
+            mask-size: 3px 3px;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nsl: { orange: '#F97316', blue: '#1E40AF', dark: '#0f172a' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-screen flex flex-col overflow-hidden text-slate-800">
+
+    <!-- Navbar -->
+    <header class="bg-white border-b border-slate-200 h-16 flex items-center px-6 justify-between flex-shrink-0 z-20 shadow-sm">
+        <div class="flex items-center space-x-3">
+             <!-- Logo -->
+             <img src="logo-NSL.png" alt="NSL Foods Logo" class="h-8 w-auto object-contain">
+             <div class="h-6 w-px bg-slate-300 mx-2"></div>
+             <span class="font-bold text-slate-700 tracking-tight">Candidate Analytics</span>
+        </div>
+        
+        <div class="flex items-center space-x-4">
+             <button onclick="document.getElementById('config-modal').classList.remove('hidden')" class="text-xs font-bold text-slate-500 hover:text-nsl-orange flex items-center bg-slate-100 px-3 py-1.5 rounded-full transition-colors">
+                <i class="ph ph-plugs mr-1.5"></i> Connect Data
+             </button>
+             <button onclick="loadData()" class="text-xs font-bold text-white bg-nsl-blue hover:bg-blue-700 px-3 py-1.5 rounded-full shadow-md transition-all flex items-center">
+                <i class="ph ph-arrows-clockwise mr-1.5"></i> Refresh
+             </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden relative">
+        
+        <!-- Sidebar: Search & List -->
+        <aside class="w-80 bg-white border-r border-slate-200 flex flex-col z-10 shadow-lg">
+            <div class="p-4 border-b border-slate-100 bg-slate-50">
+                <div class="relative">
+                    <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-slate-400"></i>
+                    <input type="text" id="searchInput" onkeyup="filterList()" class="w-full pl-9 pr-4 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-nsl-orange focus:border-nsl-orange outline-none transition-all" placeholder="Search candidate...">
+                </div>
+                <!-- Sort Indicator -->
+                <div class="mt-2 flex items-center justify-between text-[10px] text-slate-400 px-1">
+                    <span>SORT BY</span>
+                    <span class="flex items-center text-nsl-orange font-bold"><i class="ph ph-sort-descending mr-1"></i> Score (High-Low)</span>
+                </div>
+            </div>
+            <div id="candidateList" class="flex-1 overflow-y-auto p-2 space-y-1">
+                <!-- List Items Injected Here -->
+                <div class="p-8 text-center text-slate-400 text-sm">
+                    <i class="ph ph-database text-3xl mb-2 opacity-50"></i><br>
+                    No data loaded.<br>Please connect sheet.
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content: Infographic Display -->
+        <main class="flex-1 bg-slate-100 overflow-y-auto p-4 md:p-8 flex items-center justify-center relative">
+            
+            <!-- Background Pattern -->
+            <div class="absolute inset-0 opacity-5 pointer-events-none" style="background-image: radial-gradient(#F97316 1px, transparent 1px); background-size: 24px 24px;"></div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="text-center text-slate-400">
+                <i class="ph ph-identification-card text-6xl mb-4 text-slate-300"></i>
+                <h2 class="text-xl font-bold text-slate-500">Select a Candidate</h2>
+                <p class="text-sm">Choose from the list to view full evaluation report.</p>
+            </div>
+
+            <!-- Infographic Card (Hidden initially) -->
+            <div id="reportCard" class="hidden w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden animate-slide-in relative flex flex-col md:flex-row min-h-[600px]">
+                
+                <!-- Left Column: Summary & Visuals -->
+                <div class="w-full md:w-5/12 bg-slate-900 text-white p-8 relative overflow-hidden flex flex-col">
+                    <!-- Decor -->
+                    <div class="absolute top-[-50px] left-[-50px] w-64 h-64 bg-nsl-orange rounded-full mix-blend-overlay blur-3xl opacity-20"></div>
+                    <div class="absolute bottom-[-50px] right-[-50px] w-64 h-64 bg-blue-600 rounded-full mix-blend-overlay blur-3xl opacity-20"></div>
+
+                    <!-- Header Profile -->
+                    <div class="relative z-10 mb-8">
+                        <div class="inline-block px-3 py-1 rounded-full bg-white/10 text-xs font-bold text-slate-300 mb-2 border border-white/10">Candidate Profile</div>
+                        <h1 class="text-3xl font-bold tracking-tight mb-1" id="info-name">Loading...</h1>
+                        <div class="flex items-center text-slate-400 text-sm">
+                            <i class="ph ph-calendar-blank mr-1.5"></i> <span id="info-date">-</span>
+                            <span class="mx-2">•</span>
+                            <i class="ph ph-user-circle mr-1.5"></i> By <span id="info-interviewer">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Big Score -->
+                    <div class="flex-1 flex flex-col justify-center items-center relative z-10 my-4">
+                        <div class="relative w-48 h-48 flex items-center justify-center">
+                            <!-- Circular Progress SVG -->
+                            <svg class="transform -rotate-90 w-full h-full">
+                                <circle cx="96" cy="96" r="88" stroke="currentColor" stroke-width="12" fill="transparent" class="text-slate-800" />
+                                <circle id="score-circle" cx="96" cy="96" r="88" stroke="currentColor" stroke-width="12" fill="transparent" class="text-nsl-orange transition-all duration-1000 ease-out" stroke-dasharray="552" stroke-dashoffset="552" stroke-linecap="round" />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span class="text-5xl font-bold tracking-tighter" id="info-total">0</span>
+                                <span class="text-xs uppercase tracking-widest text-slate-400 mt-1">Total Score</span>
+                            </div>
+                        </div>
+                        <!-- Rank Badge (New) -->
+                        <div class="mt-4 px-4 py-1 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-xs font-bold text-slate-300">
+                            Rank: <span class="text-white" id="info-rank">#1</span>
+                        </div>
+                    </div>
+
+                    <!-- Recommendation Stamp -->
+                    <div class="relative z-10 mt-auto pt-6 border-t border-white/10 flex justify-between items-center">
+                        <div>
+                            <div class="text-xs text-slate-400 uppercase tracking-wider mb-1">Final Result</div>
+                            <div id="info-recommend-badge" class="text-xl font-bold">WAITING</div>
+                        </div>
+                        <!-- Stamp Visual -->
+                        <div id="stamp-visual" class="stamp border-4 border-white text-white px-4 py-2 text-xl font-bold opacity-30 uppercase tracking-widest">
+                            HIRE
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Detailed Breakdown -->
+                <div class="w-full md:w-7/12 p-8 bg-white flex flex-col">
+                    <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center">
+                        <i class="ph ph-chart-bar text-nsl-orange mr-2"></i> Performance Analysis
+                    </h3>
+
+                    <!-- Chart Area -->
+                    <div class="h-48 w-full mb-8 relative">
+                         <canvas id="detailRadarChart"></canvas>
+                    </div>
+
+                    <!-- Score Cards Breakdown -->
+                    <div class="space-y-4 overflow-y-auto pr-2 max-h-[300px] custom-scroll">
+                        <!-- Attitude -->
+                        <div class="group">
+                            <div class="flex justify-between items-end mb-1">
+                                <span class="text-xs font-bold text-slate-500 uppercase flex items-center"><div class="w-2 h-2 rounded-full bg-blue-500 mr-2"></div> Attitude & Learning</span>
+                                <span class="text-sm font-bold text-slate-800" id="val-att">0/10</span>
+                            </div>
+                            <div class="h-1.5 w-full bg-slate-100 rounded-full mb-2 overflow-hidden">
+                                <div id="bar-att" class="h-full bg-blue-500 rounded-full transition-all duration-700 w-0"></div>
+                            </div>
+                            <p class="text-xs text-slate-500 italic bg-slate-50 p-2 rounded border border-slate-100" id="com-att">No comment recorded.</p>
+                        </div>
+
+                        <!-- IR Knowledge -->
+                        <div class="group">
+                            <div class="flex justify-between items-end mb-1">
+                                <span class="text-xs font-bold text-slate-500 uppercase flex items-center"><div class="w-2 h-2 rounded-full bg-orange-500 mr-2"></div> IR Knowledge</span>
+                                <span class="text-sm font-bold text-slate-800" id="val-ir">0/10</span>
+                            </div>
+                            <div class="h-1.5 w-full bg-slate-100 rounded-full mb-2 overflow-hidden">
+                                <div id="bar-ir" class="h-full bg-orange-500 rounded-full transition-all duration-700 w-0"></div>
+                            </div>
+                            <p class="text-xs text-slate-500 italic bg-slate-50 p-2 rounded border border-slate-100" id="com-ir">No comment recorded.</p>
+                        </div>
+
+                        <!-- Data Analytics -->
+                        <div class="group">
+                            <div class="flex justify-between items-end mb-1">
+                                <span class="text-xs font-bold text-slate-500 uppercase flex items-center"><div class="w-2 h-2 rounded-full bg-emerald-500 mr-2"></div> Data Analytics</span>
+                                <span class="text-sm font-bold text-slate-800" id="val-data">0/10</span>
+                            </div>
+                            <div class="h-1.5 w-full bg-slate-100 rounded-full mb-2 overflow-hidden">
+                                <div id="bar-data" class="h-full bg-emerald-500 rounded-full transition-all duration-700 w-0"></div>
+                            </div>
+                            <p class="text-xs text-slate-500 italic bg-slate-50 p-2 rounded border border-slate-100" id="com-data">No comment recorded.</p>
+                        </div>
+
+                         <!-- English -->
+                         <div class="group">
+                            <div class="flex justify-between items-end mb-1">
+                                <span class="text-xs font-bold text-slate-500 uppercase flex items-center"><div class="w-2 h-2 rounded-full bg-purple-500 mr-2"></div> English Proficiency</span>
+                                <span class="text-sm font-bold text-slate-800" id="val-eng">0/10</span>
+                            </div>
+                            <div class="h-1.5 w-full bg-slate-100 rounded-full mb-2 overflow-hidden">
+                                <div id="bar-eng" class="h-full bg-purple-500 rounded-full transition-all duration-700 w-0"></div>
+                            </div>
+                            <p class="text-xs text-slate-500 italic bg-slate-50 p-2 rounded border border-slate-100" id="com-eng">No comment recorded.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Config Modal -->
+    <div id="config-modal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <h3 class="font-bold text-lg mb-2">Connect Data Source</h3>
+            <p class="text-sm text-slate-500 mb-4">Enter Google Script URL to fetch candidate data.</p>
+            <input type="text" id="script-url" class="w-full p-3 border rounded-lg mb-4 text-sm" placeholder="https://script.google.com/macros/s/...">
+            <div class="flex justify-end space-x-2">
+                <button onclick="document.getElementById('config-modal').classList.add('hidden')" class="px-4 py-2 text-slate-500 hover:bg-slate-100 rounded">Cancel</button>
+                <button onclick="saveConfig()" class="px-4 py-2 bg-nsl-orange text-white rounded font-bold">Connect & Load</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allCandidates = [];
+        let radarChartInstance = null;
+
+        // --- Mock Data for Preview ---
+        const mockData = [
+            { candidate: 'Ms. Somsri (Demo)', total_score: 65.0, score_att: 7, score_ir: 6, score_data: 5, score_eng: 8, interviewer: 'Golf', timestamp: '2023-10-24T14:30:00.000Z', recommend: 'No', comment_att: 'A bit passive.', comment_ir: 'Needs training.', comment_data: 'Weak logic.', comment_eng: 'Good writing skills.' },
+            { candidate: 'Mr. Teerapat (Demo)', total_score: 85.5, score_att: 9, score_ir: 8.5, score_data: 8, score_eng: 8.5, interviewer: 'Golf', timestamp: '2023-10-25T10:00:00.000Z', recommend: 'Yes', comment_att: 'Very proactive mindset.', comment_ir: 'Good grasp of compliance.', comment_data: 'Analysed volume correctly.', comment_eng: 'Fluent speaker.' }
+        ];
+
+        function init() {
+            const savedUrl = localStorage.getItem('nsl_candidate_url');
+            if(savedUrl) {
+                document.getElementById('script-url').value = savedUrl;
+                loadData();
+            } else {
+                // Fallback & Sort Mock Data
+                allCandidates = [...mockData].sort((a, b) => parseFloat(b.total_score) - parseFloat(a.total_score));
+                renderList(allCandidates);
+            }
+        }
+
+        function saveConfig() {
+            const url = document.getElementById('script-url').value;
+            if(url) {
+                localStorage.setItem('nsl_candidate_url', url);
+                document.getElementById('config-modal').classList.add('hidden');
+                loadData();
+            }
+        }
+
+        async function loadData() {
+            const url = localStorage.getItem('nsl_candidate_url');
+            if(!url) return;
+
+            const listEl = document.getElementById('candidateList');
+            listEl.innerHTML = '<div class="p-8 text-center text-slate-400"><i class="ph ph-spinner animate-spin text-2xl"></i><br>Loading data...</div>';
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if(Array.isArray(data)) {
+                    // SORTING LOGIC ADDED HERE: Descending by total_score
+                    data.sort((a, b) => parseFloat(b.total_score) - parseFloat(a.total_score));
+                    
+                    allCandidates = data;
+                    renderList(allCandidates);
+                    
+                    const Toast = Swal.mixin({
+                        toast: true, position: 'top-end', showConfirmButton: false, timer: 3000
+                    });
+                    Toast.fire({ icon: 'success', title: 'Data updated & sorted' });
+                }
+            } catch (error) {
+                console.error(error);
+                allCandidates = [...mockData].sort((a, b) => parseFloat(b.total_score) - parseFloat(a.total_score));
+                renderList(allCandidates); 
+                Swal.fire('Connection Error', 'Showing demo data instead. Check your URL permissions.', 'warning');
+            }
+        }
+
+        function renderList(data) {
+            const listEl = document.getElementById('candidateList');
+            listEl.innerHTML = '';
+
+            if(data.length === 0) {
+                listEl.innerHTML = '<div class="p-8 text-center text-slate-400">No candidates found.</div>';
+                return;
+            }
+
+            data.forEach((c, index) => {
+                const scoreColor = c.total_score >= 80 ? 'text-green-600' : (c.total_score >= 60 ? 'text-yellow-600' : 'text-red-600');
+                const rank = index + 1;
+                const medal = rank === 1 ? '🥇' : (rank === 2 ? '🥈' : (rank === 3 ? '🥉' : `<span class="text-slate-300 font-normal">#${rank}</span>`));
+
+                const item = document.createElement('div');
+                item.className = 'p-3 hover:bg-slate-50 cursor-pointer border-b border-slate-100 transition-colors flex justify-between items-center group relative';
+                item.onclick = () => selectCandidate(index);
+                
+                // Highlight selected visual
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="text-lg w-6 text-center">${medal}</div>
+                        <div>
+                            <div class="font-bold text-slate-700 text-sm group-hover:text-nsl-orange transition-colors">${c.candidate}</div>
+                            <div class="text-xs text-slate-400">${new Date(c.timestamp).toLocaleDateString()}</div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="font-bold ${scoreColor}">${parseFloat(c.total_score).toFixed(1)}</div>
+                        <div class="text-[10px] text-slate-400">Score</div>
+                    </div>
+                `;
+                listEl.appendChild(item);
+            });
+        }
+
+        function filterList() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allCandidates.filter(c => c.candidate.toLowerCase().includes(term));
+            renderList(filtered);
+        }
+
+        function selectCandidate(index) {
+            const c = allCandidates[index];
+            const rank = index + 1;
+            
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('reportCard').classList.remove('hidden');
+
+            document.getElementById('info-name').innerText = c.candidate;
+            document.getElementById('info-interviewer').innerText = c.interviewer;
+            document.getElementById('info-date').innerText = new Date(c.timestamp).toLocaleDateString('th-TH', { year: 'numeric', month: 'short', day: 'numeric' });
+            document.getElementById('info-rank').innerText = `#${rank}`; // Set Rank
+
+            const total = parseFloat(c.total_score);
+            document.getElementById('info-total').innerText = total.toFixed(1);
+            
+            const maxOffset = 552;
+            const offset = maxOffset - ((total / 100) * maxOffset);
+            setTimeout(() => {
+                 document.getElementById('score-circle').style.strokeDashoffset = offset;
+            }, 100);
+
+            const stamp = document.getElementById('stamp-visual');
+            const badge = document.getElementById('info-recommend-badge');
+            
+            if (c.recommend === 'Yes') {
+                stamp.innerText = 'HIRE';
+                stamp.className = 'stamp border-4 border-green-400 text-green-400 px-4 py-2 text-xl font-bold opacity-80 uppercase tracking-widest';
+                badge.innerText = 'RECOMMENDED';
+                badge.className = 'text-xl font-bold text-green-400';
+            } else {
+                stamp.innerText = 'PASS';
+                stamp.className = 'stamp border-4 border-red-400 text-red-400 px-4 py-2 text-xl font-bold opacity-80 uppercase tracking-widest';
+                badge.innerText = 'NOT MATCH';
+                badge.className = 'text-xl font-bold text-red-400';
+            }
+
+            const updateDetail = (id, val, comm) => {
+                document.getElementById(`val-${id}`).innerText = `${parseFloat(val).toFixed(1)}/10`;
+                document.getElementById(`bar-${id}`).style.width = `${(val/10)*100}%`;
+                document.getElementById(`com-${id}`).innerText = comm || "No comment.";
+            };
+
+            updateDetail('att', c.score_att, c.comment_att);
+            updateDetail('ir', c.score_ir, c.comment_ir);
+            updateDetail('data', c.score_data, c.comment_data);
+            updateDetail('eng', c.score_eng, c.comment_eng);
+
+            updateChart([c.score_att, c.score_ir, c.score_data, c.score_eng]);
+        }
+
+        function updateChart(dataValues) {
+            const ctx = document.getElementById('detailRadarChart').getContext('2d');
+            if(radarChartInstance) {
+                radarChartInstance.destroy();
+            }
+
+            radarChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Attitude', 'IR Knowledge', 'Data', 'English'],
+                    datasets: [{
+                        label: 'Candidate Score',
+                        data: dataValues,
+                        backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                        borderColor: '#F97316',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#F97316',
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            min: 0, max: 10,
+                            ticks: { display: false }, 
+                            pointLabels: {
+                                font: { size: 12, family: "'Prompt', sans-serif" }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        window.onload = init;
+
+    </script>
+</body>
+</html>
