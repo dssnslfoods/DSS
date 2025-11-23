@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSL Recruitment Portal</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background Mesh */
+        .bg-mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(249, 115, 22, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(30, 64, 175, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+            background-size: 150% 150%;
+            animation: meshFlow 15s ease infinite alternate;
+        }
+
+        @keyframes meshFlow {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+
+        /* Modern Glass Card with 3D Properties */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+            transform-style: preserve-3d; /* Key for 3D effect */
+            transform: perspective(1000px);
+            will-change: transform;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Spotlight Overlay (Pseudo-element managed by JS) */
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 1.5rem;
+            background: radial-gradient(
+                800px circle at var(--mouse-x) var(--mouse-y),
+                rgba(255, 255, 255, 0.6),
+                transparent 40%
+            );
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .glass-card:hover::after {
+            opacity: 1;
+        }
+
+        /* Inner Content Depth */
+        .card-content {
+            transform: translateZ(20px); /* Pop out effect */
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-enter {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nsl: {
+                            orange: '#F97316',
+                            blue: '#1E40AF',
+                            dark: '#0f172a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 md:p-8 text-slate-800">
+
+    <!-- Background Animation -->
+    <div class="bg-mesh"></div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-6xl mx-auto relative z-10">
+        
+        <!-- Header Section -->
+        <div class="text-center mb-16 animate-enter">
+            <div class="inline-flex items-center justify-center p-4 bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg mb-8 border border-white transform hover:scale-105 transition-transform duration-500">
+                <img src="logo-NSL.png" alt="NSL Foods Logo" class="h-14 w-auto object-contain">
+            </div>
+            
+            <!-- Dynamic Greeting -->
+            <div class="mb-2 text-nsl-orange font-bold uppercase tracking-widest text-xs" id="greeting-badge">
+                <span class="inline-block w-2 h-2 bg-nsl-orange rounded-full mr-2 animate-pulse"></span>
+                <span id="greeting-text">Welcome</span>
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-bold text-slate-800 mb-4 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600">
+                Talent Acquisition Portal
+            </h1>
+            <p class="text-slate-500 font-medium text-lg md:text-xl max-w-2xl mx-auto">
+                Centralized ecosystem for managing IR Officer recruitment
+            </p>
+        </div>
+
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 perspective-container">
+            
+            <!-- Card 1: Interview Deck -->
+            <a href="https://dssnslfoods.github.io/DSS/candidate1.html" class="glass-card rounded-3xl p-8 group animate-enter delay-1 block cursor-pointer relative h-full">
+                <!-- Content Wrapper for 3D Depth -->
+                <div class="card-content flex flex-col h-full relative z-10">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-100 to-white border border-orange-200 text-orange-600 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition-transform duration-300">
+                            <i class="ph ph-slideshow"></i>
+                        </div>
+                        <div class="text-right opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-2 group-hover:translate-x-0">
+                            <i class="ph ph-arrow-up-right text-2xl text-orange-400"></i>
+                        </div>
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold text-slate-800 mb-3 group-hover:text-nsl-orange transition-colors">Interview Deck</h2>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-8 flex-grow border-t border-slate-100 pt-4">
+                        Interactive Question Set<br>
+                        Real-time Guidelines<br>
+                        Presentation Mode
+                    </p>
+                    
+                    <div class="flex items-center text-slate-400 text-xs font-bold uppercase tracking-wider group-hover:text-nsl-orange transition-colors">
+                        <span>Launch System</span>
+                        <div class="h-px w-8 bg-current ml-3 transition-all group-hover:w-12"></div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 2: Assessment Form -->
+            <a href="https://dssnslfoods.github.io/DSS/assessment.html" class="glass-card rounded-3xl p-8 group animate-enter delay-2 block cursor-pointer relative h-full">
+                <div class="card-content flex flex-col h-full relative z-10">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-100 to-white border border-blue-200 text-blue-600 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition-transform duration-300">
+                            <i class="ph ph-clipboard-text"></i>
+                        </div>
+                        <div class="text-right opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-2 group-hover:translate-x-0">
+                            <i class="ph ph-arrow-up-right text-2xl text-blue-400"></i>
+                        </div>
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold text-slate-800 mb-3 group-hover:text-nsl-blue transition-colors">Scorecard Form</h2>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-8 flex-grow border-t border-slate-100 pt-4">
+                        Digital Evaluation Form<br>
+                        Google Sheets Sync<br>
+                        Real-time Scoring
+                    </p>
+                    
+                    <div class="flex items-center text-slate-400 text-xs font-bold uppercase tracking-wider group-hover:text-nsl-blue transition-colors">
+                        <span>Start Evaluation</span>
+                        <div class="h-px w-8 bg-current ml-3 transition-all group-hover:w-12"></div>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Card 3: Analytics Dashboard -->
+            <a href="https://dssnslfoods.github.io/DSS/candidate_search.html" class="glass-card rounded-3xl p-8 group animate-enter delay-3 block cursor-pointer relative h-full">
+                <div class="card-content flex flex-col h-full relative z-10">
+                    <div class="flex justify-between items-start mb-8">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-100 to-white border border-emerald-200 text-emerald-600 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 transition-transform duration-300">
+                            <i class="ph ph-chart-pie-slice"></i>
+                        </div>
+                        <div class="text-right opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-x-2 group-hover:translate-x-0">
+                            <i class="ph ph-arrow-up-right text-2xl text-emerald-400"></i>
+                        </div>
+                    </div>
+                    
+                    <h2 class="text-2xl font-bold text-slate-800 mb-3 group-hover:text-emerald-600 transition-colors">Analytics Hub</h2>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-8 flex-grow border-t border-slate-100 pt-4">
+                        Candidate Ranking<br>
+                        Infographic Reports<br>
+                        Data Visualization
+                    </p>
+                    
+                    <div class="flex items-center text-slate-400 text-xs font-bold uppercase tracking-wider group-hover:text-emerald-600 transition-colors">
+                        <span>View Insights</span>
+                        <div class="h-px w-8 bg-current ml-3 transition-all group-hover:w-12"></div>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-20 text-center animate-enter delay-3">
+            <p class="text-slate-400 text-xs font-medium tracking-wide opacity-70 hover:opacity-100 transition-opacity">
+                © 2025 NSL Foods PLC. All rights reserved.<br>
+                <span class="text-[10px] uppercase">Happiness • Innovation • Caring</span>
+            </p>
+        </div>
+
+    </main>
+
+    <!-- Javascript Effects -->
+    <script>
+        // --- 1. Dynamic Greeting ---
+        function setGreeting() {
+            const hour = new Date().getHours();
+            const greetingText = document.getElementById('greeting-text');
+            let text = 'Welcome Back';
+            
+            if (hour >= 5 && hour < 12) text = 'Good Morning';
+            else if (hour >= 12 && hour < 17) text = 'Good Afternoon';
+            else if (hour >= 17 && hour < 21) text = 'Good Evening';
+            
+            greetingText.innerText = `${text}, Recruitment Team`;
+        }
+        setGreeting();
+
+        // --- 2. 3D Tilt & Spotlight Effect ---
+        const cards = document.querySelectorAll('.glass-card');
+
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; // x position within the element.
+                const y = e.clientY - rect.top;  // y position within the element.
+
+                // Set CSS variables for the spotlight gradient
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+
+                // Calculate Rotation (Tilt)
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                // Rotate ranges from -5deg to 5deg (adjust divisor to control sensitivity)
+                const rotateX = ((y - centerY) / centerY) * -4; 
+                const rotateY = ((x - centerX) / centerX) * 4;
+
+                // Apply 3D Transform
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            // Reset on Mouse Leave
+            card.addEventListener('mouseleave', () => {
+                // Smoothly return to center
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                // Optional: Hide spotlight by moving it far away
+                // card.style.setProperty('--mouse-x', `-999px`);
+                // card.style.setProperty('--mouse-y', `-999px`);
+            });
+        });
+    </script>
+
+</body>
+</html>
