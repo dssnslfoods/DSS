@@ -83,10 +83,10 @@
                     <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-slate-400"></i>
                     <input type="text" id="searchInput" onkeyup="filterList()" class="w-full pl-9 pr-4 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-nsl-orange focus:border-nsl-orange outline-none transition-all" placeholder="Search candidate...">
                 </div>
-                <!-- Sort Indicator -->
+                <!-- Sort & Filter Indicator -->
                 <div class="mt-2 flex items-center justify-between text-[10px] text-slate-400 px-1">
-                    <span>SORT BY</span>
-                    <span class="flex items-center text-nsl-orange font-bold"><i class="ph ph-sort-descending mr-1"></i> Score (High-Low)</span>
+                    <span class="flex items-center text-nsl-orange font-bold"><i class="ph ph-funnel mr-1"></i> Filter: Score 50+</span>
+                    <span class="flex items-center"><i class="ph ph-sort-descending mr-1"></i> High-Low</span>
                 </div>
             </div>
             <div id="candidateList" class="flex-1 overflow-y-auto p-2 space-y-1">
@@ -247,10 +247,14 @@
         let allCandidates = [];
         let radarChartInstance = null;
 
-        // --- Mock Data for Preview ---
+        // --- Mock Data for Preview (filtered for logic) ---
         const mockData = [
+            // Score 85.5 (Keep)
+            { candidate: 'Mr. Teerapat (Demo)', total_score: 85.5, score_att: 9, score_ir: 8.5, score_data: 8, score_eng: 8.5, interviewer: 'Golf', timestamp: '2023-10-25T10:00:00.000Z', recommend: 'Yes', comment_att: 'Very proactive mindset.', comment_ir: 'Good grasp of compliance.', comment_data: 'Analysed volume correctly.', comment_eng: 'Fluent speaker.' },
+            // Score 65.0 (Keep)
             { candidate: 'Ms. Somsri (Demo)', total_score: 65.0, score_att: 7, score_ir: 6, score_data: 5, score_eng: 8, interviewer: 'Golf', timestamp: '2023-10-24T14:30:00.000Z', recommend: 'No', comment_att: 'A bit passive.', comment_ir: 'Needs training.', comment_data: 'Weak logic.', comment_eng: 'Good writing skills.' },
-            { candidate: 'Mr. Teerapat (Demo)', total_score: 85.5, score_att: 9, score_ir: 8.5, score_data: 8, score_eng: 8.5, interviewer: 'Golf', timestamp: '2023-10-25T10:00:00.000Z', recommend: 'Yes', comment_att: 'Very proactive mindset.', comment_ir: 'Good grasp of compliance.', comment_data: 'Analysed volume correctly.', comment_eng: 'Fluent speaker.' }
+            // Score 40.0 (Should be filtered out)
+            { candidate: 'Test Low Score', total_score: 40.0, score_att: 4, score_ir: 4, score_data: 4, score_eng: 4, interviewer: 'System', timestamp: '2023-10-23T10:00:00.000Z', recommend: 'No', comment_att: '-', comment_ir: '-', comment_data: '-', comment_eng: '-' }
         ];
 
         function init() {
@@ -259,8 +263,10 @@
                 document.getElementById('script-url').value = savedUrl;
                 loadData();
             } else {
-                // Fallback & Sort Mock Data
-                allCandidates = [...mockData].sort((a, b) => parseFloat(b.total_score) - parseFloat(a.total_score));
+                // Fallback: Filter >= 50 AND Sort High to Low
+                allCandidates = [...mockData]
+                    .filter(c => parseFloat(c.total_score) >= 50)
+                    .sort((a, b) => parseFloat(b.total_score) - parseFloat(a.total_score));
                 renderList(allCandidates);
             }
         }
@@ -286,20 +292,24 @@
                 const data = await response.json();
                 
                 if(Array.isArray(data)) {
-                    // SORTING LOGIC ADDED HERE: Descending by total_score
-                    data.sort((a, b) => parseFloat(b.total_score) - parseFloat(a.total_score));
+                    // FILTER & SORT LOGIC
+                    const filteredData = data.filter(c => parseFloat(c.total_score) >= 50);
+                    filteredData.sort((a, b) => parseFloat(b.total_score) - parseFloat(a.total_score));
                     
-                    allCandidates = data;
+                    allCandidates = filteredData;
                     renderList(allCandidates);
                     
                     const Toast = Swal.mixin({
                         toast: true, position: 'top-end', showConfirmButton: false, timer: 3000
                     });
-                    Toast.fire({ icon: 'success', title: 'Data updated & sorted' });
+                    Toast.fire({ icon: 'success', title: 'Data updated (Score 50+ only)' });
                 }
             } catch (error) {
                 console.error(error);
-                allCandidates = [...mockData].sort((a, b) => parseFloat(b.total_score) - parseFloat(a.total_score));
+                // Fallback if error: Filter & Sort Mock Data
+                allCandidates = [...mockData]
+                    .filter(c => parseFloat(c.total_score) >= 50)
+                    .sort((a, b) => parseFloat(b.total_score) - parseFloat(a.total_score));
                 renderList(allCandidates); 
                 Swal.fire('Connection Error', 'Showing demo data instead. Check your URL permissions.', 'warning');
             }
@@ -310,7 +320,7 @@
             listEl.innerHTML = '';
 
             if(data.length === 0) {
-                listEl.innerHTML = '<div class="p-8 text-center text-slate-400">No candidates found.</div>';
+                listEl.innerHTML = '<div class="p-8 text-center text-slate-400">No candidates found<br>(Score >= 50).</div>';
                 return;
             }
 
