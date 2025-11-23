@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSL Foods PLC - IR Officer Interview Deck</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: #f8fafc;
+        }
+        .slide-enter {
+            animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nsl: {
+                            orange: '#F97316', // Brand Orange
+                            blue: '#1E40AF',   // Brand Blue
+                            light: '#FFF7ED',  // Light Orange bg
+                            dark: '#1e293b'    // Slate 800
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col overflow-hidden">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md border-b-4 border-nsl-orange sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <!-- NSL Logo Image -->
+                <img src="logo-NSL.png" alt="NSL Foods Logo" class="h-10 md:h-12 w-auto object-contain hover:scale-105 transition-transform duration-300">
+                <div class="hidden sm:block border-l-2 border-slate-200 pl-4">
+                    <h1 class="text-lg font-bold text-slate-800 tracking-tight leading-tight">NSL Foods PLC</h1>
+                    <p class="text-[10px] text-slate-500 font-medium uppercase tracking-wide">Happiness • Innovation • Caring</p>
+                </div>
+            </div>
+            <div class="text-right hidden md:block">
+                <div class="text-sm text-slate-500 font-medium">Interview Session</div>
+                <div class="text-xs text-nsl-orange font-bold" id="progress-text">Question 1 of 30</div>
+            </div>
+        </div>
+        <!-- Progress Bar -->
+        <div class="h-1.5 bg-slate-100 w-full">
+            <div id="progress-bar" class="h-full bg-nsl-orange transition-all duration-700 ease-in-out shadow-[0_0_10px_rgba(249,115,22,0.5)]" style="width: 3%;"></div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow w-full overflow-y-auto bg-slate-50 relative">
+        <div class="max-w-5xl mx-auto px-4 py-8 pb-24">
+
+            <!-- Category Tabs -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8 sticky top-0 z-40 pt-2">
+                <button onclick="switchCategory('att')" id="tab-att" class="tab-btn group active flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border transition-all duration-300 bg-slate-800 text-white shadow-lg transform scale-105 ring-2 ring-slate-800 ring-offset-2">
+                    <i class="ph ph-brain text-2xl group-hover:animate-pulse"></i>
+                    <div class="flex flex-col items-start leading-none">
+                        <span class="text-[10px] opacity-70 font-light uppercase">Part 1</span>
+                        <span class="text-sm font-bold">Attitude</span>
+                    </div>
+                </button>
+                <button onclick="switchCategory('ir')" id="tab-ir" class="tab-btn group flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border bg-white text-slate-500 hover:bg-blue-50 hover:text-nsl-blue hover:border-blue-200 transition-all duration-300 shadow-sm">
+                    <i class="ph ph-users-three text-2xl"></i>
+                    <div class="flex flex-col items-start leading-none">
+                        <span class="text-[10px] opacity-70 font-light uppercase">Part 2</span>
+                        <span class="text-sm font-bold">IR Knowledge</span>
+                    </div>
+                </button>
+                <button onclick="switchCategory('data')" id="tab-data" class="tab-btn group flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border bg-white text-slate-500 hover:bg-blue-50 hover:text-nsl-blue hover:border-blue-200 transition-all duration-300 shadow-sm">
+                    <i class="ph ph-chart-line-up text-2xl"></i>
+                    <div class="flex flex-col items-start leading-none">
+                        <span class="text-[10px] opacity-70 font-light uppercase">Part 3</span>
+                        <span class="text-sm font-bold">Data Analytics</span>
+                    </div>
+                </button>
+                <button onclick="switchCategory('eng')" id="tab-eng" class="tab-btn group flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border bg-white text-slate-500 hover:bg-blue-50 hover:text-nsl-blue hover:border-blue-200 transition-all duration-300 shadow-sm">
+                    <i class="ph ph-globe-hemisphere-west text-2xl"></i>
+                    <div class="flex flex-col items-start leading-none">
+                        <span class="text-[10px] opacity-70 font-light uppercase">Part 4</span>
+                        <span class="text-sm font-bold">English</span>
+                    </div>
+                </button>
+            </div>
+
+            <!-- Question Card -->
+            <div id="question-card" class="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden slide-enter min-h-[550px] flex flex-col relative">
+                
+                <!-- Decor bg -->
+                <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-orange-50 to-transparent rounded-bl-full opacity-50 pointer-events-none"></div>
+
+                <div class="p-8 md:p-10 flex flex-col flex-grow relative z-10">
+                    
+                    <!-- Question Header -->
+                    <div class="flex items-start space-x-5 mb-8">
+                        <div class="flex-shrink-0 w-16 h-16 bg-white text-nsl-blue rounded-2xl flex items-center justify-center font-bold text-3xl shadow-md border-2 border-blue-50" id="q-number">
+                            1
+                        </div>
+                        <div class="flex-grow pt-1">
+                            <span class="inline-flex items-center px-3 py-1 bg-blue-50 text-nsl-blue rounded-full text-xs font-bold mb-3 tracking-wide uppercase border border-blue-100 shadow-sm" id="q-category">
+                                <i class="ph ph-tag mr-1"></i> Attitude & Learning
+                            </span>
+                            <h2 class="text-2xl md:text-3xl font-bold text-slate-800 leading-snug" id="q-text">
+                                Loading Question...
+                            </h2>
+                        </div>
+                    </div>
+
+                    <!-- Visual / Chart Area -->
+                    <div id="visual-container" class="w-full mb-8 hidden transition-all duration-500">
+                         <div id="visual-area" class="bg-slate-50 rounded-2xl p-6 border border-slate-200 shadow-inner flex items-center justify-center min-h-[300px]">
+                            <!-- Content injected via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Answer Section -->
+                    <div class="flex-grow mt-2">
+                        <div id="answer-box" class="hidden opacity-0 transition-all duration-500 transform translate-y-4 origin-top">
+                            <div class="bg-gradient-to-r from-green-50 to-emerald-50 border-l-4 border-green-500 p-6 rounded-r-xl shadow-sm">
+                                <h3 class="text-green-700 font-bold mb-3 flex items-center text-lg border-b border-green-200 pb-2">
+                                    <i class="ph ph-lightbulb mr-2 text-2xl text-yellow-500 fill-current"></i>
+                                    Guideline / แนวคำตอบ
+                                </h3>
+                                <p class="text-slate-700 text-lg leading-relaxed font-medium" id="a-text">
+                                    Loading Answer...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer Controls -->
+                <div class="bg-slate-50 px-8 py-6 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    
+                    <button onclick="toggleAnswer()" id="btn-answer" class="flex items-center px-6 py-3 bg-white text-indigo-600 rounded-full font-bold hover:bg-indigo-50 hover:text-indigo-700 transition-all duration-200 focus:outline-none ring-1 ring-indigo-100 shadow-sm hover:shadow-md group">
+                        <span class="group-hover:scale-110 transition-transform mr-2 flex items-center"><i class="ph ph-eye text-xl"></i></span>
+                        <span>Show Guideline</span>
+                    </button>
+
+                    <div class="flex space-x-3">
+                        <button onclick="prevQuestion()" id="btn-prev" class="flex items-center px-6 py-3 rounded-full font-semibold transition-all bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm">
+                            <i class="ph ph-arrow-left mr-2 font-bold"></i>
+                            Back
+                        </button>
+                        <button onclick="nextQuestion()" id="btn-next" class="flex items-center px-8 py-3 rounded-full font-semibold transition-all shadow-lg bg-nsl-dark text-white hover:bg-black hover:shadow-xl hover:-translate-y-0.5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:translate-y-0">
+                            Next
+                            <i class="ph ph-arrow-right ml-2 font-bold"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Credit -->
+    <footer class="bg-white border-t py-4 absolute bottom-0 w-full hidden md:block">
+        <div class="max-w-5xl mx-auto px-4 text-center text-slate-400 text-xs font-medium">
+            Created by Financial & IR Consultant Team for NSL Foods PCL.
+        </div>
+    </footer>
+
+    <!-- Data & Logic -->
+    <script>
+        // --- Data Set ---
+        const questions = [
+            // --- Attitude & Learning ---
+            { id: 1, cat: 'att', q: "ถ้าให้คุณสรุปธุรกิจของ NSL Foods ให้คนที่ไม่รู้จักฟังภายใน 1 นาที คุณจะเล่าว่าเราทำอะไร?", a: "ควรจับประเด็นหลักได้ว่า NSL ผลิตเบเกอรี่และขนมขบเคี้ยว (เป็น OEM ให้ 7-Eleven) และมีสินค้าแบรนด์ตัวเอง (Ezy Taste, Ezy Sweet) รวมถึงมีการนำเข้าอาหารแช่แข็งและเนื้อสัตว์", visual: 'logo' },
+            { id: 2, cat: 'att', q: "ถ้าพรุ่งนี้คุณต้องเข้าฟังประชุม Analyst Meeting และเจอคำศัพท์การเงินที่ไม่เข้าใจเลย คุณจะทำอย่างไร?", a: "แสดงความกระตือรือร้น (Proactive) เช่น 'จดบันทึกคำศัพท์นั้นไว้ แล้วรีบหาข้อมูลหลังจบการประชุม หรือสอบถามพี่เลี้ยงทันที' ไม่ปล่อยผ่าน", visual: 'learning' },
+            { id: 3, cat: 'att', q: "ถ้ามีนักลงทุนโทรเข้ามาต่อว่าบริษัทด้วยอารมณ์โกรธ เพราะราคาหุ้นตก คุณจะรับมือกับสายนี้อย่างไร?", a: "1. รับฟังด้วยความใจเย็น (Active Listening) 2. ไม่โต้เถียง 3. แสดงความเห็นอกเห็นใจ (Empathy) 4. รับปากว่าจะนำข้อกังวลไปรายงานผู้บริหาร (แต่ไม่สัญญาเรื่องราคาหุ้น)", visual: 'phone' },
+            { id: 4, cat: 'att', q: "ทำไมบริษัทอาหารอย่างเราต้องแคร์เรื่องสิ่งแวดล้อม (ESG) ทั้งที่เป้าหมายบริษัทคือหากำไร?", a: "เพราะความยั่งยืน = ความมั่นคงระยะยาว หากไม่ดูแลสิ่งแวดล้อม อาจขาดแคลนวัตถุดิบ หรือถูกแบนจากคู่ค้า (Supply Chain Risk) ซึ่งสุดท้ายจะกระทบกำไรอยู่ดี", visual: 'esg_icon' },
+            { id: 5, cat: 'att', q: "เล่าเหตุการณ์ที่คุณต้องอธิบายเรื่องยากๆ ให้คนที่ไม่มีความรู้เรื่องนั้นฟัง แล้วเขาเข้าใจได้สำเร็จ", a: "มองหาทักษะการเปรียบเทียบ (Analogy) หรือการย่อยข้อมูล (Simplification) และการเช็คความเข้าใจผู้ฟัง", visual: 'none' },
+            { id: 6, cat: 'att', q: "ถ้าหัวหน้างานสั่งงานด่วนให้ทำตัวเลข ซึ่งคุณรู้ตัวว่าทำไม่ทันแน่ๆ คุณจะสื่อสารอย่างไร?", a: "กล้าที่จะแจ้งล่วงหน้า (Manage Expectation) และเสนอทางออก (Solution) เช่น 'ขอส่งส่วนสำคัญก่อนได้ไหม' หรือ 'ขอทีมช่วย' แทนที่จะเงียบแล้วงานล่ม", visual: 'clock' },
+            { id: 7, cat: 'att', q: "คุณคิดว่า 'ความน่าเชื่อถือ (Trust)' ของบริษัท สร้างขึ้นจากอะไรได้บ้าง?", a: "ความสม่ำเสมอ (Consistency), ความโปร่งใส (Transparency - กล้าพูดทั้งข่าวดีและร้าย), และการทำตามที่พูด (Deliver promises)", visual: 'trust' },
+            { id: 8, cat: 'att', q: "หากส่งคุณไปอบรมเรื่องการวิเคราะห์งบการเงิน คุณคิดว่าจะนำมาใช้ประโยชน์กับงาน IR อย่างไร?", a: "เพื่อทำหน้าที่เป็น 'ล่าม' (Translator) แปลข้อมูลการเงินยากๆ ให้เป็นภาษาง่ายๆ สำหรับนักลงทุนรายย่อย หรือสื่อมวลชน", visual: 'book' },
+            { id: 9, cat: 'att', q: "ถ้าต้องทำงานซ้ำซ้อน (Routine) เช่นการกรอกข้อมูลเข้าระบบตลาดฯ ที่น่าเบื่อ คุณจะมีวิธีคิดอย่างไรให้ไม่หมดไฟ?", a: "มองหาจุดที่ปรับปรุงให้เร็วขึ้นได้ (Process Improvement) และตระหนักว่า 'ความถูกต้อง' ของข้อมูลเล็กๆ น้อยๆ คือรากฐานของความน่าเชื่อถือ (Trust) ของบริษัท", visual: 'checklist' },
+
+            // --- IR Knowledge ---
+            { id: 10, cat: 'ir', q: "นักลงทุนถามว่า 'ถ้า 7-Eleven ขยายสาขาน้อยลง NSL จะโตต่อได้อย่างไร?' คุณจะตอบอย่างไร?", a: "ชี้แจงว่าเราโตด้วย 3 กลยุทธ์: 1. ออกสินค้าใหม่ (NPD) เพิ่มยอดขายต่อสาขาเดิม 2. ขยายฐานลูกค้า Food Service 3. รุกตลาดส่งออก (Rice Bar) ซึ่งเป็น New S-Curve", visual: 'growth_strat' },
+            { id: 11, cat: 'ir', q: "Silent Period คืออะไร และมีความสำคัญอย่างไรกับงาน IR?", a: "คือช่วงงดให้ข้อมูลชี้นำ/พรีวิวตัวเลขก่อนงบออก (ปกติ 7-14 วัน) เพื่อความยุติธรรม (Fairness) ต่อนักลงทุนทุกกลุ่ม และป้องกันปัญหา Insider Trading", visual: 'silent' },
+            { id: 12, cat: 'ir', q: "คนมองว่าการพึ่งพา 7-Eleven มากไปเป็นความเสี่ยง คุณจะอธิบายเรื่องนี้ให้นักลงทุนสบายใจได้อย่างไร?", a: "1. เน้นความสัมพันธ์ระยะยาวที่แข็งแกร่ง (Strong Partnership) 2. ชี้ให้เห็นการกระจายความเสี่ยง (Diversification) ไปยังแบรนด์ตัวเองและตลาดส่งออกที่กำลังโต", visual: '711' },
+            { id: 13, cat: 'ir', q: "กิจกรรมพาชมโรงงาน (Factory Tour) ช่วยงาน IR ได้อย่างไร?", a: "สร้าง Trust ผ่าน 'การเห็นของจริง' (Tangible Experience) ให้เห็นมาตรฐานความสะอาด เทคโนโลยี ซึ่งสร้างความมั่นใจได้ดีกว่าตัวเลขในกระดาษ", visual: 'factory' },
+            { id: 14, cat: 'ir', q: "หากต้องสรุปข้อมูลบริษัทใน 'Factsheet 1 หน้า' องค์ประกอบ 3 ส่วนที่สำคัญที่สุดคืออะไร?", a: "1. Business at a Glance (โครงสร้างรายได้/ธุรกิจทำอะไร) 2. Key Financials (งบการเงินสำคัญย้อนหลัง) 3. Investment Highlights (จุดเด่นและกลยุทธ์การเติบโต)", visual: 'paper' },
+            { id: 15, cat: 'ir', q: "ช่วงที่มีโรคระบาดในสัตว์ (หมู/ไก่) ซึ่งกระทบวัตถุดิบ ฝ่าย IR ควรทำหน้าที่อย่างไร?", a: "สื่อสารเชิงรุก (Proactive Communication) ชี้แจงแผนบริหารความเสี่ยง (Risk Management) เช่น การสต็อกสินค้า หรือการมี Supplier สำรอง", visual: 'pig' },
+            { id: 16, cat: 'ir', q: "เราอยู่ในรายชื่อ ESG Emerging List คุณจะนำรางวัลนี้ไปโปรโมทเพื่อดึงดูดนักลงทุนกลุ่มใหม่ๆ อย่างไร?", a: "ใช้ดึงดูดกองทุน ESG (Sustainability Funds) โดยนำโลโก้รางวัลไปใส่ใน Presentation และ Roadshow material", visual: 'award' },
+            { id: 17, cat: 'ir', q: "เลือกระหว่าง 'ตอบเร็วแต่ไม่ชัวร์' กับ 'ตอบช้าแต่ข้อมูลเป๊ะ' คุณเลือกแบบไหน?", a: "เลือก 'ตอบช้าแต่ชัวร์' เพราะความถูกต้องคือหัวใจของ IR หากให้ข้อมูลผิด ความเชื่อมั่นจะพังทลาย (Loss of Credibility)", visual: 'scale' },
+            { id: 18, cat: 'ir', q: "Website IR ที่ดี ควรมีหน้าตาหรือฟังก์ชันอะไรที่สำคัญที่สุด?", a: "User-friendly: เข้าถึงงบการเงินล่าสุดง่าย, มีช่องทางติดต่อ IR ชัดเจน, และรองรับการใช้งานบนมือถือ", visual: 'web' },
+            { id: 19, cat: 'ir', q: "จะเปิดโรงงานใหม่ที่ชลบุรี จะทำ Content สื่อสารอย่างไรให้น่าสนใจ?", a: "ทำ Video Clip สั้นๆ พาชมไลน์ผลิต, Infographic เปรียบเทียบกำลังการผลิต Before vs After, หรือบทสัมภาษณ์ Plant Manager", visual: 'content' },
+
+            // --- Data Analytics ---
+            { id: 20, cat: 'data', q: "จากกราฟนี้ (ยอดขายโต แต่กำไรลด) คุณเห็นความผิดปกติอะไร และนักลงทุนจะถามว่าอะไร?", a: "เกิด 'Margin Squeeze' (ยอดขายเพิ่มแต่กำไรไม่เพิ่ม) นักลงทุนจะถามเจาะเรื่อง 'ต้นทุน' (Cost of Goods Sold) และแนวโน้มราคาวัตถุดิบ", visual: 'chart_rev_profit' },
+            { id: 21, cat: 'data', q: "ตั้งเป้าลดขยะ 10% แต่ทำได้แค่ 2% (ตามกราฟ) คุณจะรายงานเรื่องนี้อย่างไร?", a: "รายงานตามจริง (Transparency) แต่อธิบาย 'สาเหตุ' (Why missed?) และ 'แผนแก้ไข' (Recovery Plan) เพื่อให้เห็นความตั้งใจที่จะทำให้ได้ในปีต่อไป", visual: 'chart_esg' },
+            { id: 22, cat: 'data', q: "ความพึงพอใจลูกค้า กับ รายได้บริษัท เกี่ยวข้องกันอย่างไร?", a: "มีความสัมพันธ์เชิงบวก (Positive Correlation) ลูกค้าพอใจ -> เกิดการซื้อซ้ำ (Repeat Order) -> รายได้มั่นคง (Recurring Income)", visual: 'correlation' },
+            { id: 23, cat: 'data', q: "มีข้อมูลยอดขายรายสินค้าเยอะมาก จะสรุปให้ผู้บริหารดูใน 1 สไลด์ อย่างไร?", a: "ใช้ Pie Chart แสดงสัดส่วนรายได้ (Revenue Mix) แยกตามช่องทาง (7-Eleven vs Others) เพื่อให้เห็นภาพรวมว่าเราพึ่งพาใครมากที่สุด", visual: 'chart_pie' },
+            { id: 24, cat: 'data', q: "ตัวเลขการเงินไหนสำคัญที่สุดสำหรับนักลงทุนสาย 'เงินปันผล'?", a: "กำไรสุทธิ (Net Profit) และ กำไรต่อหุ้น (EPS) เพราะเป็นฐานในการคำนวณเงินปันผล (Dividend Payout Ratio)", visual: 'money' },
+            { id: 25, cat: 'data', q: "หากพบว่า Volume การซื้อขายหุ้นพุ่งสูงผิดปกติ 3 เท่า โดยไม่มีข่าวบริษัท คุณจะตรวจสอบ Data ชุดไหนเป็นอันดับแรก?", a: "ตรวจสอบยอด 'Program Trading' และ 'Short Sell' รายวันจากตลาดหลักทรัพย์ฯ รวมถึงเช็ค Sentiment ใน Social Media (Social Listening) เพื่อหาสาเหตุของแรงเก็งกำไร", visual: 'vol_analysis' },
+
+            // --- English ---
+            { id: 26, cat: 'eng', q: "Writing: นักลงทุนต่างชาติขอ Company Visit ช่วง Silent Period (7 วันก่อนงบออก) จงร่างอีเมลปฏิเสธอย่างสุภาพ", a: "'Thank you for your interest. Unfortunately, we are currently in a Silent Period. We would be happy to schedule a visit after our financial results are released next week.'", visual: 'email' },
+            { id: 27, cat: 'eng', q: "Speaking: Please introduce yourself in English and why you want this job.", a: "(สังเกตความมั่นใจ Fluency และ Attitude ที่ดีต่องาน IR)", visual: 'mic' },
+            { id: 28, cat: 'eng', q: "Translate: 'Despite raw material volatility, we maintained gross margin via cost control.'", a: "'แม้ราคาวัตถุดิบจะผันผวน แต่เรายังคงรักษาระดับกำไรขั้นต้นไว้ได้ ผ่านมาตรการควบคุมต้นทุนที่มีประสิทธิภาพ'", visual: 'translate' },
+            { id: 29, cat: 'eng', q: "Situational: Explain 'Sustainability' to a foreign investor simply.", a: "'Sustainability means we grow our business profitably in the long run, while taking good care of the environment and society, not just looking at today's profit.'", visual: 'globe' },
+            { id: 30, cat: 'eng', q: "Vocabulary: Difference between 'Quarterly' and 'Annual' report?", a: "Quarterly is every 3 months (Q1, Q2, Q3). Annual is the full-year report (Year-end summary) which is more comprehensive.", visual: 'calendar' }
+        ];
+
+        // --- Application Logic ---
+        let currentCategory = 'att';
+        let currentIndex = 0;
+        let filteredQuestions = [];
+        let chartInstance = null;
+
+        function init() {
+            filterQuestions();
+            renderQuestion();
+            
+            // Keyboard Navigation
+            document.addEventListener('keydown', function(event) {
+                if(event.key === 'ArrowRight') nextQuestion();
+                if(event.key === 'ArrowLeft') prevQuestion();
+            });
+        }
+
+        function filterQuestions() {
+            filteredQuestions = questions.filter(q => q.cat === currentCategory);
+            currentIndex = 0;
+            updateTabs();
+        }
+
+        function switchCategory(cat) {
+            currentCategory = cat;
+            filterQuestions();
+            renderQuestion();
+        }
+
+        function updateTabs() {
+            // Reset all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = 'tab-btn group flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border bg-white text-slate-500 hover:bg-blue-50 hover:text-nsl-blue hover:border-blue-200 transition-all duration-300 shadow-sm';
+            });
+            // Set active tab
+            const activeBtn = document.getElementById(`tab-${currentCategory}`);
+            activeBtn.className = 'tab-btn group active flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border transition-all duration-300 bg-slate-800 text-white shadow-lg transform scale-105 ring-2 ring-slate-800 ring-offset-2';
+        }
+
+        function renderQuestion() {
+            const q = filteredQuestions[currentIndex];
+            const card = document.getElementById('question-card');
+            
+            // Animation Reset
+            card.classList.remove('slide-enter');
+            void card.offsetWidth; 
+            card.classList.add('slide-enter');
+
+            // Update Content
+            document.getElementById('q-number').innerText = q.id;
+            document.getElementById('q-text').innerText = q.q;
+            
+            // Update Category Label
+            const catMap = {
+                'att': { text: 'Attitude & Learning', icon: 'ph-brain' },
+                'ir': { text: 'IR Knowledge & Ability', icon: 'ph-users-three' },
+                'data': { text: 'Data Analytics', icon: 'ph-chart-line-up' },
+                'eng': { text: 'English Proficiency', icon: 'ph-globe-hemisphere-west' }
+            };
+            const catInfo = catMap[q.cat];
+            document.getElementById('q-category').innerHTML = `<i class="ph ${catInfo.icon} mr-2"></i> ${catInfo.text}`;
+            
+            // Update Answer
+            document.getElementById('a-text').innerText = q.a;
+            
+            // Hide Answer initially
+            const answerBox = document.getElementById('answer-box');
+            answerBox.classList.add('hidden', 'opacity-0', 'translate-y-4');
+            answerBox.classList.remove('block', 'opacity-100', 'translate-y-0');
+            document.getElementById('btn-answer').innerHTML = `<span class="group-hover:scale-110 transition-transform mr-2 flex items-center"><i class="ph ph-eye text-xl"></i></span><span>Show Guideline</span>`;
+            document.getElementById('btn-answer').classList.remove('bg-indigo-50', 'text-indigo-700');
+            document.getElementById('btn-answer').classList.add('bg-white', 'text-indigo-600');
+
+            // Progress Bar
+            document.getElementById('progress-text').innerText = `Question ${currentIndex + 1} of ${filteredQuestions.length}`;
+            const percent = ((currentIndex + 1) / filteredQuestions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+
+            // Button States
+            document.getElementById('btn-prev').disabled = currentIndex === 0;
+            document.getElementById('btn-next').disabled = currentIndex === filteredQuestions.length - 1;
+
+            // Visual Rendering
+            renderVisual(q.visual);
+        }
+
+        function toggleAnswer() {
+            const box = document.getElementById('answer-box');
+            const btn = document.getElementById('btn-answer');
+            
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                // Trigger reflow for transition
+                void box.offsetWidth;
+                box.classList.remove('opacity-0', 'translate-y-4');
+                box.classList.add('opacity-100', 'translate-y-0');
+                
+                btn.innerHTML = `<span class="group-hover:scale-110 transition-transform mr-2 flex items-center"><i class="ph ph-eye-slash text-xl"></i></span><span>Hide Guideline</span>`;
+                btn.classList.add('bg-indigo-50', 'text-indigo-700');
+                btn.classList.remove('bg-white');
+            } else {
+                box.classList.add('opacity-0', 'translate-y-4');
+                box.classList.remove('opacity-100', 'translate-y-0');
+                setTimeout(() => {
+                    box.classList.add('hidden');
+                }, 500); // Match transition duration
+                
+                btn.innerHTML = `<span class="group-hover:scale-110 transition-transform mr-2 flex items-center"><i class="ph ph-eye text-xl"></i></span><span>Show Guideline</span>`;
+                btn.classList.remove('bg-indigo-50', 'text-indigo-700');
+                btn.classList.add('bg-white');
+            }
+        }
+
+        function nextQuestion() {
+            if (currentIndex < filteredQuestions.length - 1) {
+                currentIndex++;
+                renderQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        // --- Visual Renderer ---
+        function renderVisual(type) {
+            const container = document.getElementById('visual-container');
+            const area = document.getElementById('visual-area');
+            
+            // Reset
+            if (chartInstance) {
+                chartInstance.destroy();
+                chartInstance = null;
+            }
+            area.innerHTML = ''; 
+
+            if (type === 'none') {
+                container.classList.add('hidden');
+                return;
+            }
+            
+            container.classList.remove('hidden');
+
+            // Handle Charts
+            if (type.startsWith('chart_')) {
+                const canvas = document.createElement('canvas');
+                canvas.style.maxHeight = '300px';
+                area.appendChild(canvas);
+                renderChart(type, canvas);
+            } else {
+                // Handle Static Graphics
+                let content = '';
+                switch(type) {
+                    case 'logo':
+                        content = `<div class="flex flex-col items-center justify-center animate-fade-in"><img src="logo-NSL.png" alt="NSL Logo" class="w-64 h-auto mb-6 drop-shadow-xl transform hover:scale-105 transition-transform duration-500"><div class="text-2xl font-bold text-nsl-orange">NSL Foods PLC</div><div class="text-slate-400 text-sm">Happiness • Innovation • Caring</div></div>`; 
+                        break;
+                    case '711':
+                        content = `<div class="flex flex-col items-center justify-center transform hover:scale-105 transition-transform cursor-pointer"><div class="relative"><div class="w-32 h-32 bg-white rounded-full shadow-xl flex items-center justify-center border-4 border-green-500 z-10 relative"><span class="text-5xl font-bold text-green-600">7-11</span></div><div class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">Top Partner</div></div><div class="mt-4 text-center"><h4 class="font-bold text-slate-700">Strategic Partnership</h4><p class="text-sm text-slate-500">OEM & Exclusive Brands</p></div></div>`; 
+                        break;
+                    case 'email':
+                        content = `<div class="w-full max-w-md bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden font-sans"><div class="bg-slate-100 px-4 py-2 border-b border-slate-200 flex items-center space-x-2"><div class="w-3 h-3 rounded-full bg-red-400"></div><div class="w-3 h-3 rounded-full bg-yellow-400"></div><div class="w-3 h-3 rounded-full bg-green-400"></div><span class="text-xs text-slate-500 ml-2">Inbox</span></div><div class="p-6"><div class="border-b border-slate-100 pb-2 mb-3"><div class="text-xs text-slate-400 font-bold uppercase">Subject</div><div class="font-bold text-slate-800">Inquiry about Global Expansion</div></div><p class="text-slate-600 text-sm leading-relaxed mb-4">Dear IR Team,<br><br>Does NSL plan to expand to global markets given the current domestic saturation?<br><br>Best Regards,<br>Foreign Fund Manager</p><div class="flex justify-end"><button class="text-xs bg-blue-600 text-white px-3 py-1 rounded-md flex items-center"><i class="ph ph-arrow-u-up-left mr-1"></i> Reply</button></div></div></div>`; 
+                        break;
+                    case 'award':
+                        content = `<div class="text-center relative group"><i class="ph ph-trophy text-9xl text-yellow-400 drop-shadow-lg group-hover:scale-110 transition-transform duration-500"></i><div class="absolute top-0 right-0 animate-ping w-4 h-4 bg-yellow-200 rounded-full"></div><h3 class="text-xl font-bold text-slate-700 mt-4">ESG Emerging List</h3><p class="text-sm text-slate-500">Recognized for Sustainability</p></div>`; 
+                        break;
+                    default:
+                        // Generic Icon Mapper
+                        const iconMap = {
+                            'learning': { i: 'ph-books', c: 'text-blue-500', t: 'Continuous Learning' },
+                            'checklist': { i: 'ph-check-square-offset', c: 'text-emerald-600', t: 'Detail Oriented' },
+                            'silent': { i: 'ph-speaker-slash', c: 'text-gray-500', t: 'Regulatory Compliance' },
+                            'phone': { i: 'ph-phone-disconnect', c: 'text-red-500', t: 'Crisis Communication' },
+                            'growth_strat': { i: 'ph-chart-line-up', c: 'text-green-600', t: 'Growth Strategy' },
+                            'esg_icon': { i: 'ph-plant', c: 'text-green-500', t: 'Environmental Focus' },
+                            'clock': { i: 'ph-clock-countdown', c: 'text-orange-500', t: 'Time Management' },
+                            'trust': { i: 'ph-handshake', c: 'text-indigo-500', t: 'Building Trust' },
+                            'book': { i: 'ph-read-cv-logo', c: 'text-teal-500', t: 'Financial Literacy' },
+                            'stakeholder': { i: 'ph-users-four', c: 'text-purple-500', t: 'Stakeholder Engagement' },
+                            'factory': { i: 'ph-factory', c: 'text-slate-500', t: 'Operational Transparency' },
+                            'paper': { i: 'ph-file-text', c: 'text-gray-500', t: 'Summarization Skills' },
+                            'pig': { i: 'ph-warning-octagon', c: 'text-red-600', t: 'Risk Management' },
+                            'scale': { i: 'ph-scales', c: 'text-blue-600', t: 'Accuracy vs Speed' },
+                            'web': { i: 'ph-desktop', c: 'text-cyan-500', t: 'Digital IR' },
+                            'content': { i: 'ph-video', c: 'text-pink-500', t: 'Creative Communication' },
+                            'correlation': { i: 'ph-trend-up', c: 'text-emerald-500', t: 'Data Correlation' },
+                            'money': { i: 'ph-currency-btc', c: 'text-yellow-500', t: 'Dividend & Profit' },
+                            'vol_analysis': { i: 'ph-chart-bar', c: 'text-red-500', t: 'Volume Analysis' },
+                            'search': { i: 'ph-magnifying-glass', c: 'text-blue-400', t: 'Information Gathering' },
+                            'mic': { i: 'ph-microphone', c: 'text-indigo-400', t: 'Public Speaking' },
+                            'translate': { i: 'ph-translate', c: 'text-violet-500', t: 'Translation' },
+                            'globe': { i: 'ph-globe-hemisphere-west', c: 'text-sky-500', t: 'Global Mindset' },
+                            'calendar': { i: 'ph-calendar', c: 'text-orange-400', t: 'Reporting Cycle' },
+                            'headline': { i: 'ph-newspaper', c: 'text-slate-600', t: 'Copywriting' }
+                        };
+                        const item = iconMap[type] || { i: 'ph-image', c: 'text-gray-400', t: 'Visual' };
+                        content = `<div class="flex flex-col items-center justify-center animate-fade-in"><div class="w-32 h-32 bg-white rounded-full shadow-md flex items-center justify-center mb-4"><i class="ph ${item.i} text-6xl ${item.c}"></i></div><div class="font-bold text-lg text-slate-600">${item.t}</div></div>`;
+                }
+                area.innerHTML = content;
+            }
+        }
+
+        function renderChart(type, canvas) {
+            const ctx = canvas.getContext('2d');
+            
+            // Common Options
+            const commonOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            };
+
+            if (type === 'chart_rev_profit') {
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['2021', '2022', '2023', '2024'],
+                        datasets: [
+                            {
+                                label: 'Revenue (MB)',
+                                data: [3000, 3500, 4200, 4800],
+                                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                borderWidth: 1,
+                                yAxisID: 'y',
+                                order: 2
+                            },
+                            {
+                                type: 'line',
+                                label: 'Net Profit (MB)',
+                                data: [300, 290, 285, 280],
+                                borderColor: '#F97316', // NSL Orange
+                                backgroundColor: '#F97316',
+                                borderWidth: 3,
+                                pointRadius: 5,
+                                pointHoverRadius: 8,
+                                yAxisID: 'y1',
+                                tension: 0.3,
+                                order: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        ...commonOptions,
+                        scales: {
+                            y: { type: 'linear', display: true, position: 'left', title: {display: true, text: 'Revenue'} },
+                            y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, title: {display: true, text: 'Net Profit'} }
+                        }
+                    }
+                });
+            } else if (type === 'chart_esg') {
+                chartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Plastic Waste Reduction (%)'],
+                        datasets: [
+                            { label: 'Target 2024', data: [10], backgroundColor: '#4ADE80', borderRadius: 4 },
+                            { label: 'Actual (YTD)', data: [2], backgroundColor: '#F87171', borderRadius: 4 }
+                        ]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        ...commonOptions,
+                        scales: { x: { max: 12 } }
+                    }
+                });
+            } else if (type === 'chart_pie') {
+                chartInstance = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Bakery (7-11)', 'Snacks', 'Food Service', 'Export'],
+                        datasets: [{
+                            data: [65, 15, 10, 10],
+                            backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'],
+                            borderWidth: 0,
+                            hoverOffset: 10
+                        }]
+                    },
+                    options: {
+                        ...commonOptions,
+                        cutout: '60%'
+                    }
+                });
+            }
+        }
+
+        // Start App
+        init();
+
+    </script>
+</body>
+</html>
