@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSL - Candidate Evaluation Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #f8fafc; }
+        /* Custom Range Slider */
+        input[type=range] {
+            -webkit-appearance: none; 
+            background: transparent; 
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #F97316;
+            cursor: pointer;
+            margin-top: -8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #E2E8F0;
+            border-radius: 2px;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        nsl: { orange: '#F97316', blue: '#1E40AF', dark: '#1e293b' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md border-b-4 border-nsl-orange sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-nsl-orange rounded-lg flex items-center justify-center text-white font-bold text-xl">N</div>
+                <div>
+                    <h1 class="text-lg font-bold text-slate-800">Interview Scorecard</h1>
+                    <p class="text-xs text-slate-500">สำหรับกรรมการสัมภาษณ์ (Interviewer Only)</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <div class="text-xs text-slate-400">Total Score</div>
+                <div class="text-xl font-bold text-nsl-blue" id="header-total">0/100</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-4xl mx-auto w-full p-4 md:p-6 pb-24">
+        
+        <form id="evalForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
+            
+            <!-- Candidate Info -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                <h2 class="text-lg font-bold text-slate-700 mb-4 flex items-center"><i class="ph ph-user-list mr-2"></i> ข้อมูลผู้สมัคร (Candidate Info)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">ชื่อผู้สมัคร (Candidate Name)</label>
+                        <input type="text" id="candidateName" class="w-full border-slate-300 rounded-lg bg-slate-50 focus:ring-nsl-orange focus:border-nsl-orange p-2 text-sm" placeholder="ระบุชื่อผู้สมัคร" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-500 mb-1">ชื่อกรรมการ (Interviewer Name)</label>
+                        <input type="text" id="interviewerName" class="w-full border-slate-300 rounded-lg bg-slate-50 focus:ring-nsl-orange focus:border-nsl-orange p-2 text-sm" placeholder="ระบุชื่อของคุณ" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 1. Attitude & Learning -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-blue-500">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg text-slate-800">1. Attitude & Learning (25%)</h3>
+                    <span class="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Mindset, Proactive, EQ</span>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-slate-600">Score Evaluation</span>
+                        <span class="font-bold text-blue-600" id="score-att-display">5/10</span>
+                    </div>
+                    <input type="range" id="score_att" min="0" max="10" step="0.5" value="5" class="w-full" oninput="updateDisplay('att')">
+                    <div class="flex justify-between text-xs text-slate-400 mt-1">
+                        <span>Poor</span>
+                        <span>Average</span>
+                        <span>Excellent</span>
+                    </div>
+                </div>
+                <textarea id="comment_att" class="w-full p-3 border rounded-lg text-sm bg-slate-50" rows="2" placeholder="ความคิดเห็นเพิ่มเติม (Optional) เช่น จุดเด่น/จุดด้อย..."></textarea>
+            </div>
+
+            <!-- 2. IR Knowledge -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-orange-500">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg text-slate-800">2. IR Knowledge (25%)</h3>
+                    <span class="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">Business, Regulations, Strategy</span>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-slate-600">Score Evaluation</span>
+                        <span class="font-bold text-orange-600" id="score-ir-display">5/10</span>
+                    </div>
+                    <input type="range" id="score_ir" min="0" max="10" step="0.5" value="5" class="w-full" oninput="updateDisplay('ir')">
+                    <div class="flex justify-between text-xs text-slate-400 mt-1">
+                        <span>Poor</span>
+                        <span>Average</span>
+                        <span>Excellent</span>
+                    </div>
+                </div>
+                <textarea id="comment_ir" class="w-full p-3 border rounded-lg text-sm bg-slate-50" rows="2" placeholder="ความคิดเห็นเพิ่มเติม..."></textarea>
+            </div>
+
+            <!-- 3. Data Analytics -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-green-500">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg text-slate-800">3. Data Analytics (25%)</h3>
+                    <span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Analysis Logic, Visualization</span>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-slate-600">Score Evaluation</span>
+                        <span class="font-bold text-green-600" id="score-data-display">5/10</span>
+                    </div>
+                    <input type="range" id="score_data" min="0" max="10" step="0.5" value="5" class="w-full" oninput="updateDisplay('data')">
+                    <div class="flex justify-between text-xs text-slate-400 mt-1">
+                        <span>Poor</span>
+                        <span>Average</span>
+                        <span>Excellent</span>
+                    </div>
+                </div>
+                <textarea id="comment_data" class="w-full p-3 border rounded-lg text-sm bg-slate-50" rows="2" placeholder="ความคิดเห็นเพิ่มเติม..."></textarea>
+            </div>
+
+            <!-- 4. English Proficiency -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-purple-500">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg text-slate-800">4. English Proficiency (25%)</h3>
+                    <span class="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">Communication, Writing</span>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="flex justify-between text-sm mb-2">
+                        <span class="text-slate-600">Score Evaluation</span>
+                        <span class="font-bold text-purple-600" id="score-eng-display">5/10</span>
+                    </div>
+                    <input type="range" id="score_eng" min="0" max="10" step="0.5" value="5" class="w-full" oninput="updateDisplay('eng')">
+                    <div class="flex justify-between text-xs text-slate-400 mt-1">
+                        <span>Poor</span>
+                        <span>Average</span>
+                        <span>Excellent</span>
+                    </div>
+                </div>
+                <textarea id="comment_eng" class="w-full p-3 border rounded-lg text-sm bg-slate-50" rows="2" placeholder="ความคิดเห็นเพิ่มเติม..."></textarea>
+            </div>
+
+            <!-- Final Result Preview -->
+            <div class="bg-slate-800 text-white p-6 rounded-2xl shadow-lg mt-8">
+                <div class="grid grid-cols-2 gap-4 items-center">
+                    <div>
+                        <div class="text-sm text-slate-400 uppercase tracking-wider mb-1">Final Score</div>
+                        <div class="text-4xl font-bold text-nsl-orange" id="final-score">50/100</div>
+                    </div>
+                    <div class="h-32 w-full">
+                         <canvas id="miniRadarChart"></canvas>
+                    </div>
+                </div>
+                <div class="mt-4 pt-4 border-t border-slate-700">
+                    <label class="flex items-center space-x-3 cursor-pointer">
+                        <input type="checkbox" id="recommend_hire" class="w-5 h-5 text-nsl-orange rounded focus:ring-nsl-orange bg-slate-700 border-none">
+                        <span class="text-sm font-medium">Recommend to Hire (เห็นควรรับพิจารณา)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="fixed bottom-0 left-0 w-full bg-white border-t p-4 flex justify-between items-center z-40 shadow-[0_-5px_15px_rgba(0,0,0,0.05)] md:relative md:bg-transparent md:border-none md:shadow-none md:mt-6 md:p-0">
+                <button type="button" onclick="document.getElementById('config-modal').classList.remove('hidden')" class="text-slate-400 hover:text-slate-600">
+                    <i class="ph ph-gear text-2xl"></i>
+                </button>
+                <button type="submit" id="submit-btn" class="flex-grow ml-4 bg-nsl-dark text-white px-8 py-3 rounded-xl font-bold hover:bg-black transition flex items-center justify-center shadow-lg transform active:scale-95">
+                    Submit Score
+                </button>
+            </div>
+
+        </form>
+
+    </main>
+
+    <!-- Config Modal -->
+    <div id="config-modal" class="hidden fixed inset-0 bg-black/50 z-[60] flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <h3 class="font-bold text-lg mb-2">Google Sheet Connection</h3>
+            <input type="text" id="script-url" class="w-full p-2 border rounded mb-4 text-sm" placeholder="Paste Web App URL here...">
+            <div class="flex justify-end space-x-2">
+                <button type="button" onclick="document.getElementById('config-modal').classList.add('hidden')" class="px-4 py-2 text-slate-500 hover:bg-slate-100 rounded">Close</button>
+                <button type="button" onclick="saveConfig()" class="px-4 py-2 bg-nsl-blue text-white rounded font-bold">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let radarChart;
+
+        function updateDisplay(type) {
+            const val = document.getElementById(`score_${type}`).value;
+            document.getElementById(`score-${type}-display`).innerText = `${val}/10`;
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const att = parseFloat(document.getElementById('score_att').value) * 2.5; // Convert 10 to 25% scale
+            const ir = parseFloat(document.getElementById('score_ir').value) * 2.5;
+            const data = parseFloat(document.getElementById('score_data').value) * 2.5;
+            const eng = parseFloat(document.getElementById('score_eng').value) * 2.5;
+
+            const total = att + ir + data + eng;
+            
+            document.getElementById('final-score').innerText = `${total.toFixed(1)}/100`;
+            document.getElementById('header-total').innerText = `${total.toFixed(1)}/100`;
+
+            updateChart([att, ir, data, eng]);
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('miniRadarChart').getContext('2d');
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Attitude', 'IR Knowledge', 'Data', 'English'],
+                    datasets: [{
+                        data: [12.5, 12.5, 12.5, 12.5], // Initial half values
+                        backgroundColor: 'rgba(249, 115, 22, 0.4)',
+                        borderColor: '#F97316',
+                        borderWidth: 2,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        r: {
+                            min: 0, max: 25,
+                            ticks: { display: false },
+                            grid: { color: 'rgba(255,255,255,0.2)' },
+                            angleLines: { color: 'rgba(255,255,255,0.2)' },
+                            pointLabels: { color: 'white', font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChart(data) {
+            if(radarChart) {
+                radarChart.data.datasets[0].data = data;
+                radarChart.update();
+            }
+        }
+
+        // --- Google Sheet Logic ---
+        function saveConfig() {
+            const url = document.getElementById('script-url').value;
+            if(url) {
+                localStorage.setItem('nsl_candidate_url', url);
+                document.getElementById('config-modal').classList.add('hidden');
+                Swal.fire('Saved!', 'Ready to submit scores.', 'success');
+            }
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            let scriptURL = localStorage.getItem('nsl_candidate_url');
+            if (!scriptURL) {
+                document.getElementById('config-modal').classList.remove('hidden');
+                Swal.fire('Setup Required', 'Please enter Google Script URL first.', 'warning');
+                return;
+            }
+
+            // Collect Data
+            const formData = {
+                timestamp: new Date().toISOString(),
+                candidate: document.getElementById('candidateName').value,
+                interviewer: document.getElementById('interviewerName').value,
+                score_att: document.getElementById('score_att').value,
+                comment_att: document.getElementById('comment_att').value,
+                score_ir: document.getElementById('score_ir').value,
+                comment_ir: document.getElementById('comment_ir').value,
+                score_data: document.getElementById('score_data').value,
+                comment_data: document.getElementById('comment_data').value,
+                score_eng: document.getElementById('score_eng').value,
+                comment_eng: document.getElementById('comment_eng').value,
+                total_score: document.getElementById('final-score').innerText.split('/')[0],
+                recommend: document.getElementById('recommend_hire').checked ? 'Yes' : 'No'
+            };
+
+            // Submit
+            const btn = document.getElementById('submit-btn');
+            btn.innerHTML = '<i class="ph ph-spinner animate-spin mr-2"></i> Submitting...';
+            btn.disabled = true;
+
+            try {
+                await fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                Swal.fire({
+                    title: 'Score Submitted!',
+                    text: 'Evaluation has been saved successfully.',
+                    icon: 'success',
+                    confirmButtonColor: '#F97316'
+                }).then(() => {
+                   // Optional: window.location.reload(); 
+                });
+
+            } catch (error) {
+                Swal.fire('Error', 'Submission failed.', 'error');
+            } finally {
+                btn.innerHTML = 'Submit Score';
+                btn.disabled = false;
+            }
+        }
+
+        window.onload = function() {
+            initChart();
+            // Load saved URL if any
+            const savedUrl = localStorage.getItem('nsl_candidate_url');
+            if(savedUrl) document.getElementById('script-url').value = savedUrl;
+        };
+    </script>
+</body>
+</html>
