@@ -1,323 +1,436 @@
-import React, { useState } from 'react';
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, 
-  PieChart, Pie, Cell, AreaChart, Area
-} from 'recharts';
-import { 
-  Users, CreditCard, TrendingUp, DollarSign, Activity, 
-  ArrowUpRight, Target, Award, PieChart as PieIcon, 
-  FileText, LayoutDashboard, ChevronRight
-} from 'lucide-react';
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Customer Insight Report 2025 - DSS/NSL</title>
+    
+    <!-- Google Fonts: Noto Sans Thai -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-// --- Colors & Theme ---
-const COLORS = {
-  primary: '#4f46e5',   // Indigo 600
-  secondary: '#06b6d4', // Cyan 500
-  accent: '#f43f5e',    // Rose 500
-  success: '#10b981',   // Emerald 500
-  slate: '#64748b',     // Slate 500
-  dark: '#0f172a',      // Slate 900
-  light: '#f8fafc',     // Slate 50
-  chart: ['#4f46e5', '#06b6d4', '#f43f5e', '#8b5cf6', '#10b981']
-};
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans Thai"', 'sans-serif'],
+                        display: ['"Outfit"', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#4f46e5',
+                        secondary: '#06b6d4',
+                        accent: '#f43f5e',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
 
-// --- Mock Data (Based on your 2024_2025.xlsx analysis) ---
-const kpiData = [
-  { label: 'Total Sales Revenue', value: '18.2M', sub: 'THB', change: '+18.2%', isPositive: true, icon: DollarSign },
-  { label: 'Active Members', value: '172,000', sub: 'Users', change: '+10.9%', isPositive: true, icon: Users },
-  { label: 'Avg. Order Value', value: '3,120', sub: 'THB', change: '+9.4%', isPositive: true, icon: CreditCard },
-  { label: 'Highest Growth', value: 'Gen Alpha', sub: 'Segment', change: '+74%', isPositive: true, icon: TrendingUp },
-];
+    <style>
+        body {
+            background-color: #f8fafc;
+            scroll-behavior: smooth;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .animate-float:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        .section-header {
+            position: relative;
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .section-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(to bottom, #4f46e5, #06b6d4);
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
 
-const genComparisonData = [
-  { name: 'Gen Alpha', y2024: 4.3, y2025: 7.5, growth: 74 },
-  { name: 'Gen Z', y2024: 85, y2025: 120, growth: 41 },
-  { name: 'Gen Y', y2024: 320, y2025: 390, growth: 22 },
-  { name: 'Gen X', y2024: 880, y2025: 950, growth: 8 },
-  { name: 'Boomer', y2024: 135, y2025: 160, growth: 18 },
-];
-// Scale down Gen X for visualization balance if needed, or keep scale but handle labels. 
-// Let's use 100k unit scale for chart readability.
-
-const genderData = [
-  { name: 'Female', value: 65, color: '#ec4899' },
-  { name: 'Male', value: 35, color: '#3b82f6' },
-];
-
-// --- Components ---
-
-const Card = ({ children, className = "" }) => (
-  <div className={`bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 ${className}`}>
-    {children}
-  </div>
-);
-
-const KPICard = ({ item }) => (
-  <Card className="p-6 flex items-start justify-between relative overflow-hidden group">
-    <div className="z-10 relative">
-      <div className="flex items-center gap-2 mb-2">
-        <div className="p-2 bg-indigo-50 rounded-lg text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-          <item.icon size={20} />
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 glass-card border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-cyan-500 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                        D
+                    </div>
+                    <div>
+                        <h1 class="font-display font-bold text-xl tracking-tight text-slate-900">DSS/NSL</h1>
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Analytics Division</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center gap-4">
+                    <span class="text-sm text-slate-500 flex items-center gap-1">
+                        <i class="ph ph-calendar-blank text-indigo-600"></i> Oct 2024 - Oct 2025
+                    </span>
+                    <button class="bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition-colors flex items-center gap-2">
+                        <i class="ph ph-presentation-chart"></i> Export PDF
+                    </button>
+                </div>
+            </div>
         </div>
-        <span className="text-slate-500 text-sm font-medium">{item.label}</span>
-      </div>
-      <div className="flex items-baseline gap-1">
-        <h3 className="text-3xl font-bold text-slate-800 tracking-tight">{item.value}</h3>
-        <span className="text-xs text-slate-400 font-medium">{item.sub}</span>
-      </div>
-      <div className={`flex items-center mt-3 text-sm font-bold ${item.isPositive ? 'text-emerald-600' : 'text-rose-600'}`}>
-        {item.isPositive ? <ArrowUpRight size={16} className="mr-1" /> : <Activity size={16} className="mr-1" />}
-        {item.change} <span className="text-slate-400 font-normal ml-1">vs Oct 2024</span>
-      </div>
-    </div>
-    {/* Decor circle */}
-    <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-gradient-to-br from-indigo-50 to-white rounded-full opacity-50 group-hover:scale-125 transition-transform duration-500" />
-  </Card>
-);
+    </nav>
 
-const ExecutiveSummaryView = () => (
-  <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-    <div className="bg-gradient-to-r from-slate-900 to-indigo-900 rounded-3xl p-8 md:p-12 text-white shadow-2xl relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
-      <div className="relative z-10 max-w-3xl">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-indigo-200 text-sm font-medium mb-4 backdrop-blur-sm border border-white/10">
-          <Activity size={14} /> Executive Report • Oct 2025
+    <!-- Hero Section -->
+    <header class="relative overflow-hidden bg-slate-900 text-white py-12 md:py-20">
+        <div class="absolute top-0 right-0 w-1/2 h-full bg-indigo-600 opacity-20 blur-[100px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-1/2 h-full bg-cyan-500 opacity-20 blur-[100px] rounded-full -translate-x-1/2 translate-y-1/2"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-4xl">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 backdrop-blur-md text-cyan-300 text-sm font-medium mb-6">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> 
+                    Marketing & Product Strategy Report
+                </div>
+                <h2 class="font-display text-3xl md:text-5xl font-bold mb-6 leading-tight">
+                    วิเคราะห์เจาะลึกพฤติกรรมลูกค้า <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">เพื่อการวางแผนกลยุทธ์ปี 2026</span>
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-slate-300 mb-8">
+                    <p class="leading-relaxed">
+                        <strong class="text-white">Marketing Plan:</strong> มุ่งเน้น Personalized Campaign แยกตามพฤติกรรม Generation เพื่อเพิ่ม Conversion Rate
+                    </p>
+                    <p class="leading-relaxed">
+                        <strong class="text-white">Product Dev:</strong> พัฒนาสินค้าใหม่โดยอิงจาก Spending Power และ Frequency ในการซื้อซ้ำ
+                    </p>
+                </div>
+            </div>
         </div>
-        <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">
-          ธุรกิจเติบโตแข็งแกร่ง <br/>
-          <span className="text-indigo-300">นำโดยฐานลูกค้า Loyalty และ New Gen</span>
-        </h2>
-        <p className="text-indigo-100 text-lg leading-relaxed opacity-90">
-          ภาพรวมเดือนตุลาคม 2025 แสดงให้เห็นถึงศักยภาพในการทำกำไรที่เพิ่มขึ้น (+18.2%) 
-          โดยมีปัจจัยบวกจากกลยุทธ์ Retention ที่แข็งแรงในกลุ่ม Gen X และการขยายตัวที่น่าจับตามองในกลุ่ม Gen Alpha
-        </p>
-      </div>
-    </div>
+    </header>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <Card className="p-8 border-l-4 border-l-indigo-600">
-        <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-          <Target className="text-indigo-600" />
-          The "Cash Cow" Strategy
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 pb-20">
+        
+        <!-- Executive Summary Cards (KPIs) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+            <!-- Revenue -->
+            <div class="glass-card p-6 rounded-2xl shadow-sm animate-float">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-indigo-50 rounded-xl text-indigo-600"><i class="ph ph-currency-dollar text-2xl"></i></div>
+                    <span class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">+18.2%</span>
+                </div>
+                <h3 class="text-slate-500 text-sm font-medium">Total Revenue</h3>
+                <div class="flex items-baseline gap-1">
+                    <span class="text-3xl font-bold text-slate-800 counter" data-target="18.2">0</span>
+                    <span class="text-lg font-bold text-slate-800">M</span>
+                </div>
+            </div>
+
+            <!-- Members -->
+            <div class="glass-card p-6 rounded-2xl shadow-sm animate-float">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-cyan-50 rounded-xl text-cyan-600"><i class="ph ph-users text-2xl"></i></div>
+                    <span class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">+10.9%</span>
+                </div>
+                <h3 class="text-slate-500 text-sm font-medium">Total Members</h3>
+                <div class="flex items-baseline gap-1">
+                    <span class="text-3xl font-bold text-slate-800 counter-int" data-target="172000">0</span>
+                </div>
+            </div>
+
+            <!-- Frequency (New KPI based on TC per Member) -->
+            <div class="glass-card p-6 rounded-2xl shadow-sm animate-float">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-amber-50 rounded-xl text-amber-600"><i class="ph ph-clock-counter-clockwise text-2xl"></i></div>
+                    <span class="text-sm font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">+2.4%</span>
+                </div>
+                <h3 class="text-slate-500 text-sm font-medium">Avg. Frequency</h3>
+                <div class="flex items-baseline gap-1">
+                    <span class="text-3xl font-bold text-slate-800 counter" data-target="2.24">0</span>
+                    <span class="text-xs text-slate-400 ml-1">Times/Month</span>
+                </div>
+            </div>
+
+            <!-- Opportunity -->
+            <div class="glass-card p-6 rounded-2xl shadow-sm animate-float bg-gradient-to-br from-indigo-600 to-indigo-700 text-white border-none">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="p-3 bg-white/10 rounded-xl text-white backdrop-blur-sm"><i class="ph ph-star text-2xl"></i></div>
+                    <span class="text-sm font-bold text-white bg-white/20 px-2 py-1 rounded-lg backdrop-blur-sm">Focus</span>
+                </div>
+                <h3 class="text-indigo-100 text-sm font-medium">Product Opportunity</h3>
+                <div class="flex flex-col">
+                    <span class="text-xl font-bold">Gen Y Bundles</span>
+                    <span class="text-xs text-indigo-200 mt-1">High Spending per Head</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Overview Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+            <!-- Growth Chart -->
+            <div class="lg:col-span-2 glass-card p-6 rounded-2xl shadow-sm">
+                <div class="section-header">
+                    <h3 class="text-lg font-bold text-slate-800">Growth Comparison (YoY)</h3>
+                    <p class="text-sm text-slate-500">ยอดขายเปรียบเทียบ Oct 2024 vs Oct 2025</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="growthChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Gender Mix -->
+            <div class="glass-card p-6 rounded-2xl shadow-sm">
+                <div class="section-header">
+                    <h3 class="text-lg font-bold text-slate-800">Customer Profile</h3>
+                    <p class="text-sm text-slate-500">Gender Distribution</p>
+                </div>
+                <div class="chart-container" style="height: 200px;">
+                    <canvas id="genderChart"></canvas>
+                </div>
+                <div class="mt-4 p-4 bg-slate-50 rounded-xl text-center">
+                    <p class="text-sm text-slate-600">Decision Maker หลักคือ <strong class="text-pink-500">ผู้หญิง (65%)</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Behavioral Deep Dive (New for Product/Marketing) -->
+        <div class="glass-card p-6 rounded-2xl shadow-sm mb-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+                <div class="section-header mb-0">
+                    <h3 class="text-lg font-bold text-slate-800">Behavioral Analysis Matrix</h3>
+                    <p class="text-sm text-slate-500">วิเคราะห์ความสัมพันธ์ระหว่าง "กำลังซื้อ (Spending)" และ "ความถี่ (Frequency)"</p>
+                </div>
+                <div class="flex gap-4 text-xs">
+                    <div class="flex items-center gap-2"><span class="w-3 h-3 bg-indigo-500 rounded"></span> Spending/Head (บาท)</div>
+                    <div class="flex items-center gap-2"><span class="w-3 h-3 bg-rose-500 rounded-full border-2 border-white shadow-sm"></span> Frequency (ครั้ง/เดือน)</div>
+                </div>
+            </div>
+            <div class="chart-container" style="height: 350px;">
+                <canvas id="behaviorChart"></canvas>
+            </div>
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-3 bg-indigo-50 border border-indigo-100 rounded-lg">
+                    <span class="text-xs font-bold text-indigo-700 uppercase">High Spend</span>
+                    <p class="text-sm text-slate-700 mt-1"><strong>Gen Y:</strong> จ่ายหนักแต่มาไม่บ่อย -> <em>เสนอสินค้าพรีเมียม/ชิ้นใหญ่</em></p>
+                </div>
+                <div class="p-3 bg-rose-50 border border-rose-100 rounded-lg">
+                    <span class="text-xs font-bold text-rose-700 uppercase">High Frequency</span>
+                    <p class="text-sm text-slate-700 mt-1"><strong>Gen X:</strong> มาบ่อย จ่ายกลางๆ -> <em>เสนอระบบ Subscription/Refill</em></p>
+                </div>
+                <div class="p-3 bg-cyan-50 border border-cyan-100 rounded-lg">
+                    <span class="text-xs font-bold text-cyan-700 uppercase">Growth Potential</span>
+                    <p class="text-sm text-slate-700 mt-1"><strong>Gen Alpha:</strong> เริ่มต้นสร้าง Brand Love -> <em>สินค้าทดลอง/ราคาเข้าถึงง่าย</em></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Strategic Roadmap (Actionable Items) -->
+        <h3 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-3">
+            <i class="ph ph-strategy text-indigo-600"></i> Strategic Roadmap 2026
         </h3>
-        <p className="text-slate-600 leading-relaxed mb-4">
-          <strong className="text-slate-900">Gen X (45-59 ปี)</strong> ยังคงเป็นกระดูกสันหลังของรายได้ (Contribution &gt; 50%) 
-          แม้การเติบโตจะไม่หวือหวาเท่ากลุ่มอื่น แต่มีความเสถียรสูง
-        </p>
-        <div className="bg-indigo-50 p-4 rounded-xl">
-          <p className="text-indigo-900 text-sm font-semibold">📌 Recommendation:</p>
-          <p className="text-indigo-700 text-sm mt-1">
-            เน้นบริการ "Exclusive Service" หรือระบบสมาชิก Tier สูงเพื่อรักษาฐานนี้ไว้ ลด Churn Rate ให้ต่ำที่สุด
-          </p>
-        </div>
-      </Card>
-
-      <Card className="p-8 border-l-4 border-l-cyan-500">
-        <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
-          <TrendingUp className="text-cyan-500" />
-          The "Future Growth" Engine
-        </h3>
-        <p className="text-slate-600 leading-relaxed mb-4">
-          <strong className="text-slate-900">Gen Alpha & Z</strong> คือดาวรุ่งพุ่งแรง (Growth +74%) 
-          สะท้อนว่าแบรนด์เริ่มติดตลาดคนรุ่นใหม่
-        </p>
-        <div className="bg-cyan-50 p-4 rounded-xl">
-          <p className="text-cyan-900 text-sm font-semibold">📌 Recommendation:</p>
-          <p className="text-cyan-700 text-sm mt-1">
-            เร่งเครื่อง Social Commerce และ TikTok Campaign เพื่อเปลี่ยน Interest ให้เป็น Conversion ในวงกว้าง
-          </p>
-        </div>
-      </Card>
-    </div>
-
-    <Card className="p-8 bg-slate-50 border-none">
-      <h3 className="text-lg font-bold text-slate-800 mb-6 text-center">Snapshot: Performance by Segment</h3>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left text-slate-600">
-          <thead className="text-xs text-slate-700 uppercase bg-slate-100 border-b border-slate-200">
-            <tr>
-              <th className="px-6 py-3 rounded-tl-lg">Segment</th>
-              <th className="px-6 py-3 text-right">Sales (2025)</th>
-              <th className="px-6 py-3 text-right">Members</th>
-              <th className="px-6 py-3 text-right text-emerald-600">Growth (YoY)</th>
-              <th className="px-6 py-3 rounded-tr-lg text-center">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="bg-white border-b border-slate-100 hover:bg-slate-50">
-              <td className="px-6 py-4 font-medium text-slate-900">Gen Alpha</td>
-              <td className="px-6 py-4 text-right">฿75,000</td>
-              <td className="px-6 py-4 text-right">885</td>
-              <td className="px-6 py-4 text-right font-bold text-emerald-600">+74%</td>
-              <td className="px-6 py-4 text-center"><span className="bg-emerald-100 text-emerald-800 text-xs px-2 py-1 rounded-full">Rising Star</span></td>
-            </tr>
-            <tr className="bg-white border-b border-slate-100 hover:bg-slate-50">
-              <td className="px-6 py-4 font-medium text-slate-900">Gen X</td>
-              <td className="px-6 py-4 text-right">฿9,500,000</td>
-              <td className="px-6 py-4 text-right">108,341</td>
-              <td className="px-6 py-4 text-right text-emerald-600">+8%</td>
-              <td className="px-6 py-4 text-center"><span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full">Cash Cow</span></td>
-            </tr>
-             <tr className="bg-white hover:bg-slate-50">
-              <td className="px-6 py-4 font-medium text-slate-900">Gen Y</td>
-              <td className="px-6 py-4 text-right">฿3,900,000</td>
-              <td className="px-6 py-4 text-right">35,000</td>
-              <td className="px-6 py-4 text-right text-emerald-600">+22%</td>
-              <td className="px-6 py-4 text-center"><span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">High Spender</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </Card>
-  </div>
-);
-
-const DashboardView = () => (
-  <div className="space-y-6 animate-in fade-in zoom-in-95 duration-500">
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {kpiData.map((item, index) => <KPICard key={index} item={item} />)}
-    </div>
-
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* Main Chart */}
-      <Card className="lg:col-span-2 p-6">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h3 className="text-lg font-bold text-slate-800">Generation Growth Comparison</h3>
-            <p className="text-sm text-slate-500">Sales Volume: Oct 2024 vs Oct 2025 (Unit: 10k THB)</p>
-          </div>
-          <div className="flex gap-2 text-sm">
-            <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-slate-300"></div> 2024</div>
-            <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-indigo-600"></div> 2025</div>
-          </div>
-        </div>
-        <div className="h-80">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={genComparisonData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} dy={10} />
-              <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
-              <Tooltip 
-                cursor={{fill: '#f8fafc'}}
-                contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
-              />
-              <Bar dataKey="y2024" fill="#cbd5e1" radius={[4, 4, 0, 0]} barSize={20} name="Oct 2024" />
-              <Bar dataKey="y2025" fill="#4f46e5" radius={[4, 4, 0, 0]} barSize={20} name="Oct 2025" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </Card>
-
-      {/* Side Charts */}
-      <div className="space-y-6">
-        <Card className="p-6">
-          <h3 className="text-lg font-bold text-slate-800 mb-2">Gender Mix</h3>
-          <p className="text-sm text-slate-500 mb-6">Majority of active spenders</p>
-          <div className="h-48 relative">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={genderData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={50}
-                  outerRadius={70}
-                  paddingAngle={5}
-                  dataKey="value"
-                >
-                  {genderData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-2xl font-bold text-slate-800">65%</span>
-              <span className="text-xs text-pink-500 font-medium">Female</span>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Marketing Strategy -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-indigo-600 p-4 flex items-center gap-3 text-white">
+                    <i class="ph ph-megaphone text-xl"></i>
+                    <h4 class="font-bold">Marketing Action Plan</h4>
+                </div>
+                <div class="p-6 space-y-6">
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold shrink-0">01</div>
+                        <div>
+                            <h5 class="font-bold text-slate-800">Retention Campaign (Gen X)</h5>
+                            <p class="text-sm text-slate-600 mt-1">ใช้ LINE OA และ Personalized SMS ส่งโปรโมชั่นสินค้าที่ใช้ประจำ เพื่อรักษา Frequency (2.2+ ครั้ง/เดือน)</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold shrink-0">02</div>
+                        <div>
+                            <h5 class="font-bold text-slate-800">Acquisition Campaign (Gen Z/Alpha)</h5>
+                            <p class="text-sm text-slate-600 mt-1">ร่วมมือกับ Influencer สาย Lifestyle บน TikTok เพื่อสร้าง Brand Awareness ในกลุ่มคนรุ่นใหม่</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold shrink-0">03</div>
+                        <div>
+                            <h5 class="font-bold text-slate-800">Upselling (Gen Y)</h5>
+                            <p class="text-sm text-slate-600 mt-1">ทำโปรโมชั่น Exclusive Member หรือ Early Bird สำหรับสินค้าใหม่ เพื่อดึงดูดกลุ่ม High Spender</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div className="flex justify-center gap-6 mt-4">
-             <div className="flex items-center gap-2 text-sm text-slate-600">
-               <div className="w-3 h-3 rounded-full bg-pink-500"></div> Female
-             </div>
-             <div className="flex items-center gap-2 text-sm text-slate-600">
-               <div className="w-3 h-3 rounded-full bg-blue-500"></div> Male
-             </div>
-          </div>
-        </Card>
 
-        <Card className="p-6 bg-gradient-to-br from-indigo-600 to-indigo-700 text-white border-none">
-          <div className="flex items-start justify-between">
-            <div>
-              <p className="text-indigo-200 text-sm font-medium mb-1">Top Performer</p>
-              <h3 className="text-xl font-bold">Gen Y Spending</h3>
+            <!-- Product Strategy -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-cyan-600 p-4 flex items-center gap-3 text-white">
+                    <i class="ph ph-package text-xl"></i>
+                    <h4 class="font-bold">Product Development Plan</h4>
+                </div>
+                <div class="p-6 space-y-6">
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-full bg-cyan-50 flex items-center justify-center text-cyan-600 font-bold shrink-0">01</div>
+                        <div>
+                            <h5 class="font-bold text-slate-800">Premium Bundle Sets</h5>
+                            <p class="text-sm text-slate-600 mt-1"><strong>Target: Gen Y</strong><br>พัฒนาเซตสินค้าของขวัญ หรือเซตพรีเมียมที่เน้น Image เนื่องจาก AOV สูงสุด</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-full bg-cyan-50 flex items-center justify-center text-cyan-600 font-bold shrink-0">02</div>
+                        <div>
+                            <h5 class="font-bold text-slate-800">Value / Refill Packs</h5>
+                            <p class="text-sm text-slate-600 mt-1"><strong>Target: Gen X & Boomer</strong><br>สินค้าราคาประหยัด หรือแพ็คคู่ สำหรับลูกค้าที่ซื้อซ้ำบ่อยและเน้นความคุ้มค่า</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-full bg-cyan-50 flex items-center justify-center text-cyan-600 font-bold shrink-0">03</div>
+                        <div>
+                            <h5 class="font-bold text-slate-800">Trial Kits / Entry Level</h5>
+                            <p class="text-sm text-slate-600 mt-1"><strong>Target: Gen Alpha</strong><br>สินค้าราคาเริ่มต้น (Entry Price Point) เพื่อลดกำแพงในการตัดสินใจซื้อครั้งแรก</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <Award className="text-indigo-200" />
-          </div>
-          <div className="mt-6">
-            <div className="flex items-end gap-2 mb-2">
-              <span className="text-3xl font-bold">Highest</span>
-              <span className="text-sm text-indigo-200 mb-1">per head</span>
-            </div>
-            <p className="text-xs text-indigo-200 opacity-80 leading-relaxed">
-              Gen Y (29-44 ปี) มียอดซื้อเฉลี่ยต่อบิลสูงสุด เหมาะสำหรับการทำ Upsell สินค้าพรีเมียม
-            </p>
-          </div>
-        </Card>
-      </div>
-    </div>
-  </div>
-);
-
-const App = () => {
-  const [activeTab, setActiveTab] = useState('dashboard');
-
-  return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-800 pb-12">
-      {/* Navigation Bar */}
-      <nav className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-200">
-                D
-              </div>
-              <span className="font-bold text-xl text-slate-800 tracking-tight">DSS/NSL <span className="text-slate-400 font-normal text-sm ml-1">| Analytics</span></span>
-            </div>
-            <div className="flex gap-1 bg-slate-100 p-1 rounded-xl">
-              <button 
-                onClick={() => setActiveTab('dashboard')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 ${activeTab === 'dashboard' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-              >
-                <LayoutDashboard size={16} /> Dashboard
-              </button>
-              <button 
-                onClick={() => setActiveTab('report')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 ${activeTab === 'report' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-              >
-                <FileText size={16} /> Executive Report
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
-            {activeTab === 'dashboard' ? 'Customer Behavior Overview' : 'Strategic Insight Report'}
-          </h1>
-          <p className="text-slate-500">
-            Analysis Period: October 2024 vs October 2025 • Data Source: 2024_2025.xlsx
-          </p>
         </div>
 
-        {activeTab === 'dashboard' ? <DashboardView /> : <ExecutiveSummaryView />}
-      </main>
-    </div>
-  );
-};
+    </main>
 
-export default App;
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-12 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <div class="flex items-center justify-center gap-2 mb-4">
+                <div class="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-lg">D</div>
+                <span class="font-bold text-slate-900">DSS/NSL</span>
+            </div>
+            <p class="text-slate-500 text-sm">© 2025 DSS/NSL Analytics. Confidential Report for Internal Use Only.</p>
+            <p class="text-slate-400 text-xs mt-2">Data Source: Internal Database (Oct 2024 - Oct 2025)</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // --- Number Animation Logic ---
+        const animateValue = (obj, start, end, duration, isFloat) => {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = progress * (end - start) + start;
+                obj.innerHTML = isFloat ? value.toFixed(2) : Math.floor(value).toLocaleString();
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        }
+        document.querySelectorAll('.counter').forEach(el => animateValue(el, 0, parseFloat(el.getAttribute('data-target')), 2000, true));
+        document.querySelectorAll('.counter-int').forEach(el => animateValue(el, 0, parseInt(el.getAttribute('data-target')), 2000, false));
+
+        // --- Chart Config ---
+        Chart.defaults.font.family = "'Noto Sans Thai', sans-serif";
+        Chart.defaults.color = '#64748b';
+
+        // 1. Growth Chart
+        new Chart(document.getElementById('growthChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Gen Alpha', 'Gen Z', 'Gen Y', 'Gen X', 'Boomer'],
+                datasets: [
+                    { label: 'Oct 2024', data: [4.3, 85, 320, 880, 135], backgroundColor: '#cbd5e1', borderRadius: 4 },
+                    { label: 'Oct 2025', data: [7.5, 120, 390, 950, 160], backgroundColor: '#4f46e5', borderRadius: 4 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' }, border: { display: false } }, x: { grid: { display: false }, border: { display: false } } }
+            }
+        });
+
+        // 2. Gender Chart
+        new Chart(document.getElementById('genderChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Female', 'Male'],
+                datasets: [{ data: [65, 35], backgroundColor: ['#ec4899', '#3b82f6'], borderWidth: 0 }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, cutout: '75%',
+                plugins: { legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 6 } } }
+            }
+        });
+
+        // 3. Behavioral Analysis Chart (New Mixed Chart)
+        new Chart(document.getElementById('behaviorChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Gen Alpha', 'Gen Z', 'Gen Y', 'Gen X', 'Boomer'],
+                datasets: [
+                    {
+                        type: 'line',
+                        label: 'Frequency (Times/Month)',
+                        data: [2.2, 2.1, 2.0, 2.3, 2.1], // Mock data based on trends
+                        borderColor: '#f43f5e',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#f43f5e',
+                        pointRadius: 5,
+                        yAxisID: 'y1',
+                        tension: 0.4
+                    },
+                    {
+                        type: 'bar',
+                        label: 'Spending per Head (THB)',
+                        data: [84, 96, 112, 88, 92], // Mock data based on trends
+                        backgroundColor: '#6366f1',
+                        borderRadius: 6,
+                        barPercentage: 0.5,
+                        yAxisID: 'y'
+                    }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        position: 'left',
+                        grid: { color: '#f1f5f9' },
+                        border: { display: false },
+                        title: { display: true, text: 'Spending (THB)' }
+                    },
+                    y1: {
+                        beginAtZero: false,
+                        position: 'right',
+                        grid: { display: false },
+                        min: 1.5, max: 2.5,
+                        border: { display: false },
+                        title: { display: true, text: 'Freq (Times)' }
+                    },
+                    x: { grid: { display: false }, border: { display: false } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
