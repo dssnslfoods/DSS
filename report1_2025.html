@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrated Consumer Insight 2025 - DSS/NSL</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans Thai"', 'sans-serif'],
+                        display: ['"Outfit"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            primary: '#4f46e5',   // Indigo
+                            secondary: '#06b6d4', // Cyan
+                            accent: '#f43f5e',    // Rose
+                            dark: '#0f172a',      // Slate 900
+                        },
+                        gold: '#fbbf24',
+                        silver: '#94a3b8',
+                        bronze: '#b45309',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #f1f5f9; scroll-behavior: smooth; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .gradient-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .gradient-header::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, rgba(0,0,0,0) 70%);
+            transform: translate(30%, -30%);
+        }
+        .chart-container { position: relative; height: 320px; width: 100%; }
+        
+        /* Rank Badges */
+        .rank-badge {
+            width: 24px; height: 24px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; font-weight: bold; font-size: 12px; color: white;
+            flex-shrink: 0;
+        }
+        .rank-1 { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); box-shadow: 0 2px 4px rgba(251, 191, 36, 0.4); }
+        .rank-2 { background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%); }
+        .rank-3 { background: linear-gradient(135deg, #d97706 0%, #92400e 100%); }
+
+        /* Heatmap Utilities */
+        .heat-low { background-color: #e0e7ff; color: #3730a3; }      /* Indigo 100 */
+        .heat-med { background-color: #818cf8; color: white; }        /* Indigo 400 */
+        .heat-high { background-color: #4f46e5; color: white; }       /* Indigo 600 */
+        .heat-peak { background-color: #312e81; color: white; font-weight: bold; } /* Indigo 900 */
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 glass-panel border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-cyan-500 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                        D
+                    </div>
+                    <div>
+                        <h1 class="font-display font-bold text-lg tracking-tight text-slate-900">DSS/NSL</h1>
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Analytics Division</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+                    <a href="#summary" class="text-slate-600 hover:text-indigo-600 transition-colors">Summary</a>
+                    <a href="#location" class="text-slate-600 hover:text-indigo-600 transition-colors">Location Heatmap</a>
+                    <a href="#products" class="text-slate-600 hover:text-indigo-600 transition-colors">Product Ranking</a>
+                    <button class="bg-slate-900 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-indigo-700 transition-colors flex items-center gap-2">
+                        <i class="ph ph-download-simple"></i> Export
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="gradient-header text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end gap-8">
+                <div class="max-w-2xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 backdrop-blur-md text-cyan-300 text-xs font-medium mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span> 
+                        Full Strategic Report
+                    </div>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 leading-tight">Consumer & Product <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Integrated Analysis 2025</span></h2>
+                    <p class="text-slate-300 text-lg leading-relaxed">
+                        การวิเคราะห์เจาะลึกพฤติกรรมผู้บริโภคแบบ 360 องศา ครอบคลุมทั้งมิติ "สถานที่-เวลา" และ "สินค้าขายดี" เพื่อวางแผนกลยุทธ์ที่แม่นยำที่สุด
+                    </p>
+                </div>
+                
+                <!-- Hero Stat -->
+                <div class="flex gap-4">
+                    <div class="bg-white/5 backdrop-blur-sm p-4 rounded-2xl border border-white/10 text-center min-w-[140px]">
+                        <div class="w-8 h-8 mx-auto bg-indigo-500/20 rounded-full flex items-center justify-center text-indigo-300 mb-2"><i class="ph ph-clock text-lg"></i></div>
+                        <p class="text-slate-400 text-xs uppercase mb-1">Peak Time</p>
+                        <p class="text-2xl font-bold text-white">Evening</p>
+                        <p class="text-[10px] text-slate-500">16:00 - 20:00</p>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-sm p-4 rounded-2xl border border-white/10 text-center min-w-[140px]">
+                        <div class="w-8 h-8 mx-auto bg-yellow-500/20 rounded-full flex items-center justify-center text-yellow-300 mb-2"><i class="ph ph-crown text-lg"></i></div>
+                        <p class="text-slate-400 text-xs uppercase mb-1">Top Hero</p>
+                        <p class="text-2xl font-bold text-white">Sandwich</p>
+                        <p class="text-[10px] text-slate-500">Ham Cheese</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20 pb-20">
+
+        <!-- Executive Summary -->
+        <div id="summary" class="glass-panel p-8 rounded-2xl shadow-lg mb-12">
+            <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <i class="ph ph-lightning text-amber-500 text-2xl"></i> Executive Summary
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="relative pl-4 border-l-4 border-indigo-500">
+                    <h4 class="font-bold text-slate-700 mb-2">1. The "Evening Rush"</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        ช่วงเย็น (Evening) เป็น Prime Time สำคัญที่สุดของทุก Location โดยเฉพาะในเขตที่พักอาศัยและสถานศึกษา ที่ยอดขายพุ่งสูงกว่าช่วงเวลาอื่นถึง 50%
+                    </p>
+                </div>
+                <div class="relative pl-4 border-l-4 border-yellow-400">
+                    <h4 class="font-bold text-slate-700 mb-2">2. Ham Cheese Dominance</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        <strong>"แซนวิชแฮมชีส"</strong> คือ Undisputed Champion ที่ครองอันดับ 1 ในเกือบทุกช่วงเวลา โดยมียอดขายรวมสูงสุดในช่วงเช้าและเย็น
+                    </p>
+                </div>
+                <div class="relative pl-4 border-l-4 border-cyan-500">
+                    <h4 class="font-bold text-slate-700 mb-2">3. Lunch Opportunity</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        ช่วงเที่ยง (Noon) ผู้บริโภคเริ่มเปลี่ยนพฤติกรรมจาก Grab & Go เป็น "Heavy Meal" มากขึ้น สินค้ากลุ่ม Burger จึงเริ่มเข้ามาติด Top 3
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part 1: Location Analysis (Enhanced with Heatmap) -->
+        <div id="location" class="mb-16">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 text-lg font-bold">1</span>
+                        Location & Time Matrix
+                    </h3>
+                    <p class="text-slate-500 text-sm mt-1 ml-10">วิเคราะห์พฤติกรรมการซื้อในแต่ละสถานที่ แบ่งตามช่วงเวลาอย่างละเอียด (Heatmap)</p>
+                </div>
+            </div>
+
+            <!-- Heatmap Table -->
+            <div class="glass-panel p-6 rounded-2xl mb-8 overflow-x-auto">
+                <h4 class="text-sm font-bold text-slate-600 mb-4 uppercase tracking-wider flex items-center gap-2">
+                    <i class="ph ph-grid-four text-lg"></i> Sales Intensity Heatmap (Unit: MB)
+                </h4>
+                <table class="w-full text-sm text-center">
+                    <thead>
+                        <tr class="text-slate-500 border-b border-slate-200">
+                            <th class="p-3 text-left font-bold w-48">Location / Time</th>
+                            <th class="p-3">Late Night<br><span class="text-xs font-normal">00:00-05:59</span></th>
+                            <th class="p-3">Morning<br><span class="text-xs font-normal">06:00-09:59</span></th>
+                            <th class="p-3">Late Morning<br><span class="text-xs font-normal">10:00-10:59</span></th>
+                            <th class="p-3">Noon<br><span class="text-xs font-normal">11:00-13:59</span></th>
+                            <th class="p-3">Afternoon<br><span class="text-xs font-normal">14:00-15:59</span></th>
+                            <th class="p-3">Evening<br><span class="text-xs font-normal">16:00-19:59</span></th>
+                            <th class="p-3">Night<br><span class="text-xs font-normal">20:00-23:59</span></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-700">
+                        <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                            <td class="p-3 text-left font-bold text-indigo-900">1. ที่พักอาศัย/ตลาด</td>
+                            <td class="p-3"><div class="rounded py-1 heat-low">76.7</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-med">265.8</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-low">170.8</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-med">240.4</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-med">257.9</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-peak">559.1</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-low">191.5</div></td>
+                        </tr>
+                        <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                            <td class="p-3 text-left font-bold text-indigo-900">2. สถานศึกษา</td>
+                            <td class="p-3"><div class="rounded py-1 heat-low">81.5</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-high">382.1</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-med">229.3</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-high">300.5</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-high">377.7</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-peak">558.4</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-low">150.2</div></td>
+                        </tr>
+                        <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                            <td class="p-3 text-left font-bold text-indigo-900">3. โรงพยาบาล</td>
+                            <td class="p-3"><div class="rounded py-1 heat-low">64.9</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-peak">425.5</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-med">262.1</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-high">367.6</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-high">346.7</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-peak">542.0</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-low">151.9</div></td>
+                        </tr>
+                        <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                            <td class="p-3 text-left font-bold text-indigo-900">4. สถานที่ท่องเที่ยว</td>
+                            <td class="p-3"><div class="rounded py-1 heat-low">78.5</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-high">300.2</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-med">245.8</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-high">450.1</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-peak">579.2</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-high">380.5</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-low">200.5</div></td>
+                        </tr>
+                        <tr class="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                            <td class="p-3 text-left font-bold text-indigo-900">5. โรงงาน</td>
+                            <td class="p-3"><div class="rounded py-1 heat-low">73.0</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-med">269.3</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-low">134.4</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-low">195.9</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-med">255.4</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-high">455.2</div></td>
+                            <td class="p-3"><div class="rounded py-1 heat-low">161.0</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Existing Chart & Takeaways -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 glass-panel p-6 rounded-2xl">
+                    <h4 class="text-sm font-bold text-slate-600 mb-4 uppercase tracking-wider">Aggregated Trend Visualization</h4>
+                    <div class="chart-container">
+                        <canvas id="locationTimeChart"></canvas>
+                    </div>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl bg-slate-50 border-none">
+                    <h4 class="text-sm font-bold text-slate-800 mb-4">Deep Dive Insights</h4>
+                    <ul class="space-y-4">
+                        <li class="flex items-start gap-3">
+                            <i class="ph ph-sun-horizon text-amber-500 text-xl mt-0.5"></i>
+                            <div class="text-sm text-slate-600">
+                                <strong>Tourist Spots (Afternoon):</strong> ยอดขายพีคสุดในช่วงบ่าย (14:00-15:59) แซงหน้าทุก Location เนื่องจากนักท่องเที่ยวแวะพักทานของว่าง
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph ph-heartbeat text-rose-500 text-xl mt-0.5"></i>
+                            <div class="text-sm text-slate-600">
+                                <strong>Hospital Consistency:</strong> เป็นที่เดียวที่ยอดขายช่วงเช้า (Morning) สูงเกือบเท่าช่วงเย็น (425 vs 542) สะท้อนความต้องการอาหารเช้าที่เร่งด่วน
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="ph ph-factory text-slate-500 text-xl mt-0.5"></i>
+                            <div class="text-sm text-slate-600">
+                                <strong>Factory Pattern:</strong> แม้จะมียอดรวมน้อยกว่าที่อื่น แต่ช่วงเช้า (Morning) ยังคงเป็น Key Driver รองจากช่วงเย็น
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Part 2: Product Ranking (Top 3 Infographic) -->
+        <div id="products" class="mb-16">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-lg bg-yellow-100 flex items-center justify-center text-yellow-600 text-lg font-bold">2</span>
+                        Top 3 Best Sellers Breakdown
+                    </h3>
+                    <p class="text-slate-500 text-sm mt-1 ml-10">เจาะลึกสินค้าขายดีที่สุด แยกตามช่วงเวลาของวัน</p>
+                </div>
+            </div>
+
+            <div class="glass-panel p-8 rounded-2xl relative overflow-hidden">
+                <!-- Decorative BG -->
+                <div class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-indigo-50 to-cyan-50 rounded-full blur-3xl -mr-20 -mt-20 opacity-50 pointer-events-none"></div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 relative z-10">
+                    
+                    <!-- Card 1: Late Night & Morning -->
+                    <div class="bg-white rounded-xl border border-slate-100 shadow-sm p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="px-2 py-1 bg-slate-100 text-slate-600 text-[10px] font-bold rounded uppercase">Early</span>
+                            <h4 class="font-bold text-slate-700 text-sm">Late Night & Early</h4>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2"><span class="rank-badge rank-1">1</span> <span class="text-xs font-semibold">แฮมชีส</span></div>
+                                <span class="text-[10px] text-slate-400">41M</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full"><div class="bg-yellow-400 h-1.5 rounded-full" style="width: 100%"></div></div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2"><span class="rank-badge rank-2">2</span> <span class="text-xs font-semibold">ไส้กรอกชีส</span></div>
+                                <span class="text-[10px] text-slate-400">35M</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full"><div class="bg-slate-400 h-1.5 rounded-full" style="width: 85%"></div></div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2"><span class="rank-badge rank-3">3</span> <span class="text-xs font-semibold">ข้าวเหนียวหมู</span></div>
+                                <span class="text-[10px] text-slate-400">28M</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full"><div class="bg-orange-600 h-1.5 rounded-full" style="width: 68%"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Morning Rush -->
+                    <div class="bg-white rounded-xl border-l-4 border-cyan-500 shadow-sm p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="px-2 py-1 bg-cyan-100 text-cyan-700 text-[10px] font-bold rounded uppercase">06:00-10:00</span>
+                            <h4 class="font-bold text-slate-700 text-sm">Morning Rush</h4>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2"><span class="rank-badge rank-1">1</span> <span class="text-xs font-semibold">แฮมชีส</span></div>
+                                <span class="text-[10px] text-cyan-600 font-bold">176M</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full"><div class="bg-yellow-400 h-1.5 rounded-full" style="width: 100%"></div></div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2"><span class="rank-badge rank-2">2</span> <span class="text-xs font-semibold">ไส้กรอกชีส</span></div>
+                                <span class="text-[10px] text-cyan-600 font-bold">150M</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full"><div class="bg-slate-400 h-1.5 rounded-full" style="width: 85%"></div></div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2"><span class="rank-badge rank-3">3</span> <span class="text-xs font-semibold">หมูหยองน้ำสลัด</span></div>
+                                <span class="text-[10px] text-cyan-600 font-bold">110M</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full"><div class="bg-orange-600 h-1.5 rounded-full" style="width: 62%"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Noon -->
+                    <div class="bg-white rounded-xl border-t-4 border-amber-500 shadow-sm p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="px-2 py-1 bg-amber-100 text-amber-700 text-[10px] font-bold rounded uppercase">11:00-14:00</span>
+                            <h4 class="font-bold text-slate-700 text-sm">Lunch Break</h4>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2"><span class="rank-badge rank-1">1</span> <span class="text-xs font-semibold">แฮมชีส</span></div>
+                                <span class="text-[10px] text-amber-600 font-bold">126M</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full"><div class="bg-yellow-400 h-1.5 rounded-full" style="width: 100%"></div></div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2"><span class="rank-badge rank-2">2</span> <span class="text-xs font-semibold">เบอร์เกอร์หมูชีส</span></div>
+                                <span class="text-[10px] text-amber-600 font-bold">115M</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full"><div class="bg-slate-400 h-1.5 rounded-full" style="width: 91%"></div></div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2"><span class="rank-badge rank-3">3</span> <span class="text-xs font-semibold">ไส้กรอกชีส</span></div>
+                                <span class="text-[10px] text-amber-600 font-bold">110M</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full"><div class="bg-orange-600 h-1.5 rounded-full" style="width: 87%"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Evening Peak -->
+                    <div class="bg-white rounded-xl border-r-4 border-indigo-600 shadow-sm p-5 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="px-2 py-1 bg-indigo-100 text-indigo-700 text-[10px] font-bold rounded uppercase">16:00-20:00</span>
+                            <h4 class="font-bold text-slate-700 text-sm">Evening Peak</h4>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2"><span class="rank-badge rank-1">1</span> <span class="text-xs font-semibold">แฮมชีส</span></div>
+                                <span class="text-[10px] text-indigo-600 font-bold">193M</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full"><div class="bg-yellow-400 h-1.5 rounded-full" style="width: 100%"></div></div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2"><span class="rank-badge rank-2">2</span> <span class="text-xs font-semibold">ไส้กรอกชีส</span></div>
+                                <span class="text-[10px] text-indigo-600 font-bold">160M</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full"><div class="bg-slate-400 h-1.5 rounded-full" style="width: 83%"></div></div>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2"><span class="rank-badge rank-3">3</span> <span class="text-xs font-semibold">ครัวซองต์แฮมชีส</span></div>
+                                <span class="text-[10px] text-indigo-600 font-bold">145M</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-1.5 rounded-full"><div class="bg-orange-600 h-1.5 rounded-full" style="width: 75%"></div></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Part 3: Recommendations -->
+        <div class="glass-panel p-8 rounded-2xl border-t-4 border-t-indigo-600">
+            <h3 class="text-xl font-bold text-slate-800 mb-6">🎯 Integrated Strategy Recommendations</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Rec 1 -->
+                <div class="bg-indigo-50/50 p-6 rounded-xl border border-indigo-100 hover:shadow-md transition-all">
+                    <div class="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 mb-4">
+                        <i class="ph ph-package text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 mb-2">Inventory Management</h4>
+                    <p class="text-sm text-slate-600">
+                        <strong>Insight:</strong> ยอดขายเย็นพุ่งสูงที่สุด<br>
+                        <strong>Action:</strong> เติมสต็อกรอบบ่าย (15:00 น.) เน้น "แซนวิชแฮมชีส" และ "ครัวซองต์" เพื่อไม่ให้ของขาดช่วง Peak
+                    </p>
+                </div>
+                <!-- Rec 2 -->
+                <div class="bg-amber-50/50 p-6 rounded-xl border border-amber-100 hover:shadow-md transition-all">
+                    <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600 mb-4">
+                        <i class="ph ph-hamburger text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 mb-2">Lunch Combo Promotion</h4>
+                    <p class="text-sm text-slate-600">
+                        <strong>Insight:</strong> Burger เริ่มขายดีช่วงเที่ยง<br>
+                        <strong>Action:</strong> จัดเซตคู่กับเครื่องดื่ม เพื่อเพิ่ม Ticket Size ในช่วงเที่ยง ซึ่งลูกค้ามองหาความอิ่มคุ้ม
+                    </p>
+                </div>
+                <!-- Rec 3 -->
+                <div class="bg-cyan-50/50 p-6 rounded-xl border border-cyan-100 hover:shadow-md transition-all">
+                    <div class="w-10 h-10 bg-cyan-100 rounded-lg flex items-center justify-center text-cyan-600 mb-4">
+                        <i class="ph ph-storefront text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-slate-800 mb-2">Location Specifics</h4>
+                    <p class="text-sm text-slate-600">
+                        <strong>Insight:</strong> โรงพยาบาลขายดีช่วงเช้า<br>
+                        <strong>Action:</strong> เน้นสินค้า Grab & Go ที่ทานง่ายที่สุด (เช่น แซนวิชหมูหยอง) ไว้โซนหน้าร้านช่วงเช้า สำหรับบุคลากรทางการแพทย์
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="mt-12 py-8 bg-slate-900 text-slate-400 text-center text-sm border-t border-slate-800">
+        <p>© 2025 DSS/NSL Data Analytics. All rights reserved.</p>
+        <p class="text-xs mt-2 opacity-60">Prepared for Def to Design Co., Ltd.</p>
+    </footer>
+
+    <!-- Scripts for Charts -->
+    <script>
+        Chart.defaults.font.family = "'Noto Sans Thai', sans-serif";
+        Chart.defaults.color = '#64748b';
+        Chart.defaults.scale.grid.color = '#f1f5f9';
+
+        // 1. Location & Time Data
+        const locationData = {
+            labels: ['ที่พักอาศัย/ตลาด', 'สถานศึกษา', 'โรงพยาบาล', 'โรงงาน', 'สถานที่ท่องเที่ยว'],
+            datasets: [
+                { label: 'Morning', data: [265.8, 382.1, 425.5, 269.3, 300.2], backgroundColor: '#06b6d4' },
+                { label: 'Noon', data: [240.4, 300.5, 367.5, 195.9, 450.1], backgroundColor: '#f59e0b' },
+                { label: 'Evening', data: [559.1, 558.4, 542.0, 455.2, 579.2], backgroundColor: '#4f46e5' },
+                { label: 'Night', data: [191.5, 150.2, 151.9, 161.0, 200.5], backgroundColor: '#64748b' }
+            ]
+        };
+
+        // Chart Init: Location x Time
+        new Chart(document.getElementById('locationTimeChart'), {
+            type: 'bar',
+            data: locationData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { stacked: true, grid: { display: false } },
+                    y: { stacked: true, beginAtZero: true, border: { display: false } }
+                },
+                plugins: {
+                    legend: { position: 'top', align: 'end', labels: { usePointStyle: true, boxWidth: 8 } },
+                    tooltip: { mode: 'index', intersect: false, backgroundColor: 'rgba(15, 23, 42, 0.9)', padding: 12 }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
