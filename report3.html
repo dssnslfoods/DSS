@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Marketing Report | DSS NSL Team</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Sarabun', sans-serif; background-color: #f3f4f6; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); }
+        .card { background: white; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); }
+        .highlight-text { color: #1e40af; font-weight: 800; }
+        .metric-value { font-size: 2.5rem; font-weight: 800; color: #111827; }
+        .metric-label { color: #6b7280; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="gradient-bg text-white p-8 shadow-lg">
+        <div class="max-w-7xl mx-auto flex justify-between items-end">
+            <div>
+                <div class="text-blue-200 text-sm font-semibold mb-2">CONFIDENTIAL REPORT</div>
+                <h1 class="text-4xl font-bold mb-2">Strategic Marketing Analysis</h1>
+                <p class="text-blue-100">Performance Review: Jan 2024 - Week 46, 2025</p>
+            </div>
+            <div class="text-right hidden md:block">
+                <div class="text-2xl font-bold">DSS NSL Team</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto p-6 space-y-8">
+
+        <!-- Executive Summary Cards -->
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-blue-600 pl-4">Executive Summary</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="card p-6">
+                    <div class="metric-label">Total Sales Impact</div>
+                    <div class="metric-value text-blue-600">3,795 MB</div>
+                    <div class="text-sm text-gray-500 mt-2">ยอดขายรวมทั้งหมดในช่วงเวลา</div>
+                </div>
+                <div class="card p-6">
+                    <div class="metric-label">Weekend Dominance</div>
+                    <div class="metric-value text-green-600">51.5%</div>
+                    <div class="text-sm text-gray-500 mt-2">สัดส่วนยอดขายวันหยุด (สูงกว่าวันธรรมดา)</div>
+                </div>
+                <div class="card p-6">
+                    <div class="metric-label">Golden Hour</div>
+                    <div class="metric-value text-orange-500">Evening</div>
+                    <div class="text-sm text-gray-500 mt-2">ช่วงเวลาทำเงินสูงสุด (30% ของยอดขาย)</div>
+                </div>
+                <div class="card p-6">
+                    <div class="metric-label">Top Product</div>
+                    <div class="metric-value text-purple-600">Sandwich</div>
+                    <div class="text-sm text-gray-500 mt-2">สินค้าตระกูลแซนวิชครองยอดขายสูงสุด</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Deep Dive Analysis: Time & Day -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 card p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Sales by Time Period: Weekday vs Weekend</h3>
+                <canvas id="timeChart"></canvas>
+                <div class="mt-4 p-4 bg-blue-50 rounded-lg text-sm text-blue-800">
+                    <strong>Insight:</strong> ยอดขายช่วง "เย็น (Evening)" คือช่วงพีคที่สุดทั้งวันธรรมดาและวันหยุด แต่สังเกตว่า <strong>"วันหยุด (Weekend)"</strong> มียอดขายสูงกว่าวันธรรมดาอย่างมีนัยสำคัญ แม้จะมีจำนวนวันที่น้อยกว่า (2 วัน vs 5 วัน) แสดงถึง Traffic ที่หนาแน่นมากในช่วงสุดสัปดาห์
+                </div>
+            </div>
+            <div class="card p-6 flex flex-col justify-center bg-gray-800 text-white">
+                <h3 class="text-xl font-bold mb-4 text-yellow-400">Key Observation</h3>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-start">
+                        <span class="text-2xl mr-2">🚀</span>
+                        <div>
+                            <span class="font-bold text-lg">Weekend Power</span>
+                            <p class="text-gray-300">ยอดรวม Weekday ~1,840 MB vs Weekend ~1,957 MB. การที่ยอดขายรวม 2 วัน (ส-อา) ชนะ 5 วัน (จ-ศ) บ่งบอกว่าทำเลหรือพฤติกรรมลูกค้าเป็นแบบ <strong>Destination หรือ Leisure Shopping</strong></p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-2xl mr-2">🌙</span>
+                        <div>
+                            <span class="font-bold text-lg">The Evening Rush</span>
+                            <p class="text-gray-300">ช่วงเย็น (Evening) ทำยอดขายสูงสุดทิ้งห่างช่วงอื่นเกือบเท่าตัว น่าจะเป็นกลุ่มลูกค้าซื้อกลับบ้าน (Take home) หรือทานมื้อเย็น</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Deep Dive Analysis: Product -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="card p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Top 5 Best Selling Products</h3>
+                <canvas id="productChart"></canvas>
+            </div>
+            <div class="card p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Product Category Mix Strategy</h3>
+                <div class="space-y-4">
+                    <div class="border-l-4 border-green-500 pl-4 py-2 bg-green-50">
+                        <h4 class="font-bold text-green-800">The "Sandwich" Ecosystem</h4>
+                        <p class="text-sm text-gray-600">สินค้ากลุ่มแซนวิช (แฮมชีส, ไส้กรอกชีส) เป็น Hero Product ที่ชัดเจนมาก โดยมียอดขายทิ้งห่างกลุ่มขนมหวานหรือเบเกอรี่อื่นๆ ควรใช้เป็นตัวดึงลูกค้า (Traffic Builder)</p>
+                    </div>
+                    <div class="border-l-4 border-orange-500 pl-4 py-2 bg-orange-50">
+                        <h4 class="font-bold text-orange-800">Time-Based Opportunities</h4>
+                        <p class="text-sm text-gray-600">
+                            - <strong>Morning:</strong> แซนวิชแฮมชีส ขายดีมาก (Grab & Go)<br>
+                            - <strong>Evening:</strong> ยอดขายกระจายตัวในกลุ่ม "อื่นๆ" สูง แสดงว่าลูกค้ามองหาความหลากหลายสำหรับมื้อเย็น
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Strategic Recommendations -->
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 border-l-4 border-blue-600 pl-4">Strategic Recommendations</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Strategy 1 -->
+                <div class="card overflow-hidden">
+                    <div class="h-2 bg-red-500"></div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold mb-2">1. Operation & Staffing</h3>
+                        <p class="text-sm text-gray-600 mb-4">ปรับกำลังพลตามกราฟยอดขาย</p>
+                        <ul class="text-sm space-y-2 list-disc list-inside text-gray-700">
+                            <li>เพิ่มพนักงานช่วง <strong>Weekend Evening</strong> ให้สูงสุด เพื่อลดคิวและเพิ่ม Speed of Service</li>
+                            <li>เตรียมสต็อก Hero Product (แซนวิช) ให้พร้อมก่อน 16:00 น. เพื่อรองรับ Golden Hour</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Strategy 2 -->
+                <div class="card overflow-hidden">
+                    <div class="h-2 bg-blue-500"></div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold mb-2">2. Weekend Bundle Set</h3>
+                        <p class="text-sm text-gray-600 mb-4">เพิ่มยอดซื้อต่อบิล (Basket Size)</p>
+                        <ul class="text-sm space-y-2 list-disc list-inside text-gray-700">
+                            <li>เนื่องจาก Traffic เสาร์-อาทิตย์ หนาแน่น ควรจัดเซต <strong>"Family Weekend Treat"</strong> รวมสินค้าขายดี 3-4 ชิ้น</li>
+                            <li>ทำโปรโมชั่นคู่ เครื่องดื่ม หรือ Cross-sell กับสินค้ากลุ่มที่ขายรองลงมา</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Strategy 3 -->
+                <div class="card overflow-hidden">
+                    <div class="h-2 bg-purple-500"></div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-bold mb-2">3. Weekday Booster</h3>
+                        <p class="text-sm text-gray-600 mb-4">กระตุ้นยอดวันธรรมดา</p>
+                        <ul class="text-sm space-y-2 list-disc list-inside text-gray-700">
+                            <li>ยอดขายช่วง "Late Morning & Late Night" วันธรรมดาค่อนข้างต่ำ</li>
+                            <li>เสนอ <strong>"Happy Hour"</strong> หรือ Flash Sale ช่วง 10:00-11:00 และหลัง 20:00 เพื่อระบายสินค้าและดึงลูกค้า</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 text-sm mt-12 mb-8">
+            <p>&copy; 2025 DSS NSL Team. All Rights Reserved.</p>
+            <p>Data Source: Internal Sales Records (Jan 2024 - Nov 2025)</p>
+        </footer>
+
+    </main>
+
+    <!-- Chart Scripts -->
+    <script>
+        // Data Configuration (Extracted from provided CSV snippets)
+        
+        // Chart 1: Sales by Time Period (Weekday vs Weekend)
+        const timeCtx = document.getElementById('timeChart').getContext('2d');
+        new Chart(timeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Morning', 'Late Morning', 'Noon', 'Afternoon', 'Evening', 'Night', 'Late Night'],
+                datasets: [
+                    {
+                        label: 'Weekday Sales (MB)',
+                        data: [303.28, 173.68, 245.26, 276.34, 567.86, 192.54, 81.66],
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgb(59, 130, 246)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Weekend Sales (MB)',
+                        data: [254.51, 220.06, 318.79, 289.81, 563.67, 218.33, 92.17],
+                        backgroundColor: 'rgba(245, 158, 11, 0.7)',
+                        borderColor: 'rgb(245, 158, 11)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: { mode: 'index', intersect: false }
+                },
+                scales: {
+                    y: { beginAtZero: true, title: { display: true, text: 'Sales (MB)' } }
+                }
+            }
+        });
+
+        // Chart 2: Top Products (Weekday vs Weekend)
+        // Data Note: Excluded "Others" to focus on specific products
+        const productCtx = document.getElementById('productChart').getContext('2d');
+        new Chart(productCtx, {
+            type: 'bar',
+            indexAxis: 'y', // Horizontal bar chart
+            data: {
+                labels: ['แซนวิชแฮมชีส', 'แซนวิชไส้กรอกชีส', 'Hชีสโทสต์แซนวิช', 'แซนวิชไส้ทาร์ตไข่', 'แซนวิชหมูหยอง'],
+                datasets: [
+                    {
+                        label: 'Weekday',
+                        data: [630.69, 295.77, 272.91, 252.69, 201.85],
+                        backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                    },
+                    {
+                        label: 'Weekend',
+                        data: [277.03, 131.43, 121.72, 112.65, 85.79],
+                        backgroundColor: 'rgba(16, 185, 129, 0.8)', // Green for weekend here
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                },
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
