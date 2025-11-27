@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Southern Region Sales Performance (W40-W46) - DSS/NSL</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Libraries -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Noto Sans Thai"', 'sans-serif'],
+                        display: ['"Outfit"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            primary: '#4f46e5',   // Indigo
+                            secondary: '#06b6d4', // Cyan
+                            accent: '#f43f5e',    // Rose
+                            dark: '#0f172a',      // Slate 900
+                            south: '#f59e0b',     // Amber (Representing South/Gold)
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #f8fafc; scroll-behavior: smooth; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .gradient-header {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); /* Deep Indigo */
+            position: relative;
+            overflow: hidden;
+        }
+        .gradient-header::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, rgba(0,0,0,0) 70%); /* Amber Glow */
+            transform: translate(30%, -30%);
+        }
+        .chart-container { position: relative; height: 300px; width: 100%; }
+        .trend-up { color: #10b981; }
+        .trend-down { color: #ef4444; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 glass-panel border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-amber-500 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg">
+                        D
+                    </div>
+                    <div>
+                        <h1 class="font-display font-bold text-lg tracking-tight text-slate-900">DSS/NSL</h1>
+                        <p class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Regional Analytics: South</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center gap-4 text-sm text-slate-500">
+                    <span class="flex items-center gap-1"><i class="ph ph-calendar-blank text-indigo-600"></i> Week 40-46, 2025</span>
+                    <button class="bg-brand-south text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-amber-600 transition-colors flex items-center gap-2 shadow-sm">
+                        <i class="ph ph-file-pdf"></i> Download Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="gradient-header text-white py-12 md:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end gap-8">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/10 backdrop-blur-md text-amber-300 text-xs font-medium mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span> 
+                        Southern Region Focus
+                    </div>
+                    <h2 class="font-display text-3xl md:text-5xl font-bold mb-4 leading-tight">Southern Sales Performance <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500">Momentum Analysis (W40-46)</span></h2>
+                    <p class="text-indigo-200 text-lg leading-relaxed max-w-2xl">
+                        วิเคราะห์ผลการดำเนินงานภาคใต้ พบสัญญาณบวกชัดเจนใน Week 46 ทำ New High ของไตรมาส นำโดยโซน RSL และกลุ่มร้านค้าที่พักอาศัย
+                    </p>
+                </div>
+                
+                <!-- KPI Cards -->
+                <div class="flex gap-4">
+                    <div class="bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/10 text-center min-w-[130px]">
+                        <p class="text-indigo-300 text-xs uppercase mb-1">Total Sales</p>
+                        <p class="text-2xl font-bold text-white">219.8 <span class="text-sm font-normal text-indigo-300">MB</span></p>
+                        <p class="text-[10px] text-emerald-400 flex items-center justify-center gap-1"><i class="ph ph-trend-up"></i> Trending Up</p>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-sm p-4 rounded-xl border border-white/10 text-center min-w-[130px]">
+                        <p class="text-indigo-300 text-xs uppercase mb-1">Best Week</p>
+                        <p class="text-2xl font-bold text-amber-400">Week 46</p>
+                        <p class="text-[10px] text-white/60">33.58 MB</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20 pb-20">
+
+        <!-- Executive Summary Box -->
+        <div class="glass-panel p-8 rounded-2xl shadow-lg mb-8">
+            <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <i class="ph ph-chart-line-up text-brand-primary text-2xl"></i> Executive Summary
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="relative pl-4 border-l-4 border-emerald-500">
+                    <h4 class="font-bold text-slate-700 mb-2">Growth Momentum</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        ภาพรวมยอดขายกลับมาฟื้นตัวอย่างแข็งแกร่งหลังจากแผ่วลงใน Week 43 โดย <strong>Week 46 ทำยอดขายสูงสุด (33.58 MB)</strong> เติบโต +4.9% จากสัปดาห์ก่อนหน้า
+                    </p>
+                </div>
+                <div class="relative pl-4 border-l-4 border-amber-500">
+                    <h4 class="font-bold text-slate-700 mb-2">RSL Dominance</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        โซน <strong>RSL (Regional South Lower)</strong> ครองส่วนแบ่งตลาดสูงสุดถึง <strong>68%</strong> (149.6 MB) ถือเป็นพื้นที่ยุทธศาสตร์หลักที่ต้องรักษาฐาน
+                    </p>
+                </div>
+                <div class="relative pl-4 border-l-4 border-indigo-500">
+                    <h4 class="font-bold text-slate-700 mb-2">Key Channels</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        กลุ่ม <strong>"ที่พักอาศัย/ตลาด"</strong> (53%) และ <strong>"สถานที่ท่องเที่ยว"</strong> (26%) คือหัวใจหลัก โดยกลุ่มท่องเที่ยวมียอดขายสูงกว่าค่าเฉลี่ยภาคอื่นๆ อย่างมีนัยสำคัญ
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Sales Trend -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="lg:col-span-2 glass-panel p-6 rounded-2xl">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h4 class="font-bold text-slate-700 text-lg">Weekly Sales Trend (W40-W46)</h4>
+                        <p class="text-xs text-slate-500">ยอดขายรายสัปดาห์ (หน่วย: ล้านบาท)</p>
+                    </div>
+                    <span class="px-2 py-1 bg-emerald-100 text-emerald-700 rounded text-xs font-bold flex items-center gap-1">
+                        <i class="ph ph-caret-up-bold"></i> Strong Recovery
+                    </span>
+                </div>
+                <div class="chart-container mb-4">
+                    <canvas id="trendChart"></canvas>
+                </div>
+                
+                <!-- Week Reference Table -->
+                <div class="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                    <p class="text-xs font-bold text-slate-500 mb-2 uppercase flex items-center gap-1">
+                        <i class="ph ph-info"></i> Note: Week Period Reference (2025)
+                    </p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs text-slate-600">
+                        <div><span class="font-bold text-indigo-600">W40:</span> 29 Sep - 05 Oct</div>
+                        <div><span class="font-bold text-indigo-600">W41:</span> 06 Oct - 12 Oct</div>
+                        <div><span class="font-bold text-indigo-600">W42:</span> 13 Oct - 19 Oct</div>
+                        <div><span class="font-bold text-indigo-600">W43:</span> 20 Oct - 26 Oct</div>
+                        <div><span class="font-bold text-indigo-600">W44:</span> 27 Oct - 02 Nov</div>
+                        <div><span class="font-bold text-indigo-600">W45:</span> 03 Nov - 09 Nov</div>
+                        <div><span class="font-bold text-indigo-600">W46:</span> 10 Nov - 16 Nov</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Insight Card: Zone Share -->
+            <div class="glass-panel p-6 rounded-2xl flex flex-col">
+                <h4 class="font-bold text-slate-700 text-lg mb-2">Zone Contribution</h4>
+                <p class="text-xs text-slate-500 mb-4">สัดส่วนยอดขายแบ่งตามโซน</p>
+                <div class="flex-grow relative">
+                    <canvas id="zoneChart"></canvas>
+                </div>
+                <div class="mt-4 space-y-2">
+                    <div class="flex justify-between items-center text-sm border-b border-slate-100 pb-2">
+                        <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-indigo-600"></span> RSL</span>
+                        <span class="font-bold">149.6 MB (68%)</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm border-b border-slate-100 pb-2">
+                        <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-amber-500"></span> RSU</span>
+                        <span class="font-bold">51.1 MB (23%)</span>
+                    </div>
+                    <div class="flex justify-between items-center text-sm">
+                        <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-slate-300"></span> Others (PK/YL)</span>
+                        <span class="font-bold">19.2 MB (9%)</span>
+                    </div>
+                </div>
+
+                <!-- ADDED: Zone Definitions -->
+                <div class="mt-6 pt-4 border-t border-slate-100">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-2">Zone Definitions</p>
+                    <ul class="text-xs text-slate-500 space-y-1">
+                        <li><span class="font-bold text-indigo-600">RSL (South Lower):</span> ภาคใต้ตอนล่าง (เช่น หาดใหญ่, สงขลา, นครศรีฯ)</li>
+                        <li><span class="font-bold text-amber-500">RSU (South Upper):</span> ภาคใต้ตอนบน (เช่น สุราษฎร์ฯ, ชุมพร, ระนอง)</li>
+                        <li><span class="font-bold text-slate-600">PK (Phuket):</span> จังหวัดภูเก็ตและพื้นที่ท่องเที่ยวใกล้เคียง</li>
+                        <li><span class="font-bold text-slate-400">YL (Yala):</span> ยะลาและพื้นที่ 3 จังหวัดชายแดนภาคใต้</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Section 2: Store Profile Performance -->
+        <div class="glass-panel p-6 rounded-2xl mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h4 class="font-bold text-slate-700 text-lg">Performance by Location Profile</h4>
+                    <p class="text-xs text-slate-500">ยอดขายแยกตามประเภทสถานที่ (Top 5)</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="chart-container" style="height: 350px;">
+                    <canvas id="profileChart"></canvas>
+                </div>
+                
+                <!-- Profile Insights List -->
+                <div class="space-y-4">
+                    <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="p-2 bg-indigo-100 rounded text-indigo-600"><i class="ph ph-house-line text-lg"></i></div>
+                            <h5 class="font-bold text-slate-800">1. Residential & Market</h5>
+                        </div>
+                        <p class="text-sm text-slate-600 pl-11">
+                            ยอดขาย <strong>115.8 MB</strong> เป็นรากฐานสำคัญที่สุด สะท้อนการบริโภคในครัวเรือนที่แข็งแกร่ง
+                        </p>
+                    </div>
+
+                    <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="p-2 bg-amber-100 rounded text-amber-600"><i class="ph ph-airplane-tilt text-lg"></i></div>
+                            <h5 class="font-bold text-slate-800">2. Tourist Spots</h5>
+                        </div>
+                        <p class="text-sm text-slate-600 pl-11">
+                            ยอดขาย <strong>58.0 MB</strong> สูงเป็นอันดับ 2 คาดการณ์ว่าจะเติบโตอีกในช่วง High Season (พ.ย.-ธ.ค.)
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="p-2 bg-slate-200 rounded text-slate-600"><i class="ph ph-gas-pump text-lg"></i></div>
+                            <h5 class="font-bold text-slate-800">3. Gas Station</h5>
+                        </div>
+                        <p class="text-sm text-slate-600 pl-11">
+                            ยอดขาย <strong>27.7 MB</strong> เป็นจุดแวะพักสำคัญสำหรับการเดินทางระหว่างจังหวัดในภาคใต้
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-emerald-500">
+                <h4 class="font-bold text-slate-800 mb-3 flex items-center gap-2"><i class="ph ph-strategy text-xl"></i> Strategic Planning</h4>
+                <ul class="space-y-3 text-sm text-slate-600">
+                    <li class="flex gap-2">
+                        <i class="ph ph-check-circle text-emerald-500 mt-0.5"></i>
+                        <span><strong>Maintain Momentum:</strong> รักษา Inventory Level ให้เพียงพอสำหรับ Week 47-48 เนื่องจากกราฟกำลังเป็นขาขึ้น (Up-trend)</span>
+                    </li>
+                    <li class="flex gap-2">
+                        <i class="ph ph-check-circle text-emerald-500 mt-0.5"></i>
+                        <span><strong>Tourist Season Prep:</strong> เพิ่มสต็อกสินค้ากลุ่ม Ready-to-eat ในโซน "สถานที่ท่องเที่ยว" เพื่อรองรับนักท่องเที่ยวช่วงปลายปี</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="glass-panel p-6 rounded-2xl border-t-4 border-t-amber-500">
+                <h4 class="font-bold text-slate-800 mb-3 flex items-center gap-2"><i class="ph ph-warning-circle text-xl"></i> Areas to Watch</h4>
+                <ul class="space-y-3 text-sm text-slate-600">
+                    <li class="flex gap-2">
+                        <i class="ph ph-info text-amber-500 mt-0.5"></i>
+                        <span><strong>School & Office:</strong> ยอดขายยังค่อนข้างน้อย (รวมกัน < 10 MB) อาจพิจารณาปรับ Product Mix ให้เหมาะกับมื้อเช้า/กลางวันมากขึ้น</span>
+                    </li>
+                    <li class="flex gap-2">
+                        <i class="ph ph-info text-amber-500 mt-0.5"></i>
+                        <span><strong>Distribution Gap:</strong> โซน PK และ YL มีสัดส่วนน้อย (9%) อาจมีโอกาสในการขยายจุดกระจายสินค้าเพิ่มเติม</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="mt-12 py-8 bg-slate-900 text-slate-400 text-center text-sm border-t border-slate-800">
+        <p>© 2025 DSS/NSL Data Analytics. Internal Use Only.</p>
+        <p class="text-xs mt-2 opacity-60">Data Source: Sales Report Week 40-46, 2025</p>
+    </footer>
+
+    <!-- Chart Scripts -->
+    <script>
+        Chart.defaults.font.family = "'Noto Sans Thai', sans-serif";
+        Chart.defaults.color = '#64748b';
+
+        // 1. Trend Chart
+        const trendCtx = document.getElementById('trendChart').getContext('2d');
+        new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: ['W40', 'W41', 'W42', 'W43', 'W44', 'W45', 'W46'],
+                datasets: [{
+                    label: 'Sales (MB)',
+                    data: [30.47, 31.76, 31.64, 29.75, 30.62, 32.01, 33.58],
+                    borderColor: '#4f46e5',
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#4f46e5',
+                    pointRadius: 6,
+                    pointHoverRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: false, min: 25, grid: { color: '#f1f5f9' }, border: { display: false } },
+                    x: { grid: { display: false }, border: { display: false } }
+                }
+            }
+        });
+
+        // 2. Zone Chart
+        const zoneCtx = document.getElementById('zoneChart').getContext('2d');
+        new Chart(zoneCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['RSL', 'RSU', 'PK', 'YL'],
+                datasets: [{
+                    data: [149.57, 51.06, 10.77, 8.42],
+                    backgroundColor: ['#4f46e5', '#f59e0b', '#94a3b8', '#cbd5e1'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // 3. Profile Chart
+        const profileCtx = document.getElementById('profileChart').getContext('2d');
+        new Chart(profileCtx, {
+            type: 'bar',
+            data: {
+                labels: ['ที่พักอาศัย/ตลาด', 'สถานที่ท่องเที่ยว', 'ปั๊มน้ำมัน', 'สถานศึกษา', 'โรงพยาบาล'],
+                datasets: [{
+                    label: 'Sales (MB)',
+                    data: [115.84, 57.96, 27.67, 7.37, 4.83],
+                    backgroundColor: [
+                        '#4f46e5', // Indigo (Top)
+                        '#f59e0b', // Amber (Tourist)
+                        '#06b6d4', // Cyan
+                        '#cbd5e1', // Slate
+                        '#cbd5e1'  // Slate
+                    ],
+                    borderRadius: 6,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: '#f1f5f9' }, border: { display: false } },
+                    y: { grid: { display: false }, border: { display: false } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
