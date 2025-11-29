@@ -408,7 +408,8 @@
             qBadge.className = `inline-block px-3 py-1 rounded-full text-xs font-semibold ${badgeClass}`;
 
             // Show/Hide Speak Button
-            if (q.category === 'english') {
+            // ** Modified: Hide button if Question ID is 24 **
+            if (q.category === 'english' && q.id !== 24) {
                 btnSpeak.classList.remove('hidden');
             } else {
                 btnSpeak.classList.add('hidden');
