@@ -105,7 +105,7 @@
             <!-- Answer Section -->
             <div id="answer-box" class="hidden bg-green-50 rounded-xl p-5 border border-green-100 mb-6 animate-fade-in">
                 <p class="text-sm font-bold text-green-700 mb-2 flex items-center">
-                    <i class="fas fa-check-circle mr-2"></i>แนวคำตอบ:
+                    <i class="fas fa-check-circle mr-2"></i>แนวคำตอบ (Guideline):
                 </p>
                 <p id="a-text" class="text-gray-700 text-base leading-relaxed">
                     Answer goes here...
@@ -281,14 +281,14 @@
                 category: 'english',
                 categoryName: 'English Proficiency (Speaking)',
                 question: '(Interview in English) Could you please briefly introduce yourself and highlight your key achievements in your previous factory management role?',
-                answer: 'Candidate should summarize experience and highlight KPIs/Cost saving projects fluently.'
+                answer: '<div class="mb-4 p-3 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-100 font-medium"><b><i class="fas fa-language mr-1"></i> คำแปลโจทย์:</b> ช่วยแนะนำตัวสั้นๆ และเล่าถึงผลงานเด่นของคุณในงานบริหารโรงงานที่ผ่านมาให้ฟังหน่อยครับ</div><b>เกณฑ์การให้คะแนน:</b> ผู้สมัครควรแนะนำตัวและสรุปประสบการณ์การทำงานได้คล่องแคล่ว โดยเน้นผลงานที่เป็นตัวเลข (KPIs) หรือโปรเจกต์ลดต้นทุน (Cost Saving)<br><br><i>(Candidate should summarize experience and highlight KPIs/Cost saving projects fluently.)</i>'
             },
             {
                 id: 20,
                 category: 'english',
                 categoryName: 'English Proficiency (Speaking)',
                 question: '(Interview in English) How would you handle a situation where a foreign supplier sends us a machine that doesn\'t meet the agreed specifications?',
-                answer: 'Tests negotiation skills. Key: Check contract, evidence based claim, negotiate for replacement/compensation.'
+                answer: '<div class="mb-4 p-3 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-100 font-medium"><b><i class="fas fa-language mr-1"></i> คำแปลโจทย์:</b> คุณจะจัดการอย่างไรหาก Supplier ต่างประเทศส่งเครื่องจักรมาให้เรา ไม่ตรงตามสเปกที่ตกลงกันไว้?</div><b>จุดที่ต้องประเมินทักษะ (Key Points):</b><br>1. ตรวจสอบสัญญา (Check Contract)<br>2. เจรจาโดยใช้หลักฐาน (Evidence-based)<br>3. ต่อรองขอเปลี่ยนเครื่องหรือชดเชยค่าเสียหาย (Replacement/Compensation)'
             },
             {
                 id: 21,
@@ -296,7 +296,7 @@
                 categoryName: 'English Proficiency (Speaking)',
                 question: '(Interview in English) Please read the crisis situation below. As a Factory Manager, convince the CEO to stop the line immediately.',
                 content: '<div class="bg-yellow-50 p-4 rounded border border-yellow-200 text-sm text-gray-700 leading-relaxed"><h4 class="font-bold text-yellow-800 mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Crisis: Ammonia Leak in Spiral Freezer</h4>The Engineering Manager reports a <b>minor Ammonia leak</b> at the main valve of the Spiral Freezer. He says:<br><i>"We can patch it temporarily (Quick Fix) to finish the production lot, but there is a 20% risk the valve blows off completely."</i><br><br><b>The CEO says:</b> <i>"We cannot stop! We have a big 7-Eleven order due tomorrow. Just patch it and keep running!"</i><br><br><b>Task:</b> Explain to the CEO why we <u>MUST</u> stop now, using a simple analogy (No technical jargon).</div>',
-                answer: '<b>Evaluation Criteria:</b><br>1. <b>Safety First:</b> Firmly reject the "Quick Fix" because Ammonia is deadly.<br>2. <b>Analogy:</b> Uses a clear metaphor, e.g., <i>"It is like driving a car with a bubbling tire. We might reach the destination, but if it blows, we crash and lose everything."</i><br>3. <b>Solution:</b> Propose a recovery plan (OT/Weekend shift) instead of risking lives.'
+                answer: '<div class="mb-4 p-3 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-100 font-medium"><b><i class="fas fa-language mr-1"></i> คำแปลโจทย์:</b> โปรดอ่านสถานการณ์วิกฤตด้านล่าง (แอมโมเนียรั่ว) ในฐานะผู้จัดการโรงงาน จงโน้มน้าว CEO ให้หยุดไลน์การผลิตเดี๋ยวนี้</div><b>เกณฑ์การประเมิน (Evaluation Criteria):</b><br>1. <b>Safety First:</b> ต้องปฏิเสธการซ่อมชั่วคราว (Quick Fix) เด็ดขาดเพราะแอมโมเนียอันตรายถึงชีวิต<br>2. <b>Analogy (การเปรียบเปรย):</b> ใช้คำเปรียบเทียบง่ายๆ เช่น <i>"เหมือนขับรถยางบวมเป่ง ถ้าฝืนขับต่อยางระเบิดคือตายกันหมด"</i><br>3. <b>Solution:</b> เสนอทางออกอื่น เช่น เพิ่มกะวันหยุด (OT) แทนการเสี่ยงเดินเครื่อง'
             },
             {
                 id: 22,
@@ -304,7 +304,7 @@
                 categoryName: 'English Proficiency (Reading)',
                 question: 'Please read the text below and answer: <br>1. What is the main technical problem? <br>2. What is the consequence of operator action?',
                 content: '<div class="bg-gray-50 p-4 rounded border border-gray-200 text-sm italic font-serif text-gray-600 leading-relaxed">"Regarding the recent audit on Line 4... the machine successfully detects Ferrous... but struggles with Stainless Steel (SS) fragments smaller than 2.0mm... especially with high moisture content... This \'product effect\' creates a false signal... operators reduce sensitivity... compromising Foreign Object Control standards..."</div>',
-                answer: '1. Problem: Metal detector cannot detect small Stainless Steel (<2.0mm) due to product effect (moisture).<br>2. Consequence: Operators lower sensitivity -> Risk of contamination reaching consumers.'
+                answer: '<div class="mb-4 p-3 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-100 font-medium"><b><i class="fas fa-language mr-1"></i> คำแปลโจทย์:</b> 1. ปัญหาทางเทคนิคหลักคืออะไร? <br>2. ผลกระทบจากการกระทำของพนักงานคืออะไร?</div><b>เฉลย (Summary):</b><br>1. <b>ปัญหา:</b> เครื่องตรวจจับโลหะหาสแตนเลสชิ้นเล็ก (<2.0mm) ไม่เจอ เพราะความชื้นในสินค้ากวนสัญญาณ (Product effect)<br>2. <b>ผลกระทบ:</b> พนักงานไปลดความไวเครื่องลง (Lower sensitivity) -> ทำให้เสี่ยงมีสิ่งแปลกปลอมหลุดไปถึงลูกค้า'
             },
             {
                 id: 23,
@@ -312,14 +312,14 @@
                 categoryName: 'English Proficiency (Reading)',
                 question: 'Please read the technical highlight of "UltraCut-S300" and summarize its <b>Key Features</b> for us.',
                 content: '<div class="bg-blue-50 p-4 rounded border border-blue-200 text-sm text-gray-700 leading-relaxed"><h4 class="font-bold text-blue-800 mb-2">Product: UltraCut-S300 (Ultrasonic Sandwich Cutter)</h4>The UltraCut-S300 utilizes <b>20kHz ultrasonic blade technology</b> to slice through multi-layered sandwiches without compressing or displacing ingredients.<br><br><ul class="list-disc pl-5"><li><b>Zero-Friction Cut:</b> The vibrating blade prevents cheese and sauces from sticking, ensuring a perfect cross-section.</li><li><b>Hygiene:</b> Minimal food residue on blades reduces cleaning downtime and cross-contamination risks.</li><li><b>Capacity:</b> High-speed processing up to 60 cycles/minute.</li></ul></div>',
-                answer: '<b>Candidate should summarize:</b><br>1. Uses Ultrasonic technology (vibrating blades) for clean cuts.<br>2. Non-stick/Zero friction (ingredients don\'t move).<br>3. High Hygiene & Easy to clean.<br>4. High Speed (60 cycles/min).'
+                answer: '<div class="mb-4 p-3 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-100 font-medium"><b><i class="fas fa-language mr-1"></i> คำแปลโจทย์:</b> โปรดอ่านข้อมูลทางเทคนิคของ "UltraCut-S300" และสรุป <b>ฟีเจอร์หลัก (Key Features)</b> ให้เราฟังหน่อย</div><b>เฉลยจุดเด่น (Key Features):</b><br>1. ใช้ระบบคลื่นเสียงความถี่สูง (Ultrasonic 20kHz) ตัดแล้วไม่เละ<br>2. ไม่ติดใบมีด (Zero-friction) ไส้แซนวิชไม่เลื่อน<br>3. ถูกสุขลักษณะ (Hygiene) เศษอาหารติดใบมีดน้อย/ทำความสะอาดง่าย<br>4. ความเร็วสูง (60 รอบ/นาที)'
             },
             {
                 id: 24,
                 category: 'english',
                 categoryName: 'English Proficiency (Writing)',
                 question: '<b>Scenario:</b> เครื่อง "High-Speed Flow Wrapper (NSL-X500)" เสีย อาการคือ "Sealing jaw อุณหภูมิแกว่ง (Unstable temp)" ทำให้ซีลไม่สนิท ช่างซ่อมไม่ได้<br><br><b>Task:</b> เขียนอีเมลหา Mr. David (Supplier) เพื่อแจ้งปัญหาและขอ Video Conference ด่วน',
-                answer: '<b>Subject:</b> URGENT: Unstable Sealing Temperature - Flow Wrapper NSL-X500<br><b>Key Content:</b> Report temp fluctuation (120-160C), Incomplete seal waste, Maintenance tried but failed, Request Video Call ASAP.'
+                answer: '<b>แนวคำตอบ (Key Content):</b><br>1. <b>Subject:</b> ต้องระบุความเร่งด่วน (URGENT) และชื่อเครื่องจักรชัดเจน<br>2. <b>ปัญหา:</b> แจ้งเรื่องอุณหภูมิแกว่ง (120-160°C) และซีลไม่ติด<br>3. <b>การแก้ไขเบื้องต้น:</b> ระบุว่าช่างซ่อมพยายามแก้แล้วแต่ไม่หาย<br>4. <b>สิ่งที่ขอ:</b> ขอคู่มือ หรือขอ Video Conference ด่วน'
             },
 
             // --- หมวด 5: Scenario ---
