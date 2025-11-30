@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Executive Report: Teerapol S.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Sarabun', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .gradient-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: white;
+        }
+        .score-bar-bg { background-color: #e2e8f0; border-radius: 9999px; height: 8px; overflow: hidden; }
+        .score-bar-fill { height: 100%; border-radius: 9999px; transition: width 1s ease-in-out; }
+    </style>
+</head>
+<body class="p-4 md:p-8 max-w-7xl mx-auto">
+
+    <!-- Header & Astro Compatibility (Existing) -->
+    <div class="glass-card mb-8 overflow-hidden">
+        <div class="gradient-header p-6 relative">
+            <div class="absolute top-0 right-0 p-4 opacity-20"><i class="fas fa-star text-6xl"></i></div>
+            <h1 class="text-3xl font-bold mb-2">รายงานวิเคราะห์ผู้สมัครงาน & ความเข้ากันได้</h1>
+            <p class="opacity-90">Candidate: คุณธีระพล ศรีหาพล (อายุ 44 ปี) | Position: ผช. ผู้จัดการฝ่ายทรัพยากรบุคคล</p>
+        </div>
+        
+        <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            <!-- Astro Section -->
+            <div class="md:col-span-3 flex flex-col md:flex-row justify-center items-center gap-8 bg-blue-50 p-6 rounded-xl border border-blue-100">
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center text-4xl shadow-sm mb-2 border-2 border-blue-200">🐒</div>
+                    <div class="font-bold text-gray-700">คุณธีระพล</div>
+                    <div class="text-sm text-gray-500">ปีวอก (ธาตุทอง)</div>
+                </div>
+                
+                <div class="flex flex-col items-center">
+                    <span class="text-3xl font-bold text-green-600 drop-shadow-sm">⚡ เสริมดวง (Support) ⚡</span>
+                    <span class="text-sm bg-white px-3 py-1 rounded-full border shadow-sm mt-2 text-gray-600">
+                        <i class="fas fa-check-circle text-green-500 mr-1"></i> สามสมพงศ์ (ฮะ - Trine)
+                    </span>
+                    <p class="text-xs text-gray-500 mt-2 max-w-xs text-center">ลิง (ทอง) ส่งเสริม หนู (น้ำ) = ผู้สมัครช่วยแก้ปัญหาให้หัวหน้าได้ดีเยี่ยม</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center text-4xl shadow-sm mb-2 border-2 border-indigo-200">🐀</div>
+                    <div class="font-bold text-gray-700">หัวหน้างาน</div>
+                    <div class="text-sm text-gray-500">ปีชวด (ธาตุน้ำ)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CV Deep Dive Analysis -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <!-- Main CV Analysis -->
+        <div class="lg:col-span-2 glass-card p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-search-plus text-blue-600 mr-2"></i> วิเคราะห์จุดแข็งจาก CV (Deep Dive)
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                    <h3 class="font-bold text-green-800 mb-2">✅ จุดแข็ง (Strengths)</h3>
+                    <ul class="text-sm text-gray-700 space-y-2 list-disc pl-4">
+                        <li><strong>Total Factory Management:</strong> คุมครบวงจร HR + Admin + Safety + Transport + รปภ./แม่บ้าน (ลด Cost บริษัทได้มาก)</li>
+                        <li><strong>System Expert:</strong> ชำนาญระบบ WCM, TPM, ISO, 5S ซึ่งหาตัวจับยากใน HR ทั่วไปที่มักเก่งแต่เรื่องคน</li>
+                        <li><strong>Union & ER:</strong> มีประสบการณ์จัดการสหภาพแรงงานและข้อร้องเรียนในโรงงานขนาดใหญ่ (300+ คน)</li>
+                        <li><strong>Technology:</strong> จบสายคอมพิวเตอร์ ทำระบบ Fingerprint/Payroll ได้เอง ลดการพึ่งพา IT</li>
+                    </ul>
+                </div>
+                <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-500">
+                    <h3 class="font-bold text-orange-800 mb-2">⚠️ จุดที่ต้องตรวจสอบ (Concerns)</h3>
+                    <ul class="text-sm text-gray-700 space-y-2 list-disc pl-4">
+                        <li><strong>Job Hopping:</strong> 2 ที่ล่าสุดทำงานสั้น (5 เดือน และ <1 ปี) ต้องถามสาเหตุการลาออกให้ชัดเจน</li>
+                        <li><strong>English Skills:</strong> ระบุว่า "พอใช้" อาจไม่เหมาะกับตำแหน่งที่ต้อง Report Expat โดยตรง</li>
+                        <li><strong>Educational Background:</strong> ไม่ได้จบ HR โดยตรง ทฤษฎี HRD สมัยใหม่อาจต้องเสริม</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Radar Chart -->
+        <div class="glass-card p-6 flex flex-col items-center justify-center">
+            <h3 class="font-bold text-gray-700 mb-2">สรุปคะแนน 4 มิติ</h3>
+            <div class="relative w-full h-64">
+                <canvas id="competencyChart"></canvas>
+            </div>
+            <div class="mt-2 text-center">
+                <span class="text-3xl font-bold text-blue-600">85.3</span>
+                <span class="text-sm text-gray-500">/ 100 คะแนน</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 30-Point Detailed Balanced Scorecard -->
+    <div class="glass-card p-6">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+            <i class="fas fa-tasks text-indigo-600 mr-3"></i> การประเมินละเอียด 30 หัวข้อ (30-Point Scorecard)
+        </h2>
+
+        <!-- 1. Financial Perspective -->
+        <div class="mb-8">
+            <h3 class="text-lg font-bold text-gray-700 mb-3 border-b pb-2">1. Financial Perspective (การเงิน & ความคุ้มค่า)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Items -->
+                <script>
+                    const financialItems = [
+                        {name: "Payroll Accuracy", score: 10, max: 10},
+                        {name: "Cost Reduction (Admin)", score: 9, max: 10},
+                        {name: "Transport Cost Control", score: 9, max: 10},
+                        {name: "Manpower Planning", score: 8, max: 10},
+                        {name: "Compensation & Benefit Design", score: 7, max: 10},
+                        {name: "Overtime Management", score: 8, max: 10},
+                        {name: "Budgeting", score: 8, max: 10},
+                    ];
+                </script>
+                <!-- Rendered by JS below for brevity in HTML structure -->
+                <div id="financial-container" class="contents"></div>
+            </div>
+        </div>
+
+        <!-- 2. Customer Perspective -->
+        <div class="mb-8">
+            <h3 class="text-lg font-bold text-gray-700 mb-3 border-b pb-2">2. Customer Perspective (พนักงาน & ผู้บริหาร)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div id="customer-container" class="contents"></div>
+            </div>
+        </div>
+
+        <!-- 3. Internal Process Perspective -->
+        <div class="mb-8">
+            <h3 class="text-lg font-bold text-gray-700 mb-3 border-b pb-2">3. Internal Process Perspective (กระบวนการภายใน)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div id="process-container" class="contents"></div>
+            </div>
+        </div>
+
+        <!-- 4. Learning & Growth Perspective -->
+        <div class="mb-8">
+            <h3 class="text-lg font-bold text-gray-700 mb-3 border-b pb-2">4. Learning & Growth (การเรียนรู้ & พัฒนา)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div id="learning-container" class="contents"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to render BSC Items & Chart -->
+    <script>
+        // Data for BSC
+        const data = {
+            financial: [
+                {name: "Payroll Accuracy", score: 10, reason: "ชำนาญโปรแกรม B-Plus"},
+                {name: "Cost Reduction", score: 9, reason: "ประสบการณ์ WCM/Cost Saving"},
+                {name: "Transport Mgmt", score: 10, reason: "ดูแลรถขนส่ง/คนขับรถโดยตรง"},
+                {name: "Manpower Planning", score: 8, reason: "วางแผนกำลังคนโรงงานได้"},
+                {name: "Compensation Design", score: 7, reason: "ทำตามนโยบาย แต่อาจไม่ได้ Design ใหม่"},
+                {name: "OT Control", score: 8, reason: "คุม Productivity ได้"},
+                {name: "Budgeting", score: 8, reason: "บริหารงบ Admin/HR ได้"}
+            ],
+            customer: [
+                {name: "Union Relations", score: 10, reason: "รับมือสหภาพฯ ได้ดี"},
+                {name: "Employee Complaint", score: 9, reason: "ประสบการณ์โรงงานสูง"},
+                {name: "Service Mind", score: 9, reason: "ดูแลสวัสดิการพนักงาน"},
+                {name: "Mgt Advisory", score: 8, reason: "เป็นคู่คิด ผจก.โรงงานได้"},
+                {name: "CSR/Community", score: 9, reason: "ทำกิจกรรมชุมชนสัมพันธ์"},
+                {name: "Conflict Resolution", score: 9, reason: "ไกล่เกลี่ยเก่ง"},
+                {name: "Onboarding Exp", score: 8, reason: "ดูแลรับพนักงานใหม่"},
+                {name: "Alien Labor Mgmt", score: 10, reason: "เชี่ยวชาญแรงงานต่างด้าว"}
+            ],
+            process: [
+                {name: "Recruitment Speed", score: 8, reason: "หาคนโรงงานได้เร็ว"},
+                {name: "Safety (JorPor)", score: 10, reason: "มีใบ จป.บริหาร/คุม รปภ."},
+                {name: "Labour Law", score: 9, reason: "แม่นกฎหมายแรงงาน"},
+                {name: "Admin/Facility", score: 10, reason: "ดูแลแม่บ้าน/อาคาร"},
+                {name: "ISO/Audit", score: 9, reason: "ผ่าน Audit ระบบใหญ่ๆ มาแล้ว"},
+                {name: "5S / Kaizen", score: 9, reason: "เป็นเลขานุการ 5ส."},
+                {name: "Disciplinary Action", score: 9, reason: "ออกใบเตือน/ลงโทษได้"},
+                {name: "HR Reports/KPI", score: 8, reason: "ทำ Report ส่งสำนักงานใหญ่"}
+            ],
+            learning: [
+                {name: "Training Roadmap", score: 7, reason: "จัดอบรมได้ แต่อาจไม่ใช่ Strategic HRD"},
+                {name: "Leadership", score: 8, reason: "คุมทีมงานหลายส่วน"},
+                {name: "Tech Adoption", score: 9, reason: "พื้นฐานคอมฯ แน่น/Fingerprint"},
+                {name: "English Skill", score: 5, reason: "CV ระบุพอใช้"},
+                {name: "Succession Plan", score: 6, reason: "ยังไม่เห็นผลงานชัดเจน"},
+                {name: "Innovation", score: 7, reason: "ปรับปรุงระบบได้"},
+                {name: "Adaptability", score: 8, reason: "ปรับตัวเข้ากับโรงงานได้ดี"}
+            ]
+        };
+
+        // Function to render items
+        function renderItems(containerId, items, colorClass) {
+            const container = document.getElementById(containerId);
+            items.forEach(item => {
+                const percentage = (item.score / 10) * 100;
+                let color = 'bg-blue-500';
+                if(item.score >= 9) color = 'bg-green-500';
+                else if(item.score <= 6) color = 'bg-yellow-500';
+                else if(item.score <= 4) color = 'bg-red-500';
+
+                const html = `
+                    <div class="bg-white p-3 rounded-lg border border-gray-200 shadow-sm">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-sm font-semibold text-gray-700">${item.name}</span>
+                            <span class="text-xs font-bold text-gray-500">${item.score}/10</span>
+                        </div>
+                        <div class="score-bar-bg mb-1">
+                            <div class="score-bar-fill ${color}" style="width: ${percentage}%"></div>
+                        </div>
+                        <p class="text-xs text-gray-400 truncate">${item.reason}</p>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        renderItems('financial-container', data.financial);
+        renderItems('customer-container', data.customer);
+        renderItems('process-container', data.process);
+        renderItems('learning-container', data.learning);
+
+        // Chart
+        const ctx = document.getElementById('competencyChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Financial', 'Customer', 'Process', 'Learning'],
+                datasets: [{
+                    label: 'Score %',
+                    data: [85.7, 90, 90, 71.4], // Calculated averages
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: '#2563eb',
+                    pointBackgroundColor: '#2563eb',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: { r: { suggestedMin: 0, suggestedMax: 100, ticks: { stepSize: 20 } } },
+                plugins: { legend: { display: false } },
+                maintainAspectRatio: false
+            }
+        });
+    </script>
+</body>
+</html>
