@@ -16,9 +16,10 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
-      
+        /* Removed Google Fonts import for better GitHub Pages compatibility and performance */
+        
         body {
-
+            /* Robust System Font Stack */
             font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
         }
 
@@ -74,6 +75,7 @@
         const Menu = (props) => <IconWrapper {...props}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></IconWrapper>;
         const Sparkles = (props) => <IconWrapper {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 5H5"/><path d="M18 19v4"/><path d="M22 21h-4"/></IconWrapper>;
         const ChevronDown = (props) => <IconWrapper {...props}><path d="m6 9 6 6 6-6"/></IconWrapper>;
+        const ShoppingCart = (props) => <IconWrapper {...props}><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></IconWrapper>;
 
         // --- DATA ---
         const INITIAL_APPS = [
@@ -88,6 +90,21 @@
             badge: "New Report",
             options: [
               { label: "SD Financial Impact 2024-2025", url: "https://dssnslfoods.github.io/DSS/report4_sd.html" }
+            ]
+          },
+          {
+            id: 6,
+            title: "7-11 Report",
+            description: "Comprehensive sales and performance reports for 7-Eleven operations.",
+            category: "Analytics",
+            url: "",
+            icon: "cart",
+            color: "from-orange-600 to-red-500",
+            options: [
+              { label: "Sales Report 2025 (report1_2025)", url: "https://dssnslfoods.github.io/DSS/report1_2025.html" },
+              { label: "Performance Report (report2)", url: "https://dssnslfoods.github.io/DSS/report2.html" },
+              { label: "Inventory Analysis (report3)", url: "https://dssnslfoods.github.io/DSS/report3.html" },
+              { label: "Market Trends (report5)", url: "https://dssnslfoods.github.io/DSS/report5.html" }
             ]
           },
           {
@@ -187,6 +204,7 @@
                     case 'search': return <Search {...props} />;
                     case 'briefcase': return <Briefcase {...props} />;
                     case 'user': return <User {...props} />;
+                    case 'cart': return <ShoppingCart {...props} />;
                     default: return <Code {...props} />;
                 }
             };
