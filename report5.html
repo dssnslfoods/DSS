@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bake a Wish x 7-11 Sales Analysis (Aug-Oct 2025)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Sarabun', sans-serif; background-color: #f8f5f2; }
+        .brand-gold { color: #D4AF37; }
+        .brand-brown { color: #5D4037; }
+        .bg-brand-brown { background-color: #5D4037; }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .trend-up { color: #10B981; }
+        .trend-down { color: #EF4444; }
+        .trend-neutral { color: #F59E0B; }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Header Section -->
+    <header class="bg-brand-brown text-white p-6 shadow-lg">
+        <div class="container mx-auto flex justify-between items-center flex-wrap">
+            <div>
+                <h1 class="text-3xl font-bold">Sales Performance Report</h1>
+                <p class="text-yellow-400 text-lg mt-1">Bake a Wish @ 7-Eleven (NSL Foods PLC.)</p>
+                <p class="text-sm opacity-80">Data Period: Aug - Oct 2025 | Prepared by: DSS NSL</p>
+            </div>
+            <div class="text-right mt-4 md:mt-0">
+                <div class="bg-yellow-500 text-brand-brown px-4 py-2 rounded-lg font-bold shadow animate-pulse">
+                    Executive Summary
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <!-- Executive Summary Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-6 rounded-xl card-shadow border-l-4 border-yellow-500 hover:shadow-lg transition">
+                <h3 class="text-gray-500 text-sm font-semibold uppercase">Total Sales (3 Months)</h3>
+                <p class="text-3xl font-bold text-gray-800 mt-2">฿4.52M</p>
+                <p class="text-sm text-red-500 mt-1"><i class="fas fa-arrow-down"></i> Trend Declining slightly</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl card-shadow border-l-4 border-blue-500 hover:shadow-lg transition">
+                <h3 class="text-gray-500 text-sm font-semibold uppercase">Top Segment Sales</h3>
+                <p class="text-3xl font-bold text-gray-800 mt-2">Loyalty Keepers</p>
+                <p class="text-sm text-gray-600 mt-1">Contributed ~40% of Total Revenue</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl card-shadow border-l-4 border-green-500 hover:shadow-lg transition">
+                <h3 class="text-gray-500 text-sm font-semibold uppercase">Best Recency</h3>
+                <p class="text-3xl font-bold text-gray-800 mt-2">~9 Days</p>
+                <p class="text-sm text-gray-600 mt-1">Loyalty Members buy every 9 days</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl card-shadow border-l-4 border-red-500 hover:shadow-lg transition group relative">
+                <h3 class="text-gray-500 text-sm font-semibold uppercase flex justify-between items-center">
+                    Risk Alert (Churn) 
+                    <i class="fas fa-info-circle text-gray-400 cursor-help" title="Churn Definition"></i>
+                </h3>
+                <p class="text-3xl font-bold text-gray-800 mt-2">41,577 IDs</p>
+                <div class="mt-2 text-xs bg-red-50 text-red-800 p-2 rounded border border-red-100">
+                    <strong>Churn คือ:</strong> ลูกค้าที่เคยซื้อแต่ <u>หยุดซื้อไปในรอบ 1 เดือน</u> กลุ่มนี้คือ "สัญญาณอันตราย" ที่ต้องรีบดึงกลับมาก่อนจะหายไปถาวร
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Analysis Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Left Column: Charts -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <!-- Chart 1: Monthly Sales Trend -->
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <h2 class="text-xl font-bold text-brand-brown mb-4 flex items-center">
+                        <span class="bg-yellow-100 text-yellow-800 w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm"><i class="fas fa-chart-line"></i></span>
+                        Monthly Sales Performance (ยอดขายรายเดือน)
+                    </h2>
+                    <div class="h-80">
+                        <canvas id="monthlySalesChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600 italic bg-gray-50 p-2 rounded border-l-4 border-yellow-400">
+                        <i class="fas fa-lightbulb text-yellow-500 mr-1"></i> 
+                        เดือนสิงหาคมทำยอดขายได้สูงสุด แต่มีการปรับตัวลดลงในเดือนกันยายน (-12%) และเริ่มทรงตัวในตุลาคม
+                    </p>
+                </div>
+
+                <!-- Chart 2: Segment Breakdown -->
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <h2 class="text-xl font-bold text-brand-brown mb-4 flex items-center">
+                        <span class="bg-blue-100 text-blue-800 w-8 h-8 flex items-center justify-center rounded-full mr-3 text-sm"><i class="fas fa-users"></i></span>
+                        Customer Segment Analysis (วิเคราะห์กลุ่มลูกค้า)
+                    </h2>
+                    <div class="h-80">
+                        <canvas id="segmentChart"></canvas>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-4 text-sm">
+                        <div class="bg-gray-50 p-3 rounded border border-gray-100">
+                            <span class="font-bold text-green-700 block mb-1">👑 Loyalty -> Loyalty</span> 
+                            กลุ่มที่แข็งแกร่งที่สุด สร้างยอดขายหลักและมีความถี่ในการซื้อสูง
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded border border-gray-100">
+                            <span class="font-bold text-orange-600 block mb-1">🚀 Normal -> Loyalty</span> 
+                            กลุ่มดาวรุ่ง (Rising Star) ที่เปลี่ยนสถานะจากลูกค้าทั่วไปมาเป็น Loyalty มียอดขายเติบโตดี
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Deep Dive Info & Strategy -->
+            <div class="space-y-8">
+
+                <!-- Deep Dive VISUAL CARD (Replaced Table) -->
+                <div class="bg-white p-6 rounded-xl card-shadow">
+                    <h2 class="text-xl font-bold text-brand-brown mb-6 flex items-center border-b pb-2">
+                        <i class="fas fa-search-plus mr-2"></i> Deep Dive Metrics
+                    </h2>
+                    
+                    <!-- Metric 1: Sales Trend -->
+                    <div class="mb-6">
+                        <h4 class="text-sm text-gray-500 font-bold mb-3 uppercase">1. Sales Trend (Million THB)</h4>
+                        <div class="flex items-end justify-between space-x-2">
+                            <div class="flex-1 text-center group">
+                                <div class="text-xs text-gray-400 mb-1">Aug</div>
+                                <div class="bg-brand-brown text-white py-3 rounded-lg shadow-sm font-bold text-lg relative" style="height: 60px; display:flex; align-items:center; justify-content:center;">
+                                    1.63
+                                </div>
+                            </div>
+                            <div class="pb-4 text-gray-300"><i class="fas fa-chevron-right"></i></div>
+                            <div class="flex-1 text-center group">
+                                <div class="text-xs text-gray-400 mb-1">Sep</div>
+                                <div class="bg-brand-brown opacity-80 text-white py-2 rounded-lg shadow-sm font-bold text-lg relative" style="height: 50px; display:flex; align-items:center; justify-content:center;">
+                                    1.43
+                                </div>
+                            </div>
+                            <div class="pb-4 text-gray-300"><i class="fas fa-chevron-right"></i></div>
+                            <div class="flex-1 text-center group">
+                                <div class="text-xs text-gray-400 mb-1">Oct</div>
+                                <div class="bg-brand-brown opacity-90 text-white py-2 rounded-lg shadow-sm font-bold text-lg relative" style="height: 52px; display:flex; align-items:center; justify-content:center;">
+                                    1.46
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metric 2: Loyalty Members -->
+                    <div class="mb-6 bg-blue-50 p-4 rounded-xl border border-blue-100">
+                        <h4 class="text-sm text-blue-800 font-bold mb-2 uppercase flex justify-between">
+                            <span><i class="fas fa-user-check mr-1"></i> Active Loyalty Members</span>
+                            <span class="text-xs bg-white px-2 py-0.5 rounded text-blue-600 border border-blue-200">Monthly</span>
+                        </h4>
+                        <div class="flex justify-between items-center mt-3">
+                            <div class="text-center">
+                                <span class="block text-2xl font-bold text-gray-700">13.5k</span>
+                                <span class="text-xs text-gray-400">Aug</span>
+                            </div>
+                            <div class="h-px w-8 bg-gray-300"></div>
+                            <div class="text-center">
+                                <span class="block text-2xl font-bold text-gray-700">10.6k</span>
+                                <span class="text-xs text-gray-400">Sep</span>
+                            </div>
+                            <div class="h-px w-8 bg-gray-300"></div>
+                            <div class="text-center">
+                                <span class="block text-2xl font-bold text-blue-600">10.7k</span>
+                                <span class="text-xs text-blue-500 font-bold">Oct</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Metric 3: Churn & Recency (Split) -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <!-- Churn Warning -->
+                        <div class="bg-red-50 p-3 rounded-xl border border-red-100 text-center">
+                            <div class="text-red-500 mb-1"><i class="fas fa-user-times fa-lg"></i></div>
+                            <div class="text-xs text-red-800 font-bold uppercase mb-1">Churn (Avg.)</div>
+                            <div class="text-xl font-bold text-red-600">~13k</div>
+                            <div class="text-[10px] text-red-400">Users/Month</div>
+                        </div>
+                        <!-- Recency Watch -->
+                        <div class="bg-orange-50 p-3 rounded-xl border border-orange-100 text-center">
+                            <div class="text-orange-500 mb-1"><i class="fas fa-history fa-lg"></i></div>
+                            <div class="text-xs text-orange-800 font-bold uppercase mb-1">Recency Gap</div>
+                            <div class="text-xl font-bold text-orange-600">9.9 <span class="text-sm">Days</span></div>
+                            <div class="text-[10px] text-orange-400">Increased from 8.6</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strategic Planning Card -->
+                <div class="bg-brand-brown text-white p-6 rounded-xl card-shadow">
+                    <h2 class="text-xl font-bold mb-4 flex items-center">
+                        <span class="bg-yellow-500 text-white w-8 h-8 flex items-center justify-center rounded mr-3 text-sm"><i class="fas fa-rocket"></i></span> 
+                        Strategic Planning
+                    </h2>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-start bg-white/10 p-3 rounded-lg backdrop-blur-sm">
+                            <span class="text-yellow-400 mr-3 text-lg mt-[-2px]">1.</span>
+                            <div>
+                                <strong class="text-yellow-400 block mb-1">Prevent Churn (Win-Back)</strong>
+                                <span class="opacity-90">กลุ่ม Churn เฉลี่ย 13k คน/เดือน ควรทำแคมเปญ <strong>"We Miss You"</strong> แจกคูปองส่วนลดพิเศษหากกลับมาซื้อภายใน 7 วัน</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start bg-white/10 p-3 rounded-lg backdrop-blur-sm">
+                            <span class="text-yellow-400 mr-3 text-lg mt-[-2px]">2.</span>
+                            <div>
+                                <strong class="text-yellow-400 block mb-1">Boost Frequency</strong>
+                                <span class="opacity-90">Recency เริ่มนานขึ้น (9.9 วัน) จัดโปรฯ <strong>Weekly Mission</strong> สะสมแต้มรายสัปดาห์ เพื่อดึงให้กลับมาซื้อถี่ขึ้น</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start bg-white/10 p-3 rounded-lg backdrop-blur-sm">
+                            <span class="text-yellow-400 mr-3 text-lg mt-[-2px]">3.</span>
+                            <div>
+                                <strong class="text-yellow-400 block mb-1">Convert Normal User</strong>
+                                <span class="opacity-90">กลุ่ม Normal -> Loyalty มียอดขายโตดี ผลักดันสินค้า <strong>New Arrival</strong> ให้กลุ่มนี้เพื่อสร้างความตื่นเต้น</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer / Signature -->
+        <footer class="mt-12 text-center text-gray-500 text-sm border-t pt-6 pb-6">
+            <p>© 2025 Data Analysis Report for NSL Foods PLC.</p>
+            <p>Designed & Analyzed by <span class="text-brand-brown font-bold">DSS NSL</span></p>
+        </footer>
+
+    </main>
+
+    <script>
+        // --- DATA PREPARATION (Based on provided files) ---
+        // Unit: Baht for Sales
+        
+        // Data Structure: [Aug, Sep, Oct]
+        const months = ['August', 'September', 'October'];
+        
+        // 1. Total Sales Data (Aggregated from segments)
+        const salesData = {
+            aug: 672106 + 213066 + 375092 + 377621, // ~1.63M
+            sep: 579926 + 159719 + 371200 + 320107, // ~1.43M
+            oct: 621828 + 158317 + 390983 + 290103  // ~1.46M
+        };
+
+        // 2. Segment Sales Data Breakdown
+        const segments = {
+            loyalty_loyalty: [672106, 579926, 621828],
+            loyalty_normal: [213066, 159719, 158317],
+            normal_loyalty: [375092, 371200, 390983],
+            normal_normal:  [377621, 320107, 290103]
+        };
+
+        // --- CHART CONFIGURATIONS ---
+
+        // Chart 1: Total Sales Trend
+        const ctx1 = document.getElementById('monthlySalesChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Total Sales (THB)',
+                    data: [salesData.aug, salesData.sep, salesData.oct],
+                    borderColor: '#D4AF37', // Gold
+                    backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#5D4037',
+                    pointRadius: 6,
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB' }).format(context.parsed.y);
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: { borderDash: [2, 4] }
+                    }
+                }
+            }
+        });
+
+        // Chart 2: Segment Stacked Bar
+        const ctx2 = document.getElementById('segmentChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [
+                    {
+                        label: 'Loyalty -> Loyalty (Core)',
+                        data: segments.loyalty_loyalty,
+                        backgroundColor: '#5D4037', // Brown
+                    },
+                    {
+                        label: 'Normal -> Loyalty (Growth)',
+                        data: segments.normal_loyalty,
+                        backgroundColor: '#D4AF37', // Gold
+                    },
+                    {
+                        label: 'Loyalty -> Normal (Risk)',
+                        data: segments.loyalty_normal,
+                        backgroundColor: '#A1887F', // Light Brown
+                    },
+                    {
+                        label: 'Normal -> Normal (Standard)',
+                        data: segments.normal_normal,
+                        backgroundColor: '#E0E0E0', // Grey
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB', maximumSignificantDigits: 3 }).format(context.raw);
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true, grid: { borderDash: [2, 4] } }
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>  
