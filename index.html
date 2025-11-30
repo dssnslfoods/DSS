@@ -183,120 +183,6 @@
 
         // --- 2. Subcomponents ---
 
-        // NEW: Particle Background Component
-        const ParticleBackground = () => {
-            const canvasRef = useRef(null);
-            const mouseRef = useRef({ x: 0, y: 0 });
-
-            useEffect(() => {
-                const canvas = canvasRef.current;
-                const ctx = canvas.getContext('2d');
-                let animationFrameId;
-                let particles = [];
-
-                const handleMouseMove = (e) => {
-                    mouseRef.current = { x: e.clientX, y: e.clientY };
-                };
-                window.addEventListener('mousemove', handleMouseMove);
-
-                const resizeCanvas = () => {
-                    canvas.width = window.innerWidth;
-                    canvas.height = window.innerHeight;
-                };
-                window.addEventListener('resize', resizeCanvas);
-                resizeCanvas();
-
-                class Particle {
-                    constructor() {
-                        this.x = Math.random() * canvas.width;
-                        this.y = Math.random() * canvas.height;
-                        this.vx = (Math.random() - 0.5) * 0.5;
-                        this.vy = (Math.random() - 0.5) * 0.5;
-                        this.size = Math.random() * 1.5 + 0.5;
-                    }
-
-                    update() {
-                        this.x += this.vx;
-                        this.y += this.vy;
-
-                        // Wall bounce
-                        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-
-                        // Mouse interaction (flee)
-                        const dx = this.x - mouseRef.current.x;
-                        const dy = this.y - mouseRef.current.y;
-                        const distance = Math.sqrt(dx * dx + dy * dy);
-                        const maxDist = 100;
-
-                        if (distance < maxDist) {
-                            const forceDirectionX = dx / distance;
-                            const forceDirectionY = dy / distance;
-                            const force = (maxDist - distance) / maxDist;
-                            this.vx += forceDirectionX * force * 0.05;
-                            this.vy += forceDirectionY * force * 0.05;
-                        }
-                    }
-
-                    draw() {
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                        ctx.fillStyle = 'rgba(167, 139, 250, 0.4)'; // Light purple
-                        ctx.fill();
-                    }
-                }
-
-                const init = () => {
-                    particles = [];
-                    const numParticles = Math.min(window.innerWidth / 10, 80); // Responsive count
-                    for (let i = 0; i < numParticles; i++) {
-                        particles.push(new Particle());
-                    }
-                };
-
-                const animate = () => {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    
-                    particles.forEach(particle => {
-                        particle.update();
-                        particle.draw();
-                    });
-
-                    // Draw connections
-                    particles.forEach((a, index) => {
-                        for (let i = index + 1; i < particles.length; i++) {
-                            const b = particles[i];
-                            const dx = a.x - b.x;
-                            const dy = a.y - b.y;
-                            const distance = Math.sqrt(dx * dx + dy * dy);
-
-                            if (distance < 120) {
-                                ctx.beginPath();
-                                ctx.strokeStyle = `rgba(167, 139, 250, ${0.15 * (1 - distance / 120)})`;
-                                ctx.lineWidth = 0.5;
-                                ctx.moveTo(a.x, a.y);
-                                ctx.lineTo(b.x, b.y);
-                                ctx.stroke();
-                            }
-                        }
-                    });
-
-                    animationFrameId = requestAnimationFrame(animate);
-                };
-
-                init();
-                animate();
-
-                return () => {
-                    window.removeEventListener('resize', resizeCanvas);
-                    window.removeEventListener('mousemove', handleMouseMove);
-                    cancelAnimationFrame(animationFrameId);
-                };
-            }, []);
-
-            return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0 opacity-60" />;
-        };
-
         // NEW: Typing Effect Component
         const TypingText = ({ text }) => {
             const [displayText, setDisplayText] = useState('');
@@ -670,9 +556,6 @@
             return (
                 <div className="min-h-screen bg-[#0f172a] text-white font-sans selection:bg-fuchsia-500 selection:text-white overflow-hidden relative">
                 
-                    {/* --- Particle Background (Interactive Layer) --- */}
-                    <ParticleBackground />
-
                     {/* --- Mobile Navigation Overlay --- */}
                     {isMobileMenuOpen && (
                         <div className="fixed inset-0 z-50 bg-slate-900/95 backdrop-blur-xl p-6 flex flex-col animate-fade-in">
