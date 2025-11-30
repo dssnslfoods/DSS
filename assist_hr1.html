@@ -31,37 +31,12 @@
 </head>
 <body class="p-4 md:p-8 max-w-7xl mx-auto">
 
-    <!-- Header & Astro Compatibility (Existing) -->
+    <!-- Header -->
     <div class="glass-card mb-8 overflow-hidden">
         <div class="gradient-header p-6 relative">
-            <div class="absolute top-0 right-0 p-4 opacity-20"><i class="fas fa-star text-6xl"></i></div>
-            <h1 class="text-3xl font-bold mb-2">รายงานวิเคราะห์ผู้สมัครงาน & ความเข้ากันได้</h1>
+            <div class="absolute top-0 right-0 p-4 opacity-20"><i class="fas fa-file-signature text-6xl"></i></div>
+            <h1 class="text-3xl font-bold mb-2">รายงานวิเคราะห์ผู้สมัครงาน (HR Assessment)</h1>
             <p class="opacity-90">Candidate: คุณธีระพล ศรีหาพล (อายุ 44 ปี) | Position: ผช. ผู้จัดการฝ่ายทรัพยากรบุคคล</p>
-        </div>
-        
-        <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-            <!-- Astro Section -->
-            <div class="md:col-span-3 flex flex-col md:flex-row justify-center items-center gap-8 bg-blue-50 p-6 rounded-xl border border-blue-100">
-                <div class="text-center">
-                    <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center text-4xl shadow-sm mb-2 border-2 border-blue-200">🐒</div>
-                    <div class="font-bold text-gray-700">คุณธีระพล</div>
-                    <div class="text-sm text-gray-500">ปีวอก (ธาตุทอง)</div>
-                </div>
-                
-                <div class="flex flex-col items-center">
-                    <span class="text-3xl font-bold text-green-600 drop-shadow-sm">⚡ เสริมดวง (Support) ⚡</span>
-                    <span class="text-sm bg-white px-3 py-1 rounded-full border shadow-sm mt-2 text-gray-600">
-                        <i class="fas fa-check-circle text-green-500 mr-1"></i> สามสมพงศ์ (ฮะ - Trine)
-                    </span>
-                    <p class="text-xs text-gray-500 mt-2 max-w-xs text-center">ลิง (ทอง) ส่งเสริม หนู (น้ำ) = ผู้สมัครช่วยแก้ปัญหาให้หัวหน้าได้ดีเยี่ยม</p>
-                </div>
-
-                <div class="text-center">
-                    <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center text-4xl shadow-sm mb-2 border-2 border-indigo-200">🐀</div>
-                    <div class="font-bold text-gray-700">หัวหน้างาน</div>
-                    <div class="text-sm text-gray-500">ปีชวด (ธาตุน้ำ)</div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -86,8 +61,8 @@
                     <h3 class="font-bold text-orange-800 mb-2">⚠️ จุดที่ต้องตรวจสอบ (Concerns)</h3>
                     <ul class="text-sm text-gray-700 space-y-2 list-disc pl-4">
                         <li><strong>Job Hopping:</strong> 2 ที่ล่าสุดทำงานสั้น (5 เดือน และ <1 ปี) ต้องถามสาเหตุการลาออกให้ชัดเจน</li>
-                        <li><strong>English Skills:</strong> ระบุว่า "พอใช้" อาจไม่เหมาะกับตำแหน่งที่ต้อง Report Expat โดยตรง</li>
-                        <li><strong>Educational Background:</strong> ไม่ได้จบ HR โดยตรง ทฤษฎี HRD สมัยใหม่อาจต้องเสริม</li>
+                        <li><strong>Modern HR Knowledge:</strong> ทักษะภาษาอังกฤษระดับ "พอใช้" อาจเป็นข้อจำกัดในการเข้าถึงตำรา/องค์ความรู้ HR สมัยใหม่ หรือเอกสารมาตรฐานสากล (Global Standards)</li>
+                        <li><strong>Educational Background:</strong> ไม่ได้จบ HR โดยตรง ทฤษฎี HRD เชิงลึกอาจต้องเสริม</li>
                     </ul>
                 </div>
             </div>
@@ -107,7 +82,7 @@
     </div>
 
     <!-- 30-Point Detailed Balanced Scorecard -->
-    <div class="glass-card p-6">
+    <div class="glass-card p-6 mb-8">
         <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
             <i class="fas fa-tasks text-indigo-600 mr-3"></i> การประเมินละเอียด 30 หัวข้อ (30-Point Scorecard)
         </h2>
@@ -118,17 +93,8 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <!-- Items -->
                 <script>
-                    const financialItems = [
-                        {name: "Payroll Accuracy", score: 10, max: 10},
-                        {name: "Cost Reduction (Admin)", score: 9, max: 10},
-                        {name: "Transport Cost Control", score: 9, max: 10},
-                        {name: "Manpower Planning", score: 8, max: 10},
-                        {name: "Compensation & Benefit Design", score: 7, max: 10},
-                        {name: "Overtime Management", score: 8, max: 10},
-                        {name: "Budgeting", score: 8, max: 10},
-                    ];
+                    // Defined in JS below
                 </script>
-                <!-- Rendered by JS below for brevity in HTML structure -->
                 <div id="financial-container" class="contents"></div>
             </div>
         </div>
@@ -154,6 +120,39 @@
             <h3 class="text-lg font-bold text-gray-700 mb-3 border-b pb-2">4. Learning & Growth (การเรียนรู้ & พัฒนา)</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div id="learning-container" class="contents"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Astro Compatibility (Moved to Bottom) -->
+    <div class="glass-card mb-8 overflow-hidden">
+        <div class="bg-gray-100 p-4 border-b">
+            <h2 class="text-xl font-bold text-gray-700 flex items-center">
+                <i class="fas fa-star text-yellow-500 mr-2"></i> ความเข้ากันได้ทางโหราศาสตร์ (Supplementary Analysis)
+            </h2>
+        </div>
+        
+        <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            <div class="md:col-span-3 flex flex-col md:flex-row justify-center items-center gap-8 bg-blue-50 p-6 rounded-xl border border-blue-100">
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center text-4xl shadow-sm mb-2 border-2 border-blue-200">🐒</div>
+                    <div class="font-bold text-gray-700">คุณธีระพล</div>
+                    <div class="text-sm text-gray-500">ปีวอก (ธาตุทอง)</div>
+                </div>
+                
+                <div class="flex flex-col items-center">
+                    <span class="text-3xl font-bold text-green-600 drop-shadow-sm">⚡ เสริมดวง (Support) ⚡</span>
+                    <span class="text-sm bg-white px-3 py-1 rounded-full border shadow-sm mt-2 text-gray-600">
+                        <i class="fas fa-check-circle text-green-500 mr-1"></i> สามสมพงศ์ (ฮะ - Trine)
+                    </span>
+                    <p class="text-xs text-gray-500 mt-2 max-w-xs text-center">ลิง (ทอง) ส่งเสริม หนู (น้ำ) = ผู้สมัครช่วยแก้ปัญหาให้หัวหน้าได้ดีเยี่ยม</p>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center text-4xl shadow-sm mb-2 border-2 border-indigo-200">🐀</div>
+                    <div class="font-bold text-gray-700">หัวหน้างาน</div>
+                    <div class="text-sm text-gray-500">ปีชวด (ธาตุน้ำ)</div>
+                </div>
             </div>
         </div>
     </div>
@@ -195,7 +194,7 @@
                 {name: "Training Roadmap", score: 7, reason: "จัดอบรมได้ แต่อาจไม่ใช่ Strategic HRD"},
                 {name: "Leadership", score: 8, reason: "คุมทีมงานหลายส่วน"},
                 {name: "Tech Adoption", score: 9, reason: "พื้นฐานคอมฯ แน่น/Fingerprint"},
-                {name: "English Skill", score: 5, reason: "CV ระบุพอใช้"},
+                {name: "English (HR Doc)", score: 5, reason: "ข้อจำกัดในการศึกษา HR สมัยใหม่"},
                 {name: "Succession Plan", score: 6, reason: "ยังไม่เห็นผลงานชัดเจน"},
                 {name: "Innovation", score: 7, reason: "ปรับปรุงระบบได้"},
                 {name: "Adaptability", score: 8, reason: "ปรับตัวเข้ากับโรงงานได้ดี"}
