@@ -309,25 +309,31 @@
 
                         {/* Combo Box (Dropdown) logic */}
                         {hasOptions && (
-                        <div className="relative mb-3 group/select">
+                        <div className="mb-3 group/select">
+                            {/* Header Section */}
                             <div className="flex justify-between items-center mb-1.5 px-1">
                                 <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Available Options</span>
                                 <span className="text-[10px] font-bold text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded-md border border-indigo-500/20">
                                     {app.options.length}
                                 </span>
                             </div>
-                            <select 
-                            onChange={(e) => setSelectedUrl(e.target.value)}
-                            className="w-full appearance-none bg-slate-900/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all cursor-pointer hover:bg-slate-800/50"
-                            >
-                            {app.options.map((opt, idx) => (
-                                <option key={idx} value={opt.url} className="bg-slate-900 text-white">
-                                {opt.label}
-                                </option>
-                            ))}
-                            </select>
-                            <div className="absolute right-3 top-[calc(50%+10px)] -translate-y-1/2 pointer-events-none text-slate-400">
-                            <ChevronDown size={16} />
+
+                            {/* Select Box Wrapper - Separated for correct icon positioning */}
+                            <div className="relative">
+                                <select 
+                                onChange={(e) => setSelectedUrl(e.target.value)}
+                                className="w-full appearance-none bg-slate-900/50 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all cursor-pointer hover:bg-slate-800/50"
+                                >
+                                {app.options.map((opt, idx) => (
+                                    <option key={idx} value={opt.url} className="bg-slate-900 text-white">
+                                    {opt.label}
+                                    </option>
+                                ))}
+                                </select>
+                                {/* Icon is now centered relative to the select box only */}
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                                <ChevronDown size={16} />
+                                </div>
                             </div>
                         </div>
                         )}
