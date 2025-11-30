@@ -15,27 +15,13 @@
     <!-- Babel for JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <!-- Custom Tailwind Config -->
+    <!-- Basic Font Config -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-out forwards',
-                        'slide-up': 'slideUp 0.5s ease-out forwards',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
                     }
                 }
             }
@@ -77,7 +63,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+        const { useState, useEffect } = React;
 
         // --- ICONS ---
         const IconWrapper = ({ children, size = 24, className = "" }) => (
@@ -165,26 +151,22 @@
         // --- COMPONENTS ---
 
         const NavItem = ({ icon, label, active }) => (
-            <button className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${
+            <button className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg group ${
                 active 
                 ? 'bg-slate-800 text-white border-l-4 border-indigo-500' 
                 : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
             }`}>
-                <div className={`transition-transform duration-200 ${active ? 'text-indigo-400' : 'group-hover:text-slate-200'}`}>
+                <div className={`${active ? 'text-indigo-400' : 'group-hover:text-slate-200'}`}>
                     {icon}
                 </div>
                 <span className={`font-medium text-sm ${active ? 'font-semibold' : ''}`}>{label}</span>
             </button>
         );
 
-        const GlassStatCard = ({ title, value, trend, positive, icon, color, delay }) => {
-            // Using a separate style object to be safe for GitHub Pages (avoid double curly braces)
-            const style = { animationDelay: `${delay}ms` };
-            
+        const GlassStatCard = ({ title, value, trend, positive, icon, color }) => {
             return (
                 <div 
-                    className="relative overflow-hidden bg-slate-800/40 border border-slate-700/50 rounded-xl p-6 hover:bg-slate-800/60 transition-all duration-300 animate-slide-up"
-                    style={style}
+                    className="bg-slate-800/40 border border-slate-700/50 rounded-xl p-6 hover:bg-slate-800/60 transition-colors"
                 >
                     <div className="flex justify-between items-start mb-4">
                         <div className={`p-2 rounded-lg bg-slate-900/50 border border-slate-700/50 ${color}`}>
@@ -204,7 +186,7 @@
             );
         };
 
-        const SpotlightCard = ({ app, index, onDelete }) => {
+        const SpotlightCard = ({ app, onDelete }) => {
             const [selectedUrl, setSelectedUrl] = useState(app.options && app.options.length > 0 ? app.options[0].url : app.url);
             const hasOptions = app.options && app.options.length > 0;
 
@@ -222,23 +204,17 @@
                 }
             };
 
-            // Safe style object
-            const style = { animationDelay: `${index * 50}ms` };
-
             return (
-                <div
-                    style={style}
-                    className="flex flex-col h-full bg-slate-800/40 border border-slate-700/50 rounded-xl overflow-hidden hover:border-slate-600 transition-all duration-300 animate-slide-up hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20"
-                >
-                    {app.badge && (
-                        <div className="absolute top-3 right-3">
-                            <span className="bg-indigo-500/20 text-indigo-300 text-[10px] font-bold px-2 py-1 rounded-full border border-indigo-500/30 uppercase tracking-wider">
-                                {app.badge}
-                            </span>
-                        </div>
-                    )}
-                    
-                    <div className="p-6 flex-1 flex flex-col">
+                <div className="flex flex-col h-full bg-slate-800/40 border border-slate-700/50 rounded-xl overflow-hidden hover:border-slate-600 hover:shadow-lg transition-all">
+                    <div className="p-6 flex-1 flex flex-col relative">
+                        {app.badge && (
+                            <div className="absolute top-3 right-3">
+                                <span className="bg-indigo-500/20 text-indigo-300 text-[10px] font-bold px-2 py-1 rounded-full border border-indigo-500/30 uppercase tracking-wider">
+                                    {app.badge}
+                                </span>
+                            </div>
+                        )}
+
                         <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${app.color} flex items-center justify-center shadow-lg mb-5`}>
                             {getIcon(app.icon)}
                         </div>
@@ -267,7 +243,7 @@
                                     <div className="relative">
                                         <select 
                                             onChange={(e) => setSelectedUrl(e.target.value)}
-                                            className="w-full appearance-none bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer"
+                                            className="w-full appearance-none bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 cursor-pointer"
                                         >
                                             {app.options.map((opt, idx) => (
                                                 <option key={idx} value={opt.url}>
@@ -313,11 +289,11 @@
             };
 
             return (
-                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
                     <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md shadow-2xl relative overflow-hidden">
                         <div className="flex justify-between items-center p-5 border-b border-slate-800">
                             <h3 className="text-lg font-bold text-white">Add New App</h3>
-                            <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
+                            <button onClick={onClose} className="text-slate-400 hover:text-white">
                                 <X size={20} />
                             </button>
                         </div>
@@ -328,7 +304,7 @@
                                 <input 
                                     required
                                     type="text" 
-                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 focus:border-indigo-500 focus:outline-none transition-colors text-white placeholder-slate-500 text-sm"
+                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 focus:border-indigo-500 focus:outline-none text-white placeholder-slate-500 text-sm"
                                     placeholder="e.g. Marketing Dashboard"
                                     value={formData.title}
                                     onChange={e => setFormData({...formData, title: e.target.value})}
@@ -338,7 +314,7 @@
                             <div>
                                 <label className="block text-xs font-bold text-slate-400 uppercase mb-1.5">Description</label>
                                 <textarea 
-                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 focus:border-indigo-500 focus:outline-none transition-colors h-20 resize-none text-white placeholder-slate-500 text-sm"
+                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 focus:border-indigo-500 focus:outline-none h-20 resize-none text-white placeholder-slate-500 text-sm"
                                     placeholder="Brief description..."
                                     value={formData.description}
                                     onChange={e => setFormData({...formData, description: e.target.value})}
@@ -379,7 +355,7 @@
                                 <input 
                                     required
                                     type="url" 
-                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 focus:border-indigo-500 focus:outline-none transition-colors text-white placeholder-slate-500 text-sm"
+                                    className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 focus:border-indigo-500 focus:outline-none text-white placeholder-slate-500 text-sm"
                                     placeholder="https://"
                                     value={formData.url}
                                     onChange={e => setFormData({...formData, url: e.target.value})}
@@ -390,13 +366,13 @@
                                 <button 
                                     type="button"
                                     onClick={onClose}
-                                    className="flex-1 px-4 py-2.5 rounded-lg border border-slate-700 hover:bg-slate-800 transition-colors text-slate-300 font-medium text-sm"
+                                    className="flex-1 px-4 py-2.5 rounded-lg border border-slate-700 hover:bg-slate-800 text-slate-300 font-medium text-sm"
                                 >
                                     Cancel
                                 </button>
                                 <button 
                                     type="submit"
-                                    className="flex-1 px-4 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 transition-colors text-white font-medium text-sm"
+                                    className="flex-1 px-4 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm"
                                 >
                                     Add App
                                 </button>
@@ -420,7 +396,7 @@
 
             useEffect(() => {
                 setMounted(true);
-                const savedApps = localStorage.getItem('dss-portal-v11-clean'); // Updated version
+                const savedApps = localStorage.getItem('dss-portal-v11-clean'); 
                 if (savedApps) {
                     setApps(JSON.parse(savedApps));
                 } else {
@@ -536,10 +512,10 @@
 
                                 {/* Stats */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
-                                    <GlassStatCard title="Active Campaigns" value="1" trend="+100%" positive={true} icon={<Briefcase size={20} />} color="text-purple-400" delay={0} />
-                                    <GlassStatCard title="Data Queries" value="1,240" trend="+15%" positive={true} icon={<Code size={20} />} color="text-blue-400" delay={100} />
-                                    <GlassStatCard title="Design Tasks" value="5" trend="-1" positive={false} icon={<Palette size={20} />} color="text-pink-400" delay={200} />
-                                    <GlassStatCard title="Server Status" value="99.9%" trend="Optimal" positive={true} icon={<Globe size={20} />} color="text-emerald-400" delay={300} />
+                                    <GlassStatCard title="Active Campaigns" value="1" trend="+100%" positive={true} icon={<Briefcase size={20} />} color="text-purple-400" />
+                                    <GlassStatCard title="Data Queries" value="1,240" trend="+15%" positive={true} icon={<Code size={20} />} color="text-blue-400" />
+                                    <GlassStatCard title="Design Tasks" value="5" trend="-1" positive={false} icon={<Palette size={20} />} color="text-pink-400" />
+                                    <GlassStatCard title="Server Status" value="99.9%" trend="Optimal" positive={true} icon={<Globe size={20} />} color="text-emerald-400" />
                                 </div>
 
                                 {/* Filters */}
