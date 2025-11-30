@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSL Foods x BanpuNext - Solar Rooftop Performance Analysis</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <!-- Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #f3f4f6; }
+        .gradient-header {
+            background: linear-gradient(135deg, #005f56 0%, #00b09b 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s;
+        }
+        .card-shadow:hover {
+            transform: translateY(-2px);
+        }
+        .tab-btn {
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        .tab-btn.active {
+            color: #005f56;
+            border-bottom: 3px solid #005f56;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <div class="gradient-header text-white pb-24 pt-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex justify-between items-start md:items-center flex-col md:flex-row mb-6">
+                <div>
+                    <h2 class="text-lg opacity-90 font-light tracking-wide">Solar Rooftop Performance Report</h2>
+                    <h1 class="text-3xl md:text-4xl font-bold mt-1">โครงการ Solar Rooftop เฟส 8.1</h1>
+                    <p class="mt-2 text-sm opacity-80"><i class="fa-regular fa-calendar mr-2"></i>ข้อมูล: เมษายน 2024 - พฤศจิกายน 2025</p>
+                </div>
+                <div class="mt-4 md:mt-0 bg-white/20 backdrop-blur-sm rounded-lg p-4 text-right">
+                    <p class="text-xs font-light mb-1">Powered by</p>
+                    <div class="text-3xl font-bold tracking-wider leading-none">NSL FOODS</div>
+                    <div class="text-sm font-medium mt-1 opacity-90">X BANPU<span class="text-green-300">NEXT</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-16">
+        <div class="bg-white rounded-t-xl shadow-sm border-b border-gray-200 flex overflow-x-auto">
+            <button onclick="switchTab('finance')" id="tab-finance" class="tab-btn active flex-1 py-4 text-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                <i class="fa-solid fa-coins mr-2"></i> Financial Report (ด้านการเงิน)
+            </button>
+            <button onclick="switchTab('sustain')" id="tab-sustain" class="tab-btn flex-1 py-4 text-center text-gray-500 hover:text-gray-700 focus:outline-none">
+                <i class="fa-solid fa-leaf mr-2"></i> Sustainability Report (ด้านสิ่งแวดล้อม)
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12">
+        
+        <!-- PAGE 1: FINANCIAL REPORT -->
+        <div id="page-finance" class="space-y-6 animate-fade-in">
+            <!-- KPIs -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Total Saving -->
+                <div class="bg-white rounded-xl card-shadow p-6 border-l-4 border-green-500">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-gray-500 text-sm font-medium">ผลประหยัดสะสม (Total Saving)</h3>
+                        <div class="p-2 bg-green-100 rounded-full text-green-600"><i class="fa-solid fa-sack-dollar"></i></div>
+                    </div>
+                    <div class="flex items-baseline">
+                        <span class="text-3xl font-bold text-gray-800" id="fin-totalSaving">0</span>
+                        <span class="ml-2 text-sm text-gray-500">บาท</span>
+                    </div>
+                    <p class="mt-1 text-xs text-green-600"><i class="fa-solid fa-arrow-trend-up"></i> รายได้ที่ประหยัดได้จริง</p>
+                </div>
+
+                <!-- 2025 Saving -->
+                <div class="bg-white rounded-xl card-shadow p-6 border-l-4 border-emerald-400">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-gray-500 text-sm font-medium">ผลประหยัดปี 2025 (YTD)</h3>
+                        <div class="p-2 bg-emerald-100 rounded-full text-emerald-600"><i class="fa-solid fa-calendar-check"></i></div>
+                    </div>
+                    <div class="flex items-baseline">
+                        <span class="text-3xl font-bold text-gray-800" id="fin-2025Saving">0</span>
+                        <span class="ml-2 text-sm text-gray-500">บาท</span>
+                    </div>
+                    <p class="mt-1 text-xs text-gray-500">ม.ค. - พ.ย. 2025</p>
+                </div>
+
+                <!-- Avg Saving/Month -->
+                <div class="bg-white rounded-xl card-shadow p-6 border-l-4 border-blue-400">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-gray-500 text-sm font-medium">ประหยัดเฉลี่ยต่อเดือน (2025)</h3>
+                        <div class="p-2 bg-blue-100 rounded-full text-blue-600"><i class="fa-solid fa-calculator"></i></div>
+                    </div>
+                    <div class="flex items-baseline">
+                        <span class="text-3xl font-bold text-gray-800" id="fin-avgSaving">0</span>
+                        <span class="ml-2 text-sm text-gray-500">บาท/เดือน</span>
+                    </div>
+                    <p class="mt-1 text-xs text-gray-500">คิดจาก 11 เดือนล่าสุด</p>
+                </div>
+            </div>
+
+            <!-- Quarterly Analysis (QoQ) - Saving -->
+            <div class="bg-white rounded-xl card-shadow p-6">
+                <div class="flex flex-col md:flex-row justify-between items-start mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800">
+                            <i class="fa-solid fa-chart-column text-green-600 mr-2"></i>
+                            วิเคราะห์ผลประหยัดรายไตรมาส (Quarterly Saving Analysis)
+                        </h3>
+                        <p class="text-sm text-gray-500">เปรียบเทียบผลประหยัดค่าไฟฟ้า QoQ (ปี 2024 vs 2025)</p>
+                    </div>
+                </div>
+                <div class="h-72 w-full">
+                    <canvas id="savingQoQChart"></canvas>
+                </div>
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-4 text-center text-sm">
+                    <div class="p-2 bg-gray-50 rounded">
+                        <div class="text-gray-500">Q1 Growth</div>
+                        <div class="font-bold text-gray-400">N/A (No 2024 Data)</div>
+                    </div>
+                    <div class="p-2 bg-gray-50 rounded">
+                        <div class="text-gray-500">Q2 Growth</div>
+                        <div class="font-bold text-red-500" id="s-q2-growth">-%</div>
+                    </div>
+                    <div class="p-2 bg-gray-50 rounded">
+                        <div class="text-gray-500">Q3 Growth</div>
+                        <div class="font-bold text-green-500" id="s-q3-growth">+%</div>
+                    </div>
+                    <div class="p-2 bg-gray-50 rounded">
+                        <div class="text-gray-500">Q4 (Partial)</div>
+                        <div class="font-bold text-gray-600">In Progress</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Trend Chart -->
+            <div class="bg-white rounded-xl card-shadow p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">แนวโน้มผลประหยัดรายเดือน (Monthly Saving Trend)</h3>
+                <div class="h-64">
+                    <canvas id="savingTrendChart"></canvas>
+                </div>
+            </div>
+            
+             <!-- Peak Analysis -->
+             <div class="bg-white rounded-xl card-shadow p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4"><i class="fa-regular fa-clock text-blue-500 mr-2"></i>ประสิทธิภาพการผลิต (On-Peak Analysis 2025)</h3>
+                <p class="text-sm text-gray-500 mb-4">ปริมาณไฟฟ้า Solar ที่ผลิตได้ในช่วง On-Peak (ค่าไฟแพง) vs Off-Peak</p>
+                <div class="h-64">
+                    <canvas id="peakChart"></canvas>
+                </div>
+                <div class="mt-4 text-sm text-gray-600 bg-blue-50 p-3 rounded-lg border border-blue-100">
+                    <i class="fa-solid fa-circle-info text-blue-500 mr-1"></i> 
+                    <b>Insight:</b> ระบบ Solar สามารถผลิตไฟฟ้าเพื่อทดแทนช่วง <b>On-Peak</b> ได้อย่างมีประสิทธิภาพสูงสุด ช่วยลดค่า Demand Charge และค่าไฟหน่วยแพงได้มาก
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 2: SUSTAINABILITY REPORT -->
+        <div id="page-sustain" class="hidden space-y-6 animate-fade-in">
+            
+            <!-- Hero ESG Card -->
+            <div class="bg-gradient-to-r from-green-700 to-teal-600 rounded-2xl shadow-lg p-8 text-white flex flex-col md:flex-row items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold mb-2">Environmental Impact Summary</h2>
+                    <p class="opacity-90 mb-6">ความสำเร็จในการลดผลกระทบต่อสิ่งแวดล้อมสะสมของโครงการ</p>
+                    <div class="flex gap-8">
+                        <div>
+                            <div class="text-4xl font-bold" id="sus-totalCo2">0</div>
+                            <div class="text-sm opacity-80">Tons CO2 Reduced</div>
+                        </div>
+                        <div class="border-l border-white/30 pl-8">
+                            <div class="text-4xl font-bold" id="sus-trees">0</div>
+                            <div class="text-sm opacity-80">Equivalent Trees Planted</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 md:mt-0 text-center bg-white/10 p-4 rounded-xl backdrop-blur-sm">
+                    <i class="fa-solid fa-earth-asia text-6xl opacity-90"></i>
+                    <div class="mt-2 font-medium">Cleaner Future</div>
+                </div>
+            </div>
+
+            <!-- Quarterly Analysis (QoQ) - CO2 -->
+            <div class="bg-white rounded-xl card-shadow p-6">
+                <div class="flex flex-col md:flex-row justify-between items-start mb-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-gray-800">
+                            <i class="fa-solid fa-leaf text-green-500 mr-2"></i>
+                            การลดคาร์บอนรายไตรมาส (Quarterly CO2 Reduction Analysis)
+                        </h3>
+                        <p class="text-sm text-gray-500">เปรียบเทียบปริมาณ CO2 ที่ลดได้ QoQ (ตัน)</p>
+                    </div>
+                </div>
+                <div class="h-72 w-full">
+                    <canvas id="co2QoQChart"></canvas>
+                </div>
+                 <div class="mt-4 grid grid-cols-1 md:grid-cols-4 gap-4 text-center text-sm">
+                    <div class="p-2 bg-green-50 rounded border border-green-100">
+                        <div class="text-green-800 font-bold">Q1 Overview</div>
+                        <div class="text-xs text-gray-600">High efficiency period due to clear skies.</div>
+                    </div>
+                    <div class="p-2 bg-green-50 rounded border border-green-100">
+                        <div class="text-green-800 font-bold">Q2 Overview</div>
+                        <div class="text-xs text-gray-600">Peak sunlight hours, consistent reduction.</div>
+                    </div>
+                     <div class="p-2 bg-green-50 rounded border border-green-100">
+                        <div class="text-green-800 font-bold">Q3 Overview</div>
+                        <div class="text-xs text-gray-600">Rainy season impact managed well.</div>
+                    </div>
+                     <div class="p-2 bg-green-50 rounded border border-green-100">
+                        <div class="text-green-800 font-bold">Q4 Trend</div>
+                        <div class="text-xs text-gray-600">Strong finish expected for the year.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Energy Mix & Self Consumption -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-xl card-shadow p-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">สัดส่วนพลังงานสะอาด (Green Energy Mix 2025)</h3>
+                    <div class="h-64">
+                        <canvas id="sus-energyMixChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-center text-gray-500">สัดส่วนการใช้พลังงานแสงอาทิตย์เทียบกับพลังงานทั้งหมด</p>
+                </div>
+
+                <div class="bg-white rounded-xl card-shadow p-6 flex flex-col justify-center items-center text-center">
+                    <div class="w-full mb-4 text-left">
+                        <h3 class="text-lg font-bold text-gray-800">Sustainability Target</h3>
+                    </div>
+                    <div class="relative w-40 h-40">
+                         <svg class="w-full h-full transform -rotate-90">
+                            <circle cx="80" cy="80" r="70" stroke="#e5e7eb" stroke-width="12" fill="transparent" />
+                            <circle cx="80" cy="80" r="70" stroke="#10b981" stroke-width="12" fill="transparent"
+                                stroke-dasharray="440" stroke-dashoffset="396" /> <!-- Approx 10% -->
+                        </svg>
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                            <span class="text-3xl font-bold text-gray-800">~10.5%</span>
+                            <span class="block text-xs text-gray-500">Green Energy</span>
+                        </div>
+                    </div>
+                    <p class="mt-6 text-sm text-gray-600 px-4">
+                        โครงการเฟส 8.1 ช่วยให้ NSL Foods ใช้พลังงานสะอาดเฉลี่ยประมาณ 10.5% ของการใช้ไฟฟ้าทั้งหมดในปี 2025
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Data Table Toggle (Shared) -->
+        <div class="text-center mt-12 mb-8">
+            <button onclick="toggleTable()" class="text-gray-500 hover:text-gray-800 underline text-sm">
+                ดูตารางข้อมูลดิบ (Raw Data Summary)
+            </button>
+        </div>
+
+        <div id="dataTable" class="hidden mt-6 bg-white rounded-xl card-shadow overflow-hidden mb-8">
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-left text-gray-500">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3">Year - Month</th>
+                            <th class="px-6 py-3">Saving (THB)</th>
+                            <th class="px-6 py-3">CO2 Reduction (kg)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer Section (Credits & Disclaimer) -->
+        <div class="border-t border-gray-200 pt-8 pb-4 text-center">
+            <div class="flex flex-col items-center justify-center space-y-2">
+                <p class="text-xs text-gray-400 font-light tracking-wide uppercase">
+                    <i class="fa-solid fa-shield-halved mr-1"></i> 
+                    CONFIDENTIAL: INTERNAL USE ONLY
+                </p>
+                <p class="text-sm text-red-400 font-medium">
+                    เอกสารนี้เป็นข้อมูลภายใน ห้ามเผยแพร่หรือส่งต่อบุคคลภายนอกโดยไม่ได้รับอนุญาต
+                </p>
+                <div class="mt-4 pt-4 border-t border-gray-100 w-48"></div>
+                <p class="text-xs text-gray-400">
+                    Developed by <span class="font-bold text-gray-600">DSS NSL</span>
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- TAB SWITCHING LOGIC ---
+        function switchTab(tabName) {
+            // Hide all pages
+            document.getElementById('page-finance').classList.add('hidden');
+            document.getElementById('page-sustain').classList.add('hidden');
+            
+            // Reset tab styles
+            document.getElementById('tab-finance').classList.remove('active', 'text-gray-800');
+            document.getElementById('tab-sustain').classList.remove('active', 'text-gray-800');
+            
+            // Show selected page
+            document.getElementById('page-' + tabName).classList.remove('hidden');
+            document.getElementById('tab-' + tabName).classList.add('active', 'text-gray-800');
+        }
+
+        // --- DATA PREPARATION ---
+        const data2024 = {
+            months: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            saving: [219791.84, 191604.53, 197604.53, 174322.8, 196427.8, 175313.26, 184428.16, 185775.96, 176801.71],
+            co2: [86937.75, 76172.84, 80434.20, 68515.00, 78950.00, 70349.00, 73391.00, 74233.00, 71595.00] 
+        };
+
+        const data2025 = {
+            months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov'],
+            energy: [125208.5, 101543.5, 123879.38, 116289.63, 106108, 130676.13, 121056.88, 133371, 111745.75, 108645.75, 94114],
+            saving: [190694.32, 152041.04, 184014.12, 173514.00, 158200.00, 195400.00, 181500.00, 199800.00, 167500.00, 162900.00, 141100.00], 
+            onPeak: [82170.13, 62291.13, 73575.75, 66763.25, 60893.5, 76421.63, 66440.25, 76767.25, 72917.25, 65352, 56838.75],
+            offPeak: [43038.38, 39252.38, 50303.63, 49526.38, 45214.5, 54254.5, 54616.63, 56603.75, 38828.5, 43293.75, 37275.25],
+            totalConsumption: [1090752, 1090204, 1263805, 1296631, 1263019, 1245161, 1289906, 1341510, 1228601, 1217755, 1068035]
+        };
+
+        const co2Factor = 0.5986; 
+        
+        // Helper Sum
+        const sum = arr => arr.reduce((a, b) => a + b, 0);
+
+        // --- CALCS: FINANCIAL ---
+        const totalSaving2024 = sum(data2024.saving);
+        const totalSaving2025 = sum(data2025.saving);
+        const grandTotalSaving = totalSaving2024 + totalSaving2025;
+        const avgSaving2025 = totalSaving2025 / data2025.months.length;
+
+        // --- CALCS: SUSTAINABILITY ---
+        const totalCo2_2024_kg = sum(data2024.co2);
+        const totalCo2_2025_kg = sum(data2025.energy) * co2Factor;
+        const grandTotalCo2_Tons = (totalCo2_2024_kg + totalCo2_2025_kg) / 1000;
+        const trees = (grandTotalCo2_Tons * 1000) / 12; // 12kg per tree per year
+
+        // --- CALCS: SEASONAL / QUARTERLY (QoQ) ---
+        // Saving QoQ
+        const savingQ2_24 = sum(data2024.saving.slice(0, 3)); // Apr-Jun
+        const savingQ3_24 = sum(data2024.saving.slice(3, 6)); // Jul-Sep
+        const savingQ4_24 = sum(data2024.saving.slice(6, 9)); // Oct-Dec
+        
+        const savingQ1_25 = sum(data2025.saving.slice(0, 3)); // Jan-Mar
+        const savingQ2_25 = sum(data2025.saving.slice(3, 6)); // Apr-Jun
+        const savingQ3_25 = sum(data2025.saving.slice(6, 9)); // Jul-Sep
+        const savingQ4_25 = sum(data2025.saving.slice(9, 11)); // Oct-Nov
+
+        // CO2 QoQ
+        const co2Q2_24 = sum(data2024.co2.slice(0, 3)) / 1000;
+        const co2Q3_24 = sum(data2024.co2.slice(3, 6)) / 1000;
+        const co2Q4_24 = sum(data2024.co2.slice(6, 9)) / 1000;
+
+        const co2Q1_25 = (sum(data2025.energy.slice(0, 3)) * co2Factor) / 1000;
+        const co2Q2_25 = (sum(data2025.energy.slice(3, 6)) * co2Factor) / 1000;
+        const co2Q3_25 = (sum(data2025.energy.slice(6, 9)) * co2Factor) / 1000;
+        const co2Q4_25 = (sum(data2025.energy.slice(9, 11)) * co2Factor) / 1000;
+
+        // Growth Calcs
+        const growthQ2 = ((savingQ2_25 - savingQ2_24) / savingQ2_24) * 100;
+        const growthQ3 = ((savingQ3_25 - savingQ3_24) / savingQ3_24) * 100;
+
+
+        // --- UI UPDATES ---
+        document.getElementById('fin-totalSaving').innerText = grandTotalSaving.toLocaleString('th-TH', {maximumFractionDigits: 0});
+        document.getElementById('fin-2025Saving').innerText = totalSaving2025.toLocaleString('th-TH', {maximumFractionDigits: 0});
+        document.getElementById('fin-avgSaving').innerText = avgSaving2025.toLocaleString('th-TH', {maximumFractionDigits: 0});
+        
+        document.getElementById('sus-totalCo2').innerText = grandTotalCo2_Tons.toLocaleString('th-TH', {maximumFractionDigits: 2});
+        document.getElementById('sus-trees').innerText = trees.toLocaleString('th-TH', {maximumFractionDigits: 0});
+
+        // Set Growth Colors
+        const elQ2 = document.getElementById('s-q2-growth');
+        elQ2.innerText = growthQ2.toFixed(1) + '%';
+        elQ2.className = growthQ2 >= 0 ? 'font-bold text-green-500' : 'font-bold text-red-500';
+
+        const elQ3 = document.getElementById('s-q3-growth');
+        elQ3.innerText = (growthQ3 > 0 ? '+' : '') + growthQ3.toFixed(1) + '%';
+        elQ3.className = growthQ3 >= 0 ? 'font-bold text-green-500' : 'font-bold text-red-500';
+
+
+        // --- CHARTS ---
+        Chart.defaults.font.family = "'Prompt', sans-serif";
+
+        // 1. Quarterly Saving Chart (Bar Grouped)
+        new Chart(document.getElementById('savingQoQChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                datasets: [
+                    {
+                        label: '2024 (THB)',
+                        data: [0, savingQ2_24, savingQ3_24, savingQ4_24],
+                        backgroundColor: '#cbd5e1',
+                        borderRadius: 4
+                    },
+                    {
+                        label: '2025 (THB)',
+                        data: [savingQ1_25, savingQ2_25, savingQ3_25, savingQ4_25],
+                        backgroundColor: '#10b981',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            footer: function(tooltipItems) {
+                                if(tooltipItems[0].label === 'Q1' && tooltipItems[0].datasetIndex === 0) return 'No Data';
+                                if(tooltipItems[0].label === 'Q4' && tooltipItems[0].datasetIndex === 1) return 'Partial Data (Oct-Nov)';
+                            }
+                        }
+                    }
+                },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // 2. Saving Trend (Line)
+        const dataset2024_trend = [null, null, null, ...data2024.saving];
+        new Chart(document.getElementById('savingTrendChart'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [
+                    {
+                        label: '2024',
+                        data: dataset2024_trend,
+                        borderColor: '#9ca3af',
+                        backgroundColor: 'rgba(156, 163, 175, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: '2025',
+                        data: data2025.saving,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // 3. Peak Analysis (Bar)
+        new Chart(document.getElementById('peakChart'), {
+            type: 'bar',
+            data: {
+                labels: data2025.months,
+                datasets: [
+                    {
+                        label: 'On-Peak (kWh)',
+                        data: data2025.onPeak,
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Off-Peak (kWh)',
+                        data: data2025.offPeak,
+                        backgroundColor: '#93c5fd',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // 4. Quarterly CO2 Chart (Bar Grouped)
+        new Chart(document.getElementById('co2QoQChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                datasets: [
+                    {
+                        label: '2024 (Tons)',
+                        data: [0, co2Q2_24, co2Q3_24, co2Q4_24],
+                        backgroundColor: '#94a3b8',
+                        borderRadius: 4
+                    },
+                    {
+                        label: '2025 (Tons)',
+                        data: [co2Q1_25, co2Q2_25, co2Q3_25, co2Q4_25],
+                        backgroundColor: '#059669', // Darker Green for Sustain
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                         callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + ' Tons';
+                            }
+                        }
+                    }
+                },
+                scales: { y: { beginAtZero: true, title: {display:true, text: 'Tons CO2'} } }
+            }
+        });
+
+        // 5. Energy Mix (Sustainability Page)
+        new Chart(document.getElementById('sus-energyMixChart'), {
+            type: 'bar',
+            data: {
+                labels: data2025.months,
+                datasets: [
+                    {
+                        label: 'Solar (Clean Energy)',
+                        data: data2025.energy,
+                        backgroundColor: '#10b981', // Green
+                        stack: 'Stack 0',
+                    },
+                    {
+                        label: 'Grid (Fossil/Mixed)',
+                        data: data2025.totalConsumption.map((total, i) => total - data2025.energy[i]),
+                        backgroundColor: '#e5e7eb', // Gray
+                        stack: 'Stack 0',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
+            }
+        });
+
+        // --- TABLE ---
+        const tableBody = document.getElementById('tableBody');
+        const addRow = (date, sav, co2) => {
+            const row = `
+                <tr class="bg-white border-b hover:bg-gray-50">
+                    <td class="px-6 py-4 font-medium text-gray-900">${date}</td>
+                    <td class="px-6 py-4 text-green-600 font-bold">${sav.toLocaleString()}</td>
+                    <td class="px-6 py-4 text-blue-600">${co2.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</td>
+                </tr>
+            `;
+            tableBody.insertAdjacentHTML('beforeend', row);
+        };
+        data2025.months.forEach((m, i) => {
+            addRow(`2025 - ${m}`, data2025.saving[i], data2025.energy[i] * co2Factor);
+        });
+        data2024.months.forEach((m, i) => {
+            addRow(`2024 - ${m}`, data2024.saving[i], data2024.co2[i]);
+        });
+        function toggleTable() {
+            document.getElementById('dataTable').classList.toggle('hidden');
+        }
+
+    </script>
+</body>
+</html>
