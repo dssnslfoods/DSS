@@ -50,7 +50,6 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // Removed unused useRef
         const { useState, useEffect } = React;
 
         // --- ICONS ---
@@ -368,6 +367,30 @@
                         </form>
                     </div>
                 </div>
+            );
+        };
+
+        // NEW: Typing Effect Component
+        const TypingText = ({ text }) => {
+            const [displayText, setDisplayText] = useState('');
+            
+            useEffect(() => {
+                let index = 0;
+                const timer = setInterval(() => {
+                    if (index <= text.length) {
+                        setDisplayText(text.slice(0, index));
+                        index++;
+                    } else {
+                        clearInterval(timer);
+                    }
+                }, 50); // Speed of typing
+                return () => clearInterval(timer);
+            }, [text]);
+
+            return (
+                <span className="inline-block border-r-4 border-purple-400 pr-1">
+                    {displayText}
+                </span>
             );
         };
 
