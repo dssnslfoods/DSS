@@ -107,7 +107,7 @@
         const Code = (props) => <IconWrapper {...props}><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></IconWrapper>;
         const Globe = (props) => <IconWrapper {...props}><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10 15.3 15.3 0 0 1 4 10z"/></IconWrapper>;
         const Menu = (props) => <IconWrapper {...props}><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></IconWrapper>;
-        const Sparkles = (props) => <IconWrapper {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 5H5"/><path d="M18 19v4"/><path d="M22 21h-4"/></IconWrapper>;
+        const Sparkles = (props) => <IconWrapper {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M9 5H5"/><path d="M18 19v4"/><path d="M22 21h-4"/></IconWrapper>;
         const ChevronDown = (props) => <IconWrapper {...props}><path d="m6 9 6 6 6-6"/></IconWrapper>;
 
         // --- 1. Constants & Data ---
@@ -144,7 +144,7 @@
             id: 1,
             title: "Restaurant Finder",
             description: "AI-powered tool to discover and categorize restaurant data.",
-            category: "Marketing",
+            category: "Others",
             url: "https://dssnslfoods.github.io/DSS/restaurant.html",
             icon: "search",
             color: "from-pink-500 to-rose-500"
@@ -153,7 +153,7 @@
             id: 2,
             title: "Meeting Summary",
             description: "Automated meeting notes and corporate assistance tool.",
-            category: "Corporate",
+            category: "Others",
             url: "https://dss-meeting-assistance-625395946978.us-west1.run.app/",
             icon: "briefcase",
             color: "from-blue-500 to-cyan-500"
@@ -162,14 +162,14 @@
             id: 3,
             title: "Financial Advisor",
             description: "Interactive financial reporting and advisory dashboard.",
-            category: "IR Project",
+            category: "Others",
             url: "https://studio--studio-3888922975-640fd.us-central1.hosted.app/?reportId=dda7e54e-e973-4a14-81fe-08f58843cd86",
             icon: "finance",
             color: "from-emerald-500 to-teal-500"
           }
         ];
 
-        const CATEGORIES = ["All", "Analytics", "Marketing", "HR", "Design", "Development", "Corporate", "IR Project", "Other"];
+        const CATEGORIES = ["All", "Analytics", "Marketing", "HR", "Design", "Development", "Corporate", "IR Project", "Others"];
 
         // --- 2. Subcomponents ---
 
@@ -520,7 +520,7 @@
                                 </button>
                             </div>
                             <nav className="space-y-6 text-lg">
-                                {['Dashboard', 'Analytics', 'Profile'].map((item) => (
+                                {['Dashboard'].map((item) => (
                                     <button key={item} className="block w-full text-left py-2 border-b border-white/10 hover:text-purple-400 transition-colors">
                                         {item}
                                     </button>
@@ -548,7 +548,6 @@
 
                         <nav className="flex-1 p-6 space-y-2">
                             <NavItem icon={<LayoutDashboard size={20} />} label="Dashboard" active />
-                            <NavItem icon={<PieChart size={20} />} label="Analytics Overview" />
                         </nav>
 
                         <div className="p-6">
