@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Analysis: Land Plot 10 for NSL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Updated Lucide CDN to a more reliable source -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+        }
+        .bg-gradient-brand {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+        /* Pulse Animation for Map Zone SVG */
+        @keyframes pulse-svg-border {
+            0% { stroke-opacity: 1; stroke-width: 3; }
+            50% { stroke-opacity: 0.6; stroke-width: 4; }
+            100% { stroke-opacity: 1; stroke-width: 3; }
+        }
+        .map-zone-svg-pulse {
+            animation: pulse-svg-border 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <!-- Navbar / Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-blue-900 text-white p-2 rounded">
+                    <i class="fas fa-building"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-slate-800">NSL Asset Acquisition</h1>
+                    <p class="text-xs text-slate-500">Prepared by DSS NSL</p>
+                </div>
+            </div>
+            <div class="text-right hidden sm:block">
+                <p class="text-sm font-semibold text-blue-900">เอกสารวิเคราะห์การลงทุน</p>
+                <p class="text-xs text-slate-500">Ref: Plot-10-SaphanChet</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 py-8 space-y-8">
+
+        <!-- Executive Summary & Price -->
+        <section class="grid md:grid-cols-2 gap-6">
+            <!-- Main Info Card -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
+                <div class="bg-gradient-brand p-6 text-white">
+                    <h2 class="text-2xl font-bold mb-1">แปลงที่ 10 : โซนสะพานเจษฯ</h2>
+                    <p class="opacity-90"><i class="fas fa-map-marker-alt mr-2"></i>ติดริมถนนใหญ่ (ใกล้ Lotus's Go Fresh)</p>
+                </div>
+                <div class="p-6">
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="p-4 bg-blue-50 rounded-xl">
+                            <p class="text-sm text-slate-500 mb-1">ขนาดที่ดิน (Land Size)</p>
+                            <p class="text-xl font-bold text-blue-900">3 ไร่ <span class="text-sm font-normal text-slate-600">(-20 ตร.ว.)</span></p>
+                            <p class="text-xs text-slate-500 mt-1">รวม 1,180 ตร.ว.</p>
+                        </div>
+                        <div class="p-4 bg-emerald-50 rounded-xl">
+                            <p class="text-sm text-slate-500 mb-1">ราคาต่อตารางวา</p>
+                            <p class="text-xl font-bold text-emerald-700">90,000</p>
+                            <p class="text-xs text-slate-500 mt-1">บาท (THB)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="border-t border-slate-100 pt-4">
+                        <p class="text-slate-500 text-sm mb-2">ราคารวมสุทธิ (Total Asking Price)</p>
+                        <div class="flex items-baseline gap-2">
+                            <h3 class="text-4xl font-bold text-blue-900">106,200,000</h3>
+                            <span class="text-lg text-slate-600">บาท (THB)</span>
+                        </div>
+                        <p class="text-xs text-red-500 mt-2">*คำนวณจาก 1,180 ตร.ว. x 90,000 บาท</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dimensions & Shape -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 border border-slate-100 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-lg text-slate-800 mb-4 flex items-center">
+                        <i data-lucide="maximize-2" class="mr-2 text-blue-600 w-6 h-6"></i> มิติที่ดิน (Dimensions)
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                            <span class="flex items-center"><i class="fas fa-arrows-alt-h w-6 text-slate-400"></i> หน้ากว้าง (ติดถนน)</span>
+                            <span class="font-bold">58 เมตร</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                            <span class="flex items-center"><i class="fas fa-arrow-left w-6 text-slate-400"></i> ลึก (ด้านซ้าย)</span>
+                            <span class="font-bold">80 เมตร</span>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                            <span class="flex items-center"><i class="fas fa-arrow-right w-6 text-slate-400"></i> ลึก (ด้านขวา)</span>
+                            <span class="font-bold">90 เมตร</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 p-4 bg-yellow-50 border border-yellow-100 rounded-lg">
+                    <h4 class="font-semibold text-yellow-800 mb-2"><i class="fas fa-lightbulb mr-1"></i> ข้อสังเกต</h4>
+                    <p class="text-sm text-yellow-900">รูปทรงที่ดินมีความลึกสองด้านไม่เท่ากัน (80m/90m) เป็นทรงสี่เหลี่ยมคางหมูเล็กน้อย ควรพิจารณาเรื่องการวางผังอาคาร (Setback) ตามกฎหมายควบคุมอาคารริมถนนสายหลัก</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location & Map Analysis -->
+        <section class="bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+                <h3 class="font-bold text-lg text-slate-800 flex items-center">
+                    <i class="fas fa-map-marked-alt mr-2 text-blue-600"></i> วิเคราะห์ทำเลที่ตั้ง (Location Analysis)
+                </h3>
+                <a href="https://www.google.com/maps/search/?api=1&query=13.8436667,100.4603333" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-semibold flex items-center">
+                    เปิดใน Google Maps <i class="fas fa-external-link-alt ml-1"></i>
+                </a>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-0">
+                <!-- Map Visual -->
+                <div class="md:col-span-2 bg-slate-200 min-h-[450px] relative group overflow-hidden">
+                     <!-- Interactive Google Map Embed -->
+                     <iframe 
+                        width="100%" 
+                        height="100%" 
+                        frameborder="0" 
+                        scrolling="no" 
+                        marginheight="0" 
+                        marginwidth="0" 
+                        src="https://maps.google.com/maps?q=13.843667,100.460333&hl=th&z=18&output=embed"
+                        class="absolute inset-0 w-full h-full"
+                        style="filter: saturate(1.2) contrast(1.1);"
+                     ></iframe>
+                     
+                     <!-- VISUAL ZONE FRAME OVERLAY (SVG Shape) -->
+                     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none flex items-center justify-center w-[180px] h-[200px]">
+                        <div class="relative w-full h-full backdrop-blur-[1px]">
+                            <svg viewBox="0 0 180 200" class="w-full h-full absolute inset-0 filter drop-shadow-lg">
+                                <polygon 
+                                    points="20,10 160,0 180,200 0,200"
+                                    class="stroke-red-500 fill-red-500/20 map-zone-svg-pulse"
+                                    stroke-width="3"
+                                    stroke-dasharray="8,4"
+                                    stroke-linejoin="round"
+                                ></polygon>
+                            </svg>
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-red-600 rounded-full animate-ping z-20"></div>
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-red-600 border-2 border-white rounded-full z-30 shadow-sm"></div>
+                            <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-red-600 text-white text-[11px] font-bold px-3 py-1 rounded-full shadow-md whitespace-nowrap z-40 border-2 border-white">
+                                พื้นที่เป้าหมาย (3 ไร่)
+                            </div>
+                             <div class="absolute top-1/2 -left-8 transform -translate-y-1/2 text-[10px] font-bold text-red-700 bg-white/90 px-1.5 py-0.5 rounded border border-red-200 rotate-[-90deg] origin-right shadow-sm">
+                                ~80 ม.
+                            </div>
+                             <div class="absolute top-1/2 -right-8 transform -translate-y-1/2 text-[10px] font-bold text-red-700 bg-white/90 px-1.5 py-0.5 rounded border border-red-200 rotate-[90deg] origin-left shadow-sm">
+                                ~90 ม.
+                            </div>
+                             <div class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 text-[10px] font-bold text-red-700 bg-white/90 px-1.5 py-0.5 rounded border border-red-200 shadow-sm">
+                                ~58 ม.
+                            </div>
+                        </div>
+                     </div>
+                     <div class="absolute bottom-4 right-4 bg-white/95 backdrop-blur-md px-4 py-2 rounded-lg shadow-lg text-xs font-semibold text-slate-700 pointer-events-none border border-slate-200 flex items-center">
+                        <i class="fas fa-satellite-dish text-blue-500 mr-2 animate-pulse"></i> พิกัด: 13°50'37.2"N 100°27'37.2"E
+                     </div>
+                </div>
+                
+                <!-- Location Details -->
+                <div class="p-6 bg-slate-50 flex flex-col justify-center">
+                    <h4 class="font-semibold mb-4 text-slate-700 text-lg">สภาพแวดล้อมโดยรอบ</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-start bg-white p-3 rounded-lg shadow-sm border border-slate-100">
+                            <span class="bg-green-100 text-green-700 p-1.5 rounded-full mr-3 shrink-0"><i class="fas fa-check"></i></span>
+                            <span><strong>ติดถนนใหญ่:</strong> ศักยภาพสูงสำหรับการทำ Showroom, อาคารสำนักงาน หรือ Community Mall</span>
+                        </li>
+                        <li class="flex items-start bg-white p-3 rounded-lg shadow-sm border border-slate-100">
+                            <span class="bg-blue-100 text-blue-700 p-1.5 rounded-full mr-3 shrink-0"><i class="fas fa-store"></i></span>
+                            <span><strong>ใกล้แหล่งชุมชน:</strong> อยู่ใกล้ Lotus's Go Fresh และ Pet Grooming Plus แสดงถึงกำลังซื้อในพื้นที่</span>
+                        </li>
+                        <li class="flex items-start bg-white p-3 rounded-lg shadow-sm border border-slate-100">
+                            <span class="bg-orange-100 text-orange-700 p-1.5 rounded-full mr-3 shrink-0"><i class="fas fa-road"></i></span>
+                            <span><strong>การเดินทาง:</strong> เชื่อมต่อถนนราชพฤกษ์ และสะพานเจษฎาบดินทร์ฯ สะดวกต่อการขนส่งโลจิสติกส์</span>
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-8 pt-6 border-t border-slate-200">
+                        <p class="text-xs text-slate-500 mb-2 uppercase tracking-wider font-semibold">ผู้ติดต่อ (Contact Person)</p>
+                        <div class="flex items-center gap-4 bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                            <div class="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center text-blue-700 text-xl">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <div>
+                                <p class="font-bold text-lg text-slate-800">คุณต้อย</p>
+                                <a href="tel:0897871188" class="text-blue-600 hover:text-blue-800 font-mono font-bold flex items-center">
+                                    <i class="fas fa-phone-alt mr-2 text-sm"></i> 089-787-1188
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Horoscope Analysis Section (NEW) -->
+        <section class="bg-indigo-900 text-white rounded-2xl shadow-lg p-8 relative overflow-hidden">
+            <!-- Background Decoration -->
+            <div class="absolute top-0 right-0 -mt-10 -mr-10 w-40 h-40 bg-indigo-500 rounded-full opacity-20 blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 -mb-10 -ml-10 w-40 h-40 bg-purple-500 rounded-full opacity-20 blur-3xl"></div>
+
+            <h3 class="font-bold text-2xl mb-6 flex items-center relative z-10">
+                <i class="fas fa-star text-yellow-400 mr-3"></i> วิเคราะห์เจ้าของที่ดินจากศาสตร์ตัวเลข
+                <span class="ml-auto text-sm bg-indigo-800 px-3 py-1 rounded-full text-indigo-200 font-normal border border-indigo-700">จากเบอร์ 089-787-1188</span>
+            </h3>
+
+            <div class="grid md:grid-cols-2 gap-8 relative z-10">
+                <!-- Personality Traits -->
+                <div class="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                    <h4 class="font-bold text-lg text-yellow-300 mb-4 flex items-center"><i class="fas fa-user-secret mr-2"></i> ลักษณะนิสัย (Persona)</h4>
+                    <ul class="space-y-3 text-sm text-indigo-100">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mt-1 mr-2 text-green-400"></i>
+                            <span><strong>ใจใหญ่ ใจนักเลง:</strong> กล้าได้กล้าเสีย ชอบเป็นผู้นำ มีพรรคพวกเยอะ คำไหนคำนั้น</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mt-1 mr-2 text-green-400"></i>
+                            <span><strong>ตัดสินใจเร็ว (Fast Mover):</strong> คิดเร็วทำเร็ว ไม่ชอบรออะไรนานๆ แต่บทจะเปลี่ยนใจก็เปลี่ยนทันที</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle mt-1 mr-2 text-green-400"></i>
+                            <span><strong>เชื่อมั่นในตัวเองสูง:</strong> ไม่ค่อยฟังใคร ดื้อรั้น เชื่อในสัญชาตญาณตัวเองเป็นหลัก</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-exclamation-circle mt-1 mr-2 text-red-400"></i>
+                            <span><strong>จุดเปราะบาง:</strong> ระวังเรื่องอารมณ์ร้อน ขี้หงุดหงิด และอาจเปลี่ยนใจกลางคัน (ทำอะไรดีตอนต้น ต่อมาล้มเลิก)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Negotiation Tactics -->
+                <div class="bg-white text-slate-800 rounded-xl p-6 shadow-xl">
+                    <h4 class="font-bold text-lg text-indigo-900 mb-4 flex items-center"><i class="fas fa-chess-knight mr-2"></i> กลยุทธ์การเจรจา (Tactics)</h4>
+                    <div class="space-y-4">
+                        <div class="flex gap-3">
+                            <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0 font-bold">1</div>
+                            <div>
+                                <h5 class="font-bold text-sm">ให้เกียรติ ยกย่อง (Give Face)</h5>
+                                <p class="text-xs text-slate-500 mt-1">เจ้าของชอบบทบาท "ผู้นำ/เสี่ย/เฮีย" การเจรจาควรใช้น้ำเสียงนอบน้อม ให้เกียรติสูง อย่าไปหักหน้าหรือเถียงด้วยทิฐิ</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0 font-bold">2</div>
+                            <div>
+                                <h5 class="font-bold text-sm">ปิดการขายให้ไว (Speed is Key)</h5>
+                                <p class="text-xs text-slate-500 mt-1">เขาเป็นคน "คิดเร็ว ตัดสินใจเร็ว" หากตกลงราคาได้แล้ว **ต้องรีบนัดทำสัญญา** อย่าปล่อยเวลาผ่านไป เพราะเขามีนิสัย "ล้มเลิกกลางคัน" หรือเปลี่ยนใจง่าย</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 shrink-0 font-bold">3</div>
+                            <div>
+                                <h5 class="font-bold text-sm">เน้นภาพใหญ่ (Big Picture)</h5>
+                                <p class="text-xs text-slate-500 mt-1">คุยเรื่องตัวเลขกลมๆ (Lump Sum) เช่น "100 ล้านจบเลย" แทนการคุยหยุมหยิมรายตารางวา เพราะเขาชอบความเด็ดขาดและโปรเจกต์ใหญ่</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Negotiation Strategy (Standard) -->
+        <section>
+            <h3 class="font-bold text-xl text-slate-800 mb-6 flex items-center">
+                <i class="fas fa-handshake mr-3 text-emerald-600"></i> ประเด็นต่อรองมาตรฐาน (Standard Strategy)
+            </h3>
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Point 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow group">
+                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600 mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-chart-area text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-lg mb-2 group-hover:text-red-700 transition-colors">1. พื้นที่ขาด 20 ตร.ว.</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">ใช้จุดที่ "หย่อนไป 20 วา" เป็นประเด็นในการขอลดราคาแบบเหมา (Lump Sum) แทนการคิดต่อตารางวา อาจขอปัดเศษลงจาก 106.2 ล้าน เหลือ <strong>100-102 ล้านบาท</strong> ถ้วน</p>
+                </div>
+
+                <!-- Point 2 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow group">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-file-invoice-dollar text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-lg mb-2 group-hover:text-blue-700 transition-colors">2. ค่าโอนและภาษี</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">ราคา 90,000 บาท/ตร.ว. ถือเป็นราคาตลาด (Market Price) สำหรับโซนนี้ ควรต่อรองให้ <strong>"ผู้ขายเป็นผู้ออกค่าใช้จ่าย ณ กรมที่ดินทั้งหมด"</strong> (ค่าโอน 2%, ภาษีธุรกิจเฉพาะ 3.3% หรืออากร) ซึ่งจะช่วยลดต้นทุนให้ NSL ได้ประมาณ 3-5 ล้านบาท</p>
+                </div>
+
+                <!-- Point 3 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow group">
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-layer-group text-xl"></i>
+                    </div>
+                    <h4 class="font-bold text-lg mb-2 group-hover:text-purple-700 transition-colors">3. สภาพที่ดิน (Land Condition)</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed">ตรวจสอบระดับดินเทียบกับถนน หากต้องถมดินเพิ่ม ใช้เป็นข้อต่อรองขอลดราคา หรือขอให้ผู้ขายเคลียร์พื้นที่/รื้อถอนสิ่งปลูกสร้างเดิม (ถ้ามี) ให้เรียบร้อยก่อนโอน</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="text-center py-8 text-slate-400 text-sm border-t border-slate-200 mt-12">
+            <p>Designed for NSL Investment Planning</p>
+            <p class="mt-1">© 2025 DSS NSL</p>
+        </footer>
+
+    </main>
+
+    <script>
+        // Init Lucide Icons safely
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            } else {
+                console.error("Lucide library failed to load");
+            }
+        });
+    </script>
+</body>
+</html>
