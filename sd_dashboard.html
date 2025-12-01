@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NSL Foods: Sustainability & Financial Impact Assessment</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        body { font-family: 'Prompt', sans-serif; background-color: #F3F4F6; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .gradient-header { background: linear-gradient(135deg, #10B981 0%, #059669 100%); }
+        .section-icon { background: rgba(16, 185, 129, 0.1); color: #059669; }
+        .print-hide { @media print { display: none; } }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <!-- Header Section -->
+    <header class="gradient-header text-white py-10 px-4 shadow-lg print:bg-white print:text-black">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <div class="text-xs font-semibold tracking-widest uppercase opacity-80 mb-2">Internal Discussion Document (เอกสารหารือภายใน)</div>
+                    <h1 class="text-3xl md:text-4xl font-bold">Sustainability x Financial Impact</h1>
+                    <p class="mt-2 text-green-100 font-light">Questionnaire for NSL Foods PLC. | Focus: IR & Data Analytics</p>
+                </div>
+                <div class="text-right hidden md:block">
+                    <div class="text-sm opacity-90">Prepared by</div>
+                    <div class="font-bold text-lg">Def to Design</div>
+                    <div class="text-xs opacity-75">Data Analytics & IR Consulting</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-4 py-8 space-y-12">
+
+        <!-- Intro Box -->
+        <div class="bg-white rounded-xl p-6 shadow-sm border-l-4 border-emerald-500">
+            <h3 class="font-bold text-lg text-emerald-700 mb-2 flex items-center gap-2">
+                <i class="ph ph-strategy text-2xl"></i> วัตถุประสงค์ (Objective)
+            </h3>
+            <p class="text-sm text-slate-600">
+                รายการคำถามนี้ออกแบบมาเพื่อดึงข้อมูลจากฝ่าย Sustainability เพื่อนำไปวิเคราะห์ผลกระทบทางการเงิน (Financial Impact) 
+                เพื่อใช้ในการจัดทำรายงาน 56-1 One Report และสื่อสารกับนักลงทุน โดยเน้นการเชื่อมโยงข้อมูล ESG เข้ากับผลประกอบการ (Bottom Line)
+            </p>
+        </div>
+
+        <!-- SECTION 1 -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                    <i class="ph ph-chart-line-up text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">1. Cost Efficiency & Optimization (ประสิทธิภาพและการบริหารต้นทุน)</h2>
+                <span class="ml-auto text-xs font-semibold bg-blue-100 text-blue-700 py-1 px-3 rounded-full">Impact: ลดต้นทุน (OPEX - ค่าใช้จ่ายดำเนินงาน)</span>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Q1 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 card-hover transition-all duration-300">
+                    <div class="text-xs text-slate-400 font-bold mb-2">ENERGY MANAGEMENT (การจัดการพลังงาน)</div>
+                    <h4 class="font-bold text-slate-800 mb-3">Q1: ผลตอบแทนจากการลงทุนพลังงาน (ROI)</h4>
+                    <p class="text-sm text-slate-600 mb-4">โครงการ Solar Rooftop หรือการเปลี่ยนเครื่องจักรประหยัดพลังงานในปีที่ผ่านมา ช่วยลดค่าไฟฟ้าจริงคิดเป็นกี่บาท และมี Payback Period (ระยะเวลาคืนทุน) ตามเป้าหรือไม่?</p>
+                    <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                        <span class="text-xs font-bold text-blue-600">Variables (ตัวแปรที่ต้องการ):</span>
+                        <p class="text-xs text-slate-500 mt-1">Cost Saving (THB/Year), % IRR (อัตราผลตอบแทนภายใน) ของโครงการ</p>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 card-hover transition-all duration-300">
+                    <div class="text-xs text-slate-400 font-bold mb-2">WASTE MANAGEMENT (การจัดการของเสีย)</div>
+                    <h4 class="font-bold text-slate-800 mb-3">Q2: รายได้จากการจัดการของเสีย (Waste-to-Value)</h4>
+                    <p class="text-sm text-slate-600 mb-4">เรามีรายได้จากการขายขยะรีไซเคิล หรือเศษอาหาร (Food Waste) เพื่อไปทำอาหารสัตว์/ปุ๋ย เป็นมูลค่าเท่าไหร่ และมีแนวโน้มเพิ่มขึ้นหรือไม่?</p>
+                    <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                        <span class="text-xs font-bold text-blue-600">Variables (ตัวแปรที่ต้องการ):</span>
+                        <p class="text-xs text-slate-500 mt-1">Revenue from Waste (รายได้จากขยะ), Waste Disposal Cost reduction (ต้นทุนกำจัดขยะที่ลดลง)</p>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 card-hover transition-all duration-300">
+                    <div class="text-xs text-slate-400 font-bold mb-2">RESOURCE EFFICIENCY (ประสิทธิภาพทรัพยากร)</div>
+                    <h4 class="font-bold text-slate-800 mb-3">Q3: ต้นทุนต่อหน่วย (Unit Cost Intensity)</h4>
+                    <p class="text-sm text-slate-600 mb-4">เมื่อเทียบ Production Yield (ผลผลิตที่ได้) กับการใช้ทรัพยากร (น้ำ/ไฟ/แก๊ส) ต้นทุนด้าน Utilities ต่อหน่วยการผลิตลดลงกี่ % เมื่อเทียบกับปีก่อน?</p>
+                    <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                        <span class="text-xs font-bold text-blue-600">Variables (ตัวแปรที่ต้องการ):</span>
+                        <p class="text-xs text-slate-500 mt-1">Utility Cost per SKU/Unit (ต้นทุนต่อนัด), Efficiency Trend Graph (กราฟแนวโน้มประสิทธิภาพ)</p>
+                    </div>
+                </div>
+                 <!-- Q4 -->
+                 <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 card-hover transition-all duration-300">
+                    <div class="text-xs text-slate-400 font-bold mb-2">LOGISTICS (การขนส่ง)</div>
+                    <h4 class="font-bold text-slate-800 mb-3">Q4: การบริหารจัดการ Route ขนส่ง</h4>
+                    <p class="text-sm text-slate-600 mb-4">การปรับปรุง Route (เส้นทาง) ขนส่งเพื่อลด Carbon Footprint (รอยเท้าคาร์บอน) ช่วยลดค่าใช้จ่ายน้ำมันเชื้อเพลิง (Fuel Cost) ได้เป็นมูลค่าเท่าไหร่?</p>
+                    <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                        <span class="text-xs font-bold text-blue-600">Variables (ตัวแปรที่ต้องการ):</span>
+                        <p class="text-xs text-slate-500 mt-1">Fuel Cost Saving (ประหยัดค่าน้ำมัน), CO2 Reduction (ลดก๊าซคาร์บอน - ตัน)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- SECTION 2 -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-3 rounded-full bg-emerald-100 text-emerald-600">
+                    <i class="ph ph-plant text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">2. Revenue Growth & New Opportunities (การเติบโตรายได้และโอกาสใหม่)</h2>
+                <span class="ml-auto text-xs font-semibold bg-emerald-100 text-emerald-700 py-1 px-3 rounded-full">Impact: เพิ่มรายได้ (Revenue)</span>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Q5 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 card-hover transition-all duration-300">
+                    <div class="text-xs text-slate-400 font-bold mb-2">GREEN PRODUCTS (สินค้าเป็นมิตรต่อสิ่งแวดล้อม)</div>
+                    <h4 class="font-bold text-slate-800 mb-3">Q5: สัดส่วนรายได้จากสินค้าเพื่อความยั่งยืน</h4>
+                    <p class="text-sm text-slate-600 mb-4">ยอดขายสินค้ากลุ่ม Plant-based (ทำจากพืช), Low Sodium (โซเดียมต่ำ) หรือสินค้าที่มี Packaging เป็นมิตรต่อสิ่งแวดล้อม คิดเป็นกี่ % ของรายได้รวม?</p>
+                    <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                        <span class="text-xs font-bold text-emerald-600">Variables (ตัวแปรที่ต้องการ):</span>
+                        <p class="text-xs text-slate-500 mt-1">% Revenue from Sustainable Products, Growth Rate (อัตราการเติบโต)</p>
+                    </div>
+                </div>
+
+                <!-- Q6 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 card-hover transition-all duration-300">
+                    <div class="text-xs text-slate-400 font-bold mb-2">MARKET ACCESS (การเข้าถึงตลาด)</div>
+                    <h4 class="font-bold text-slate-800 mb-3">Q6: โอกาสทางธุรกิจกับ Partner (B2B)</h4>
+                    <p class="text-sm text-slate-600 mb-4">การที่เรามีนโยบาย ESG ที่ชัดเจน ทำให้เราได้เปรียบในการคัดเลือกเป็น Supplier (ผู้จัดหาสินค้า) ให้กับลูกค้ารายใหญ่ (เช่น 7-11 หรือ Modern Trade อื่นๆ) หรือไม่?</p>
+                    <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                        <span class="text-xs font-bold text-emerald-600">Variables (ตัวแปรที่ต้องการ):</span>
+                        <p class="text-xs text-slate-500 mt-1">List of Key Accounts (ลูกค้ารายสำคัญ) requiring ESG compliance</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- SECTION 3 -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-3 rounded-full bg-orange-100 text-orange-600">
+                    <i class="ph ph-shield-warning text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">3. Risk Management & Resilience (การบริหารความเสี่ยง)</h2>
+                <span class="ml-auto text-xs font-semibold bg-orange-100 text-orange-700 py-1 px-3 rounded-full">Impact: ป้องกันความเสี่ยง (Risk Avoidance)</span>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Q7 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 card-hover transition-all duration-300">
+                    <div class="text-xs text-slate-400 font-bold mb-2">CLIMATE RISK (TCFD - ความเสี่ยงด้านภูมิอากาศ)</div>
+                    <h4 class="font-bold text-slate-800 mb-3">Q7: ผลกระทบทางการเงินจาก Climate Change</h4>
+                    <p class="text-sm text-slate-600 mb-4">หากเกิดภาวะภัยแล้ง หรือน้ำท่วม โรงงานของเรามีความเสี่ยงที่จะสูญเสียรายได้ (Business Interruption) คิดเป็นมูลค่าเท่าไหร่ และมีแผนสำรองน้ำ/ไฟ อย่างไร?</p>
+                    <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                        <span class="text-xs font-bold text-orange-600">Variables (ตัวแปรที่ต้องการ):</span>
+                        <p class="text-xs text-slate-500 mt-1">Estimated Financial Loss (ค่าเสียหายประเมิน) vs Mitigation Cost (ต้นทุนป้องกัน)</p>
+                    </div>
+                </div>
+
+                <!-- Q8 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 card-hover transition-all duration-300">
+                    <div class="text-xs text-slate-400 font-bold mb-2">SUPPLY CHAIN (ห่วงโซ่อุปทาน)</div>
+                    <h4 class="font-bold text-slate-800 mb-3">Q8: ความเสี่ยงด้านราคาวัตถุดิบ</h4>
+                    <p class="text-sm text-slate-600 mb-4">Climate Change ส่งผลกระทบต่อราคาแป้งหรือวัตถุดิบเกษตรหลักของเราอย่างไร และเรามีการทำ Contract Farming (เกษตรพันธสัญญา) เพื่อประกันราคาและความยั่งยืนหรือไม่?</p>
+                    <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                        <span class="text-xs font-bold text-orange-600">Variables (ตัวแปรที่ต้องการ):</span>
+                        <p class="text-xs text-slate-500 mt-1">% of Raw Material secured by Sustainable Sourcing (การจัดหาอย่างยั่งยืน)</p>
+                    </div>
+                </div>
+
+                <!-- Q9 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 card-hover transition-all duration-300">
+                    <div class="text-xs text-slate-400 font-bold mb-2">REGULATION (กฎระเบียบ)</div>
+                    <h4 class="font-bold text-slate-800 mb-3">Q9: ภาษีคาร์บอน (CBAM / Thailand Tax)</h4>
+                    <p class="text-sm text-slate-600 mb-4">หากมีการเก็บภาษีคาร์บอนในอนาคต (สมมติ 200 บาท/ตัน) NSL จะต้องมีภาระค่าใช้จ่ายเพิ่มขึ้นปีละเท่าไหร่จาก Emission (การปล่อยก๊าซ) ปัจจุบัน?</p>
+                    <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                        <span class="text-xs font-bold text-orange-600">Variables (ตัวแปรที่ต้องการ):</span>
+                        <p class="text-xs text-slate-500 mt-1">Potential Carbon Tax Liability (ภาระภาษีคาร์บอนที่อาจเกิดขึ้น - บาท)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <!-- SECTION 4 (NEW) -->
+        <section>
+            <div class="flex items-center gap-3 mb-6">
+                <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                    <i class="ph ph-clipboard-text text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-800">4. Operational Excellence & Compliance (มาตรฐานสากล)</h2>
+                <span class="ml-auto text-xs font-semibold bg-purple-100 text-purple-700 py-1 px-3 rounded-full">Impact: การปฏิบัติตามกฎ (Compliance)</span>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Q10: Wastewater -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 card-hover transition-all duration-300">
+                    <div class="text-xs text-slate-400 font-bold mb-2">WATER & EFFLUENTS (น้ำและน้ำเสีย - GRI 303)</div>
+                    <h4 class="font-bold text-slate-800 mb-3">Q10: คุณภาพน้ำทิ้งและการนำกลับมาใช้ใหม่</h4>
+                    <p class="text-sm text-slate-600 mb-4">ค่ามาตรฐานน้ำทิ้ง (BOD/COD) เฉลี่ยดีกว่าเกณฑ์กฎหมายกี่ % และมีการนำน้ำที่บำบัดแล้วกลับมาใช้หมุนเวียน (Recycled Water) ในกิจกรรมที่ไม่สัมผัสอาหารหรือไม่?</p>
+                    <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                        <span class="text-xs font-bold text-purple-600">Variables (ตัวแปรที่ต้องการ):</span>
+                        <p class="text-xs text-slate-500 mt-1">Avg. BOD/COD levels, % Water Recycled (สัดส่วนน้ำรีไซเคิล)</p>
+                    </div>
+                </div>
+
+                <!-- Q11: Hazardous Waste -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 card-hover transition-all duration-300">
+                    <div class="text-xs text-slate-400 font-bold mb-2">HAZARDOUS WASTE (ขยะอันตราย - GRI 306)</div>
+                    <h4 class="font-bold text-slate-800 mb-3">Q11: การจัดการขยะอันตราย</h4>
+                    <p class="text-sm text-slate-600 mb-4">กระบวนการกำจัดขยะอันตราย (เช่น หลอดไฟ, กระป๋องสารเคมี) มี Manifest (เอกสารกำกับการขนส่ง) ยืนยันครบ 100% หรือไม่ และมีมาตรการลดปริมาณขยะกลุ่มนี้อย่างไร?</p>
+                    <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                        <span class="text-xs font-bold text-purple-600">Variables (ตัวแปรที่ต้องการ):</span>
+                        <p class="text-xs text-slate-500 mt-1">Hazardous Waste Volume (ปริมาณขยะอันตราย - kg), % Proper Disposal (กำจัดถูกวิธี)</p>
+                    </div>
+                </div>
+
+                <!-- Q12: Refrigerant Gas -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 card-hover transition-all duration-300">
+                    <div class="text-xs text-slate-400 font-bold mb-2">FUGITIVE EMISSIONS (การรั่วไหล - Scope 1)</div>
+                    <h4 class="font-bold text-slate-800 mb-3">Q12: สารทำความเย็น (Refrigerants)</h4>
+                    <p class="text-sm text-slate-600 mb-4">ในระบบห้องเย็น (Freezer/Chiller) มีการรั่วไหลของสารทำความเย็นหรือไม่ และมีแผนเปลี่ยนไปใช้สารกลุ่ม Low GWP (ค่าศักยภาพทำให้โลกร้อนต่ำ) หรือไม่?</p>
+                    <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                        <span class="text-xs font-bold text-purple-600">Variables (ตัวแปรที่ต้องการ):</span>
+                        <p class="text-xs text-slate-500 mt-1">Refrigerant Refill Volume (ปริมาณเติมสารทำความเย็น), Type of Refrigerant (ชนิดสาร)</p>
+                    </div>
+                </div>
+
+                <!-- Q13: Packaging -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 card-hover transition-all duration-300">
+                    <div class="text-xs text-slate-400 font-bold mb-2">PACKAGING CIRCULARITY (ความหมุนเวียนบรรจุภัณฑ์)</div>
+                    <h4 class="font-bold text-slate-800 mb-3">Q13: บรรจุภัณฑ์ที่เป็นมิตรต่อสิ่งแวดล้อม</h4>
+                    <p class="text-sm text-slate-600 mb-4">บรรจุภัณฑ์พลาสติกที่ใช้ในปัจจุบัน สามารถนำกลับมารีไซเคิลได้ (Recyclable Design) คิดเป็นกี่เปอร์เซ็นต์โดยน้ำหนัก?</p>
+                    <div class="bg-slate-50 p-3 rounded border border-slate-200">
+                        <span class="text-xs font-bold text-purple-600">Variables (ตัวแปรที่ต้องการ):</span>
+                        <p class="text-xs text-slate-500 mt-1">% Recyclable Packaging (สัดส่วนรีไซเคิลได้ - by weight)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final Notes / Footer -->
+        <div class="mt-12 text-center pb-8">
+             <button onclick="window.print()" class="print-hide bg-slate-800 text-white px-6 py-3 rounded-full shadow-lg hover:bg-slate-700 transition-colors flex items-center gap-2 mx-auto">
+                <i class="ph ph-printer"></i> Print / Save as PDF
+            </button>
+            <p class="text-xs text-slate-400 mt-6">
+                © 2025 Def to Design Co., Ltd. - Confidential for NSL Foods PLC Usage Only.
+            </p>
+        </div>
+
+    </main>
+
+</body>
+</html>
