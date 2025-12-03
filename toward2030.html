@@ -82,9 +82,25 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid md:grid-cols-2 gap-12 items-center">
                 <div class="space-y-6">
-                    <div class="inline-flex items-center space-x-2 bg-brand-accent/20 text-brand-accent px-3 py-1 rounded-full border border-brand-accent/30">
-                        <span class="text-xs font-bold tracking-wider uppercase">New Release 2025</span>
+                    
+                    <!-- View Counter & Badge Row -->
+                    <div class="flex flex-wrap items-center gap-4">
+                        <div class="inline-flex items-center space-x-2 bg-brand-accent/20 text-brand-accent px-3 py-1 rounded-full border border-brand-accent/30">
+                            <span class="text-xs font-bold tracking-wider uppercase">New Release 2025</span>
+                        </div>
+
+                        <!-- Live View Counter Component -->
+                        <div class="inline-flex items-center space-x-2 bg-black/30 backdrop-blur-sm px-3 py-1 rounded-full border border-white/10 shadow-inner">
+                            <span class="relative flex h-2 w-2">
+                              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                              <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </span>
+                            <i data-lucide="eye" class="w-3 h-3 text-slate-300"></i>
+                            <span id="live-view-count" class="text-xs font-mono font-medium text-white tabular-nums">000</span>
+                            <span class="text-[10px] text-slate-400 uppercase tracking-wide">Readers</span>
+                        </div>
                     </div>
+
                     <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
                         From Blueprint <br>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-white">To Reality</span>
@@ -323,6 +339,107 @@
     <script>
         // Initialize Lucide Icons
         lucide.createIcons();
+
+        // --- Live View Counter Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const counterElement = document.getElementById('live-view-count');
+            
+            // 1. ตั้งค่าวันเริ่มต้น (Start Date)
+            // แก้ไขเป็นวันที่ 3 ธันวาคม 2025 เวลา 12:00:00 (เที่ยงวัน) 
+            // เพื่อให้ ณ เวลาปัจจุบัน (เที่ยงกว่าๆ) ยอดเริ่มต้นที่ 20 พอดี
+            const startDate = new Date('2025-12-03T12:00:00').getTime();
+            const now = new Date().getTime();
+            
+            // 2. คำนวณเวลาที่ผ่านไปเป็น "ชั่วโมง"
+            const hoursPassed = Math.max(0, Math.floor((now - startDate) / (1000 * 60 * 60)));
+
+            // 3. กำหนดค่าเริ่มต้นและ Pattern ตามโจทย์
+            const startViews = 20; 
+            const growthPattern = [2, 3, 4, 5, 6]; // เพิ่มสลับกันไป
+            const cycleLength = growthPattern.length; // 5 ชั่วโมง
+            const cycleTotal = growthPattern.reduce((a, b) => a + b, 0); // รวม 5 ชม. ได้ 20 คน
+
+            // 4. คำนวณยอดวิวปัจจุบันแบบแม่นยำตาม Pattern
+            // 4.1 คำนวณจำนวนรอบที่ครบ (Full Cycles)
+            const fullCycles = Math.floor(hoursPassed / cycleLength);
+            let targetViews = startViews + (fullCycles * cycleTotal);
+
+            // 4.2 คำนวณเศษชั่วโมงที่เหลือ (Remaining Hours)
+            const remainingHours = hoursPassed % cycleLength;
+            for (let i = 0; i < remainingHours; i++) {
+                targetViews += growthPattern[i];
+            }
+
+            // เพิ่มเศษนาทีของชั่วโมงปัจจุบัน (Pro-rate) 
+            // ดูว่าชั่วโมงนี้ต้องเพิ่มกี่คน (Current Rate)
+            const currentHourRate = growthPattern[remainingHours];
+            const minutesPassed = Math.max(0, ((now - startDate) / (1000 * 60)) % 60);
+            
+            // ถ้าผ่านไปเกินครึ่งชั่วโมง อาจจะบวกเพิ่มไปบ้างแล้ว (เพื่อความสมจริง)
+            if (minutesPassed > 30 && Math.random() > 0.5) {
+                targetViews += Math.floor(currentHourRate / 2);
+            }
+
+            // 5. Animation Function (วิ่งจาก 0 -> targetViews)
+            const duration = 2000;
+            const frameDuration = 1000 / 60;
+            const totalFrames = Math.round(duration / frameDuration);
+            const easeOutQuad = t => t * (2 - t);
+            
+            let frame = 0;
+            const countTo = targetViews;
+            
+            const counter = setInterval(() => {
+                frame++;
+                const progress = easeOutQuad(frame / totalFrames);
+                const currentCount = Math.round(countTo * progress);
+
+                if (parseInt(counterElement.innerText.replace(/,/g, '')) !== currentCount) {
+                    counterElement.innerText = currentCount.toLocaleString();
+                }
+
+                if (frame === totalFrames) {
+                    clearInterval(counter);
+                    // เริ่ม Loop เพิ่มยอดวิว Realtime
+                    startLiveUpdates(currentCount, remainingHours); 
+                }
+            }, frameDuration);
+
+            // ฟังก์ชันเพิ่มยอดวิวขณะเปิดหน้าค้างไว้ (Realtime Simulation)
+            function startLiveUpdates(currentVal, currentPatternIndex) {
+                let liveVal = currentVal;
+                let patternIdx = currentPatternIndex; // เริ่มต้นที่ index ของชั่วโมงปัจจุบัน
+
+                const scheduleNextUpdate = () => {
+                    // ดูว่าชั่วโมงนี้ต้องเพิ่มกี่คน (2, 3, 4, 5 หรือ 6)
+                    const peoplePerHour = growthPattern[patternIdx % cycleLength];
+                    
+                    // คำนวณ Interval เฉลี่ย
+                    const avgIntervalMs = (60 / peoplePerHour) * 60 * 1000;
+                    
+                    // Random เวลาบวกลบ 20%
+                    const randomFactor = 0.8 + (Math.random() * 0.4); 
+                    const nextTick = Math.floor(avgIntervalMs * randomFactor);
+
+                    setTimeout(() => {
+                        liveVal++;
+                        counterElement.innerText = liveVal.toLocaleString();
+                        
+                        // Effect กระพริบ
+                        counterElement.classList.add('text-green-400');
+                        setTimeout(() => counterElement.classList.remove('text-green-400'), 300);
+                        
+                        // อัปเดต Index เมื่อครบชั่วโมง (จำลอง)
+                        // หมายเหตุ: ในการใช้งานจริง patternIdx ควรเช็คจากเวลาจริง แต่เพื่อความง่ายในการแสดงผล realtime ใช้การ increment
+                        // ถ้าจะให้แม่นยำ 100% ต้องคำนวณใหม่ทุก tick แต่แบบนี้พอใช้แสดงผลได้ครับ
+                        
+                        scheduleNextUpdate();
+                    }, nextTick);
+                };
+
+                scheduleNextUpdate();
+            }
+        });
     </script>
 </body>
 </html>
