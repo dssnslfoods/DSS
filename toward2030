@@ -112,7 +112,7 @@
                     <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-teal-400 rounded-lg blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
                     <div class="relative bg-white rounded-lg shadow-2xl overflow-hidden aspect-[3/4] max-w-sm mx-auto transform rotate-2 group-hover:rotate-0 transition duration-500 border border-slate-200">
                          <!-- Cover Design Representation -->
-                        <img src="https://d2infinite.com/pocketbook_toward2030/pocketbook_toward2030.jpg" alt="หน้าปกหนังสือพิมพ์เขียวสู่ความสำเร็จ 2030" class="w-full h-full object-cover rounded-lg shadow-2xl">
+                        <img src="pocketbook_toward2030.jpg" alt="หน้าปกหนังสือพิมพ์เขียวสู่ความสำเร็จ 2030" class="w-full h-full object-cover rounded-lg shadow-2xl">
                     </div>
                 </div>
             </div>
