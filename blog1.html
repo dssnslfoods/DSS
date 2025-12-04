@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytical Depth & Customer Insight - บทความโดย อานนท์ อาภาเขต</title>
+
+  <!-- Font (ถ้าไม่มีเน็ต ระบบจะใช้ฟอนต์สำรองแทน) -->
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --bg-soft: #111827;
+      --bg-card: #020617;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --text-main: #e5e7eb;
+      --text-soft: #9ca3af;
+      --border-soft: rgba(148, 163, 184, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Sarabun", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1f2937 0, #020617 45%, #000 100%);
+      color: var(--text-main);
+      line-height: 1.7;
+    }
+
+    .page-wrap {
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px;
+    }
+
+    .blog-shell {
+      width: 100%;
+      max-width: 1040px;
+      display: grid;
+      grid-template-columns: 1.2fr 2.1fr;
+      gap: 32px;
+    }
+
+    @media (max-width: 900px) {
+      .blog-shell {
+        grid-template-columns: 1fr;
+      }
+      .page-wrap {
+        padding: 24px 12px 40px;
+      }
+    }
+
+    /* Sidebar / Profile */
+    .profile-card {
+      position: sticky;
+      top: 24px;
+      align-self: flex-start;
+      background: linear-gradient(145deg, rgba(15,23,42,0.95), rgba(17,24,39,1));
+      border-radius: 24px;
+      padding: 24px 22px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+      backdrop-filter: blur(18px);
+    }
+
+    .avatar-wrap {
+      width: 96px;
+      height: 96px;
+      border-radius: 999px;
+      border: 2px solid rgba(56, 189, 248, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      background: radial-gradient(circle at 30% 20%, #38bdf8 0, #0f172a 55%, #020617 100%);
+      box-shadow: 0 12px 30px rgba(56,189,248,0.35);
+    }
+
+    .avatar-initial {
+      font-weight: 700;
+      font-size: 34px;
+      color: #e0f2fe;
+    }
+
+    .author-name {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .author-title {
+      font-size: 13px;
+      color: var(--text-soft);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .author-divider {
+      margin: 18px 0 14px;
+      border: none;
+      border-top: 1px dashed rgba(148, 163, 184, 0.4);
+    }
+
+    .author-meta {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 4px;
+    }
+
+    .author-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(15, 118, 110, 0.2);
+      border: 1px solid rgba(34,197,94,0.4);
+      color: #bbf7d0;
+      margin-top: 4px;
+    }
+
+    .author-pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 10px rgba(34,197,94,0.8);
+    }
+
+    .author-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .author-tag {
+      font-size: 11px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      color: #e5e7eb;
+      background: rgba(15,23,42,0.7);
+    }
+
+    .note-box {
+      margin-top: 18px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(15,23,42,0.85);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .note-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #7dd3fc;
+      margin-bottom: 4px;
+    }
+
+    /* Main content */
+    .article-card {
+      background: rgba(15,23,42, 0.96);
+      border-radius: 26px;
+      padding: 28px 26px 30px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 28px 70px rgba(0,0,0,0.75);
+      backdrop-filter: blur(18px);
+    }
+
+    @media (max-width: 600px) {
+      .article-card {
+        padding: 20px 16px 24px;
+        border-radius: 20px;
+      }
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .badge {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(56,189,248,0.6);
+      color: #7dd3fc;
+      background: rgba(15,23,42,0.8);
+    }
+
+    .badge-outline {
+      border-style: dashed;
+      border-color: rgba(148,163,184,0.6);
+      color: var(--text-soft);
+    }
+
+    .article-title {
+      font-size: clamp(26px, 2.4vw, 32px);
+      font-weight: 700;
+      margin: 4px 0 8px;
+      letter-spacing: 0.01em;
+    }
+
+    .article-subtitle {
+      font-size: 14px;
+      color: var(--text-soft);
+      margin-bottom: 12px;
+    }
+
+    .article-meta {
+      font-size: 12px;
+      color: var(--text-soft);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .meta-divider-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.7);
+    }
+
+    .hero-box {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 1px solid rgba(56,189,248,0.4);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(56,189,248,0.25), transparent 55%),
+        radial-gradient(circle at 100% 100%, rgba(59,130,246,0.25), transparent 55%),
+        linear-gradient(135deg, #020617, #020617);
+      padding: 18px 18px 16px;
+      margin-bottom: 24px;
+    }
+
+    .hero-kicker {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #bae6fd;
+      margin-bottom: 4px;
+    }
+
+    .hero-text {
+      font-size: 15px;
+      color: #e5e7eb;
+      max-width: 540px;
+    }
+
+    .hero-label-chip {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.85);
+      border: 1px solid rgba(148,163,184,0.7);
+      color: var(--text-soft);
+    }
+
+    .hero-float {
+      position: absolute;
+      right: 18px;
+      bottom: 10px;
+      font-size: 11px;
+      color: #a5b4fc;
+      opacity: 0.8;
+    }
+
+    .hero-float span {
+      display: block;
+    }
+
+    .content {
+      font-size: 15px;
+      color: var(--text-main);
+    }
+
+    .content p {
+      margin: 0 0 14px;
+    }
+
+    .content p.lead {
+      font-size: 15px;
+      color: #e5e7eb;
+    }
+
+    .content p strong {
+      color: #e0f2fe;
+    }
+
+    .content h2 {
+      font-size: 19px;
+      margin: 22px 0 10px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .content h3 {
+      font-size: 16px;
+      margin: 18px 0 8px;
+    }
+
+    .content-highlight {
+      margin: 18px 0 16px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(56,189,248,0.4);
+      background: var(--accent-soft);
+      font-size: 13px;
+      color: #e0f2fe;
+    }
+
+    .content-highlight-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #bae6fd;
+      margin-bottom: 4px;
+    }
+
+    .bullet-list {
+      margin: 6px 0 14px 1.1em;
+      padding-left: 0.6em;
+    }
+
+    .bullet-list li {
+      margin-bottom: 4px;
+    }
+
+    .quote-block {
+      margin: 20px 0 18px;
+      padding: 10px 14px 10px 14px;
+      border-radius: 16px;
+      border-left: 3px solid rgba(56,189,248,0.8);
+      background: rgba(15,23,42,0.9);
+      font-size: 14px;
+      color: #e5e7eb;
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: "“";
+      position: absolute;
+      top: -16px;
+      left: 8px;
+      font-size: 36px;
+      color: rgba(56,189,248,0.4);
+    }
+
+    .quote-author {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--text-soft);
+    }
+
+    .section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #9ca3af;
+      margin-bottom: 2px;
+    }
+
+    .section-title-inline {
+      font-size: 16px;
+      font-weight: 600;
+      color: #e5e7eb;
+      margin-bottom: 4px;
+    }
+
+    .footer-note {
+      margin-top: 26px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(148,163,184,0.4);
+      font-size: 12px;
+      color: #9ca3af;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .footer-note span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot-soft {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(56,189,248,0.8);
+      box-shadow: 0 0 10px rgba(56,189,248,0.9);
+    }
+      .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: rgba(15,23,42,0.8);
+      z-index: 50;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #22c55e);
+      box-shadow: 0 0 12px rgba(56,189,248,0.9);
+      transition: width 0.1s linear;
+    }
+
+    .section-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .section-chip {
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.9);
+      color: #e5e7eb;
+      font-size: 11px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .section-chip::before {
+      content: "●";
+      font-size: 9px;
+      color: rgba(56,189,248,0.9);
+    }
+
+    .section-chip:hover {
+      background: rgba(15,23,42,1);
+      transform: translateY(-1px);
+    }
+
+    .section-chip.active {
+      border-color: rgba(56,189,248,0.9);
+      background: rgba(15,23,42,1);
+      box-shadow: 0 0 16px rgba(56,189,248,0.4);
+    }
+
+    .insight-toggle {
+      margin-bottom: 18px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(56,189,248,0.8);
+      background: rgba(15,23,42,0.95);
+      color: #e0f2fe;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .insight-toggle::before {
+      content: "✦";
+      font-size: 13px;
+    }
+
+    .insight-toggle:hover {
+      box-shadow: 0 0 14px rgba(56,189,248,0.5);
+    }
+
+    body.insight-mode .content strong {
+      background: rgba(56,189,248,0.16);
+      border-radius: 999px;
+      padding: 0 6px;
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.4);
+    }
+
+    body.insight-mode .quote-block {
+      border-left-color: #f97316;
+    }
+
+    .content-highlight {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .content-highlight.collapsible {
+      cursor: pointer;
+    }
+
+    .content-highlight .chevron {
+      font-size: 10px;
+      margin-left: 6px;
+      opacity: 0.7;
+    }
+
+    .content-highlight-body {
+      max-height: 500px;
+      transition: max-height 0.35s ease, opacity 0.25s ease;
+      opacity: 1;
+    }
+
+    .content-highlight.collapsed .content-highlight-body {
+      max-height: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+      /* Comments section */
+    .comments-section {
+      margin-top: 28px;
+      padding-top: 18px;
+      border-top: 1px dashed rgba(148,163,184,0.4);
+    }
+
+    .comments-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .comments-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .comments-subtitle {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+
+    .comment-form {
+      margin-bottom: 16px;
+      padding: 12px 12px 10px;
+      border-radius: 14px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.4);
+    }
+
+    .comment-form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .comment-label {
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+
+    .comment-input,
+    .comment-textarea {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: rgba(15,23,42,0.95);
+      color: #e5e7eb;
+      font-family: inherit;
+      font-size: 13px;
+      padding: 7px 9px;
+      outline: none;
+    }
+
+    .comment-textarea {
+      resize: vertical;
+      min-height: 60px;
+      max-height: 160px;
+    }
+
+    .comment-input:focus,
+    .comment-textarea:focus {
+      border-color: rgba(56,189,248,0.9);
+      box-shadow: 0 0 0 1px rgba(56,189,248,0.5);
+    }
+
+    .comment-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .comment-hint {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .comment-submit {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(56,189,248,0.8);
+      background: rgba(8,47,73,0.9);
+      color: #e0f2fe;
+      font-size: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .comment-submit:hover {
+      box-shadow: 0 0 12px rgba(56,189,248,0.5);
+    }
+
+    .comment-submit:disabled {
+      opacity: 0.4;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .comments-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .comment-empty {
+      font-size: 12px;
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    .comment-card {
+      padding: 9px 10px;
+      border-radius: 12px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(31,41,55,0.9);
+    }
+
+    .comment-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      margin-bottom: 4px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .comment-author {
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .comment-time {
+      font-size: 10px;
+    }
+
+    .comment-body {
+      font-size: 13px;
+      color: #e5e7eb;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 600px) {
+      .comments-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .comment-actions {
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      .comment-hint {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-container"><div class="progress-bar"></div></div>
+  <div class="page-wrap">
+    <div class="blog-shell">
+
+      <!-- Sidebar / Author Profile -->
+      <aside class="profile-card">
+        <div class="avatar-wrap">
+          <div class="avatar-initial">A</div>
+        </div>
+        <div class="author-name">อานนท์ อาภาเขต</div>
+        <div class="author-title">DATA & MARKET INSIGHT CONSULTANT</div>
+
+        <hr class="author-divider" />
+
+        <div class="author-meta">มุมมองจากคนทำงานที่อยู่ระหว่าง “ธุรกิจ–ข้อมูล–มนุษย์”</div>
+        <div class="author-pill">
+          <span class="author-pill-dot"></span>
+          <span>เขียนจากประสบการณ์จริง</span>
+        </div>
+
+        <div class="author-tags">
+          <span class="author-tag">Data Analytics</span>
+          <span class="author-tag">Marketing Insight</span>
+          <span class="author-tag">Consumer Behavior</span>
+          <span class="author-tag">Decision Science</span>
+        </div>
+
+        <div class="note-box">
+          <div class="note-label">Personal Note</div>
+          <div>
+            บทความนี้ไม่ใช่คู่มือเทคนิค แต่เป็น “มุมมองส่วนตัว”  
+            ที่ตั้งใจเขียนไว้ให้คนทำงานด้าน Data, Marketing และเจ้าของธุรกิจ  
+            ได้ลองกลับมาถามตัวเองใหม่ว่า “เราเข้าใจตัวเลข หรือเราเข้าใจมนุษย์กันแน่”
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Article -->
+      <main class="article-card">
+        <div class="badge-row">
+          <div class="badge">Analytics & Market Insight</div>
+          <div class="badge badge-outline">Opinion Piece</div>
+        </div>
+
+        <h1 class="article-title">
+          Analytical Depth × Customer Insight:<br />เมื่อ “การเข้าใจมนุษย์” สำคัญกว่าแค่ “การอ่านตัวเลข”
+        </h1>
+
+        <div class="article-subtitle">
+          ในวันที่ทุกธุรกิจพูดถึง Data แต่ไม่ใช่ทุกคนที่ “อ่านความจริง” จากตัวเลขได้ถูกต้อง
+        </div>
+
+        <div class="article-meta">
+          <span>เขียนโดย อานนท์ อาภาเขต</span>
+          <span class="meta-divider-dot"></span>
+          <span>บทความเชิงมุมมองส่วนบุคคล</span>
+        </div>
+
+        <div class="section-chips">
+          <button class="section-chip" data-target="#section-analytical">Analytical Depth</button>
+          <button class="section-chip" data-target="#section-customer">Customer Insight</button>
+        </div>
+
+        <section class="hero-box">
+          <div class="hero-kicker">Opening</div>
+          <div class="hero-text">
+            ผมเชื่อว่าหน้าที่ของ Data Analyst ไม่ใช่การทำ Dashboard ให้สวย  
+            แต่คือการตอบให้ได้ว่า <strong>“แล้วข้อมูลนี้กำลังเล่าอะไรกับเรา?”</strong>  
+            เพราะตัวเลขอาจไม่โกหก แต่การตีความผิดสามารถพาธุรกิจหลงทางได้ง่ายกว่าที่คิด
+          </div>
+          <div class="hero-label-chip">จากโต๊ะทำงานของนักวิเคราะห์</div>
+          <div class="hero-float">
+            <span>มองตลาดให้ลึกกว่าคลิกและวิว</span>
+            <span>มอง “คน” ที่ซ่อนอยู่หลังตัวเลข</span>
+          </div>
+        </section>
+
+        <button class="insight-toggle" type="button">เปิดโหมด Insight</button>
+
+        <article class="content">
+          <p class="lead">
+            หลายปีที่ผมทำงานร่วมกับทั้งฝั่งธุรกิจ การตลาด และทีม Data ผมสังเกตเห็นภาพหนึ่งซ้ำ ๆ  
+            คือคนจำนวนไม่น้อยที่เรียกตัวเองว่า Data Analyst นั้น “ถนัดจัดการข้อมูล” แต่ “ไม่ถนัดแปลความหมาย”  
+            ทั้งที่จริงแล้วคุณค่าที่แท้จริงของงานวิเคราะห์ คือการช่วยให้คนตัดสินใจได้ดีขึ้น ไม่ใช่แค่มี Report สวยขึ้น
+          </p>
+
+          <h2 id="section-analytical">1. Analytical Depth – มอง “ตลาด” ให้มากกว่าตัวเลข</h2>
+
+          <p>
+            เวลาพูดถึง Data Analyst ภาพที่คนส่วนใหญ่นึกถึงคือคนที่ดึงข้อมูลเก่ง ใช้เครื่องมือคล่อง  
+            จัด Dashboard ได้ครบทุกตัวชี้วัด (KPI) ไม่ว่าจะเป็นยอดคลิก ยอดวิว หรือ Conversion  
+            แต่คำถามสำคัญที่มักถูกลืมคือ: <strong>“แล้วตัวเลขพวกนี้มันบอกอะไรเรากันแน่?”</strong>
+          </p>
+
+          <p>
+            เพราะในโลกของธุรกิจจริง ๆ การดูแต่ยอด Metric บนหน้าจอไม่เคยเพียงพอ  
+            สิ่งที่เราจำเป็นต้องเข้าให้ถึงคือ
+          </p>
+
+          <ul class="bullet-list">
+            <li>เราเข้าใจ “กลุ่มลูกค้า” ของเราจริง ๆ แค่ไหน?</li>
+            <li>พฤติกรรมที่เห็นในตัวเลข เชื่อมโยงกับ “เหตุผล” เบื้องหลังอย่างไร?</li>
+            <li>จุดไหนคือพื้นที่ที่คุ้มค่าจะ “ลงทุนเพิ่ม” และจุดไหนควร “หยุดใส่เงิน” ชั่วคราว?</li>
+          </ul>
+
+          <p>
+            นักวิเคราะห์ที่ทำงานได้ลึกจะไม่หยุดแค่การบอกว่า “ตัวเลขขึ้น–ลงเท่าไร”  
+            แต่จะต้องอธิบายได้ว่า <strong>“พฤติกรรมที่เราเห็นสะท้อนอะไรออกมา?”</strong>  
+            และ “สิ่งนี้ควรพาเราไปสู่การตัดสินใจอะไรต่อ?”
+          </p>
+
+          <div class="content-highlight">
+            <div class="content-highlight-title">สิ่งที่น่ากลัวกว่าข้อมูลผิด คือการตีความที่ผิด</div>
+            <div>
+              ในการตลาด ไม่ใช่ทุกตัวเลขใน Marketing Dashboard จะเล่าเรื่องได้ตรงไปตรงมาเสมอไป  
+              ยอด Reach สูง ไม่ได้แปลว่ามีผลต่อยอดขายเสมอไป  
+              ยอด Conversion โต อาจเป็นเพราะฤดูกาล ไม่ใช่เพราะแคมเปญที่เราภูมิใจ
+            </div>
+          </div>
+
+          <p>
+            ความสามารถสำคัญของนักวิเคราะห์ยุคนี้ จึงไม่ใช่เพียงการ “อ่าน Data”  
+            แต่ต้องเป็นคนที่ “อ่านบริบท” ได้ด้วย เช่น:
+          </p>
+
+          <ul class="bullet-list">
+            <li>ตัวเลขดีขึ้น เพราะเราเก่งขึ้น หรือแค่ตลาดกำลังเป็นใจ?</li>
+            <li>ยอดขายลดลง เพราะแคมเปญไม่เวิร์ก หรือเพราะเศรษฐกิจช่วงนี้หดตัว?</li>
+            <li>Retention ดีขึ้น เพราะลูกค้ารักแบรนด์เราจริง ๆ หรือแค่ย้ายไปไหนไม่ได้?</li>
+          </ul>
+
+          <div class="quote-block">
+            ตัวเลขไม่เคยโกหกเรา…  
+            แต่ถ้าเราเลือกมองแค่บางส่วนของมัน มันก็สามารถทำให้เราหลงทางได้เหมือนกัน
+            <div class="quote-author">— มุมมองส่วนตัวของผมในฐานะ Data Analyst</div>
+          </div>
+
+          <h2 id="section-customer">2. Customer Insight – เข้าใจ “มนุษย์” ก่อนเข้าใจ “ข้อมูล”</h2>
+
+          <p>
+            Market Insight ที่ทรงพลังที่สุด มักไม่ได้เริ่มจากการเปิด Dashboard แต่มาจากการถามว่า  
+            <strong>“ลูกค้าคนหนึ่ง เขาคิดอะไร รู้สึกอะไร กลัวอะไร และตัดสินใจอย่างไร?”</strong>
+          </p>
+
+          <p>
+            แน่นอนว่า Data Evidence สำคัญมาก แต่ถ้าเรามีแต่ตัวเลขโดยไม่มีความเข้าใจเรื่องมนุษย์  
+            Insight ที่ออกมาก็จะเป็นแค่ประโยคแบบ:
+          </p>
+
+          <ul class="bullet-list">
+            <li>“ยอดเพิ่มขึ้น X% เมื่อเทียบกับเดือนที่แล้ว”</li>
+            <li>“ช่องทางนี้ Conversion ดีกว่าอีกช่องทางหนึ่ง”</li>
+          </ul>
+
+          <p>
+            ซึ่งทั้งหมดนี้เป็นแค่ “การรายงานผล” ไม่ใช่ Insight ในความหมายที่แท้จริง
+          </p>
+
+          <h3>จาก Report สู่ Insight</h3>
+
+          <p>ผมมักแบ่งเส้นบาง ๆ ระหว่าง “คนทำ Report” กับ “คนทำ Insight” ไว้ประมาณนี้:</p>
+
+          <ul class="bullet-list">
+            <li>คนทำ Report: บอกได้ว่า “อะไรเกิดขึ้นกับตัวเลข”</li>
+            <li>คนทำ Insight: อธิบายได้ว่า “ทำไมสิ่งนั้นถึงเกิดขึ้น” และ “เราควรทำอย่างไรต่อ”</li>
+          </ul>
+
+          <p>
+            เพราะฉะนั้น Insight Analyst ที่เก่งจึงต้องเข้าใจคำถามอย่างเช่น:
+          </p>
+
+          <ul class="bullet-list">
+            <li>ลูกค้ากลัวอะไรเวลาจะตัดสินใจซื้อสินค้าของเรา?</li>
+            <li>อะไรคือจุด “ว้าว” ที่ทำให้เขาพร้อมจ่ายเพิ่ม?</li>
+            <li>เหตุผลลึก ๆ ที่เขากลับมาซื้อซ้ำ คืออะไร?</li>
+          </ul>
+
+          <p>
+            ซึ่งทั้งหมดนี้ ไม่สามารถหาเจอได้จากตัวเลขล้วน ๆ  
+            แต่เกิดจากการผสาน <strong>Behavioral Insight</strong> เข้ากับ <strong>Data Evidence</strong> อย่างพอดี
+          </p>
+
+          <div class="content-highlight">
+            <div class="content-highlight-title">สามศาสตร์ที่คนทำ Insight ควรรู้</div>
+            <div>
+              สำหรับผม คนทำงานด้าน Insight ควรมีพื้นฐานอย่างน้อยในสามเรื่องนี้:
+              <ul class="bullet-list">
+                <li><strong>Consumer Psychology</strong> – เข้าใจแรงจูงใจ ความกลัว ความต้องการที่ซ่อนอยู่</li>
+                <li><strong>Decision Science</strong> – เข้าใจรูปแบบการตัดสินใจของมนุษย์ ที่ไม่ได้มีแค่เหตุผลล้วน ๆ</li>
+                <li><strong>Customer Journey Mapping</strong> – เข้าใจเส้นทางตั้งแต่ก่อนรู้จักแบรนด์ จนถึงหลังการซื้อ</li>
+              </ul>
+              เมื่อสามสิ่งนี้มารวมกับ Data ที่ดี เราจะไม่ได้แค่รู้ว่า “ยอดโตเท่าไร”  
+              แต่จะรู้ด้วยว่า “อะไรเป็นตัวขับเคลื่อนการเติบโตนั้นจริง ๆ”
+            </div>
+          </div>
+
+          <div class="quote-block">
+            ข้อมูลอาจบอกเราว่า “ยอดเพิ่มขึ้น”  
+            แต่ความเข้าใจลูกค้าจะบอกเราว่า “ทำไมยอดถึงเพิ่ม”  
+            และตรงนั้นแหละ คือจุดที่ Data Analyst กลายเป็น “พาร์ตเนอร์ทางธุรกิจ” ไม่ใช่แค่ “คนทำ Report”
+          </div>
+
+          <p>
+            <span class="section-label">ท้ายที่สุด</span><br />
+            <span class="section-title-inline">เราอยากเป็น Data Analyst แบบไหน?</span>
+          </p>
+
+          <p>
+            สำหรับผม คำถามที่สำคัญกว่าการถามว่า “เราใช้เครื่องมืออะไรได้บ้าง”  
+            คือการถามว่า <strong>“เราช่วยให้คนตัดสินใจได้ดีขึ้นแค่ไหน จากข้อมูลที่มีอยู่?”</strong>
+          </p>
+
+          <p>
+            ถ้าในแต่ละโปรเจกต์ เราสามารถช่วยให้ทีมธุรกิจ ทีมการตลาด หรือเจ้าของกิจการ  
+            มองเห็นลูกค้าได้ชัดขึ้น ตัดสินใจได้มั่นใจขึ้น และเข้าใจ “มนุษย์ที่อยู่หลังตัวเลข” มากขึ้น  
+            ผมว่าตรงนั้นแหละ คือช่วงเวลาที่งาน Data ของเราเริ่มมีความหมายจริง ๆ
+          </p>
+        </article>
+
+        
+
+        <footer class="footer-note">
+          <span>
+            <span class="dot-soft"></span>
+            บทความเชิงมุมมองส่วนบุคคลโดย อานนท์ อาภาเขต
+          </span>
+          <span>สำหรับคนทำ Data, Marketing และธุรกิจ ที่เชื่อว่าตัวเลขคือ “จุดเริ่มต้น” ไม่ใช่ “คำตอบสุดท้าย”</span>
+        </footer>
+      </main>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Reading progress bar
+      const progressBar = document.querySelector('.progress-bar');
+      function updateProgress() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        if (progressBar) {
+          progressBar.style.width = progress + '%';
+        }
+      }
+      window.addEventListener('scroll', updateProgress);
+      updateProgress();
+
+      // Section chips scroll + active state
+      const chips = document.querySelectorAll('.section-chip');
+      const sections = [
+        document.querySelector('#section-analytical'),
+        document.querySelector('#section-customer')
+      ];
+
+      chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+          const targetSel = chip.getAttribute('data-target');
+          const target = targetSel ? document.querySelector(targetSel) : null;
+          if (target) {
+            const rect = target.getBoundingClientRect();
+            const offset = rect.top + window.scrollY - 80;
+            window.scrollTo({ top: offset, behavior: 'smooth' });
+          }
+        });
+      });
+
+      function updateActiveChip() {
+        let activeIndex = 0;
+        const triggerLine = window.innerHeight * 0.3;
+        sections.forEach(function (sec, index) {
+          if (!sec) return;
+          const rect = sec.getBoundingClientRect();
+          if (rect.top < triggerLine) {
+            activeIndex = index;
+          }
+        });
+        chips.forEach(function (chip, index) {
+          chip.classList.toggle('active', index === activeIndex);
+        });
+      }
+
+      window.addEventListener('scroll', updateActiveChip);
+      updateActiveChip();
+
+      // Insight mode toggle
+      const insightToggle = document.querySelector('.insight-toggle');
+      if (insightToggle) {
+        insightToggle.addEventListener('click', function () {
+          document.body.classList.toggle('insight-mode');
+          const on = document.body.classList.contains('insight-mode');
+          insightToggle.textContent = on ? 'ปิดโหมด Insight' : 'เปิดโหมด Insight';
+        });
+      }
+
+                    commentsList.innerHTML = '';
+        if (!stored.length) {
+          const empty = document.createElement('div');
+          empty.className = 'comment-empty';
+          empty.textContent = 'ยังไม่มีใครแสดงความคิดเห็น ลองเริ่มคอมเมนต์แรกดูไหมครับ 🙂';
+          commentsList.appendChild(empty);
+          return;
+        }
+        stored.forEach(function (c) {
+          const card = document.createElement('div');
+          card.className = 'comment-card';
+          const meta = document.createElement('div');
+          meta.className = 'comment-meta';
+          const author = document.createElement('div');
+          author.className = 'comment-author';
+          author.textContent = c.name || 'ผู้อ่านนิรนาม';
+          const time = document.createElement('div');
+          time.className = 'comment-time';
+          time.textContent = c.time || '';
+          meta.appendChild(author);
+          meta.appendChild(time);
+          const body = document.createElement('div');
+          body.className = 'comment-body';
+          body.textContent = c.text;
+          card.appendChild(meta);
+          card.appendChild(body);
+          commentsList.appendChild(card);
+        });
+      }
+
+      if (commentForm && commentText && commentsList) {
+        loadComments();
+        commentForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          const text = (commentText.value || '').trim();
+          const name = (commentName.value || '').trim();
+          if (!text) return;
+          commentSubmit && (commentSubmit.disabled = true);
+          let stored = [];
+          try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw) stored = JSON.parse(raw) || [];
+          } catch (err) {
+            stored = [];
+          }
+          const now = new Date();
+          const timeLabel = now.toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short' });
+          stored.unshift({
+            name: name || 'ผู้อ่านนิรนาม',
+            text: text,
+            time: timeLabel
+          });
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
+          } catch (err) {
+            // ignore storage errors
+          }
+          commentText.value = '';
+          loadComments();
+          commentSubmit && (commentSubmit.disabled = false);
+        });
+      }
+
+      // Collapsible highlight boxes
+      const highlightBlocks = document.querySelectorAll('.content-highlight');
+      highlightBlocks.forEach(function (block) {
+        block.classList.add('collapsible');
+        const title = block.querySelector('.content-highlight-title');
+        let body = block.querySelector('.content-highlight-body');
+        if (!body) {
+          const children = Array.from(block.children).slice(1);
+          body = document.createElement('div');
+          body.className = 'content-highlight-body';
+          children.forEach(function (child) { body.appendChild(child); });
+          block.appendChild(body);
+        }
+        if (title && !title.querySelector('.chevron')) {
+          const chev = document.createElement('span');
+          chev.className = 'chevron';
+          chev.textContent = '▾';
+          title.appendChild(chev);
+        }
+        block.addEventListener('click', function (e) {
+          if (e.target.closest('a, button')) return;
+          block.classList.toggle('collapsed');
+        });
+      });
+    });
+  </script>
+</body>
+</html>
