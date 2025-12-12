@@ -2,15 +2,14 @@
 <html lang="th">
 <head>
   <meta charset="utf-8" />
-  <title>Excel → ESG / SD Dashboard</title>
+  <title>Excel → ESG Standard Mapping + Infographic Report</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- SheetJS (XLSX) – primary -->
+  <!-- SheetJS (XLSX) primary + fallback -->
   <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
-  <!-- fallback -->
   <script>
     if (typeof XLSX === "undefined") {
       document.write('<script src="https://cdn.jsdelivr.net/npm/xlsx@0.19.3/dist/xlsx.full.min.js"><\/script>');
@@ -21,192 +20,961 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
   <style>
-    body { background:#f8fafc }
-    .card { background:white; border-radius:16px; padding:20px; box-shadow:0 10px 25px rgba(0,0,0,.06) }
+    .glass { background: rgba(255,255,255,0.82); backdrop-filter: blur(10px); }
+    .shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+    .hide-scroll::-webkit-scrollbar{ height: 10px; width: 10px;}
+    .hide-scroll::-webkit-scrollbar-thumb{ background: rgba(0,0,0,.12); border-radius: 999px;}
+    .hide-scroll::-webkit-scrollbar-track{ background: rgba(0,0,0,.05); border-radius: 999px;}
+    @media print { .no-print { display:none !important; } }
   </style>
 </head>
 
-<body class="p-6">
-
-<!-- Header -->
-<div class="flex justify-between items-center mb-6">
-  <div>
-    <h1 class="text-2xl font-bold">Excel → ESG / SD Dashboard</h1>
-    <p class="text-slate-500 text-sm">อ่าน Excel + สร้าง HTML Infographic + Executive Summary</p>
-  </div>
-  <div class="flex gap-2">
-    <label class="px-4 py-2 bg-black text-white rounded-lg cursor-pointer">
-      Upload Excel
-      <input type="file" id="fileInput" accept=".xlsx,.xls" hidden>
-    </label>
-    <button onclick="window.print()" class="px-4 py-2 border rounded-lg">Print / Save PDF</button>
-  </div>
-</div>
-
-<!-- Executive Summary -->
-<div class="grid md:grid-cols-3 gap-6 mb-6">
-  <div class="card md:col-span-2">
-    <h2 class="font-semibold text-lg mb-2">Executive Summary</h2>
-    <div id="summary" class="text-slate-700">
-      กรุณาอัปโหลดไฟล์ Excel
-    </div>
-
-    <div class="grid grid-cols-4 gap-3 mt-4 text-center">
-      <div class="border rounded-lg p-3">
-        <div class="text-xs text-slate-500">Sheets</div>
-        <div id="kpiSheets" class="font-bold text-xl">–</div>
-      </div>
-      <div class="border rounded-lg p-3">
-        <div class="text-xs text-slate-500">Rows</div>
-        <div id="kpiRows" class="font-bold text-xl">–</div>
-      </div>
-      <div class="border rounded-lg p-3">
-        <div class="text-xs text-slate-500">Numeric</div>
-        <div id="kpiNums" class="font-bold text-xl">–</div>
-      </div>
-      <div class="border rounded-lg p-3">
-        <div class="text-xs text-slate-500">Coverage</div>
-        <div id="kpiCoverage" class="font-bold text-xl">–</div>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 text-slate-900">
+<header class="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur no-print">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <div class="h-10 w-10 rounded-2xl bg-slate-900 text-white grid place-items-center shadow-soft font-semibold">ESG</div>
+      <div>
+        <div class="font-semibold leading-tight">Excel → ESG Standard Mapping + Infographic Report</div>
+        <div class="text-xs text-slate-500">Upload Excel → กด Generate เพื่อสร้าง Mapping + Trend + Executive Summary</div>
       </div>
     </div>
-  </div>
 
-  <div class="card">
-    <h2 class="font-semibold mb-2">Dashboard Overview</h2>
-    <canvas id="coverageChart"></canvas>
-  </div>
-</div>
+    <div class="flex items-center gap-2">
+      <label class="px-3 py-2 rounded-xl bg-slate-900 text-white cursor-pointer hover:opacity-95 text-sm">
+        <input id="fileInput" type="file" accept=".xlsx,.xls" class="hidden" />
+        Upload Excel
+      </label>
 
-<!-- ESG Cards -->
-<h2 class="font-semibold text-lg mb-3">Report Cards (7 Topics)</h2>
-<div id="cards" class="grid md:grid-cols-2 gap-4"></div>
+      <button id="btnGenerate" class="px-3 py-2 rounded-xl bg-emerald-600 text-white hover:opacity-95 text-sm disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+        Generate ESG Report
+      </button>
 
-<!-- Data Explorer -->
-<div class="card mt-6">
-  <h2 class="font-semibold mb-2">Data Explorer</h2>
-  <select id="sheetSelect" class="border rounded-lg px-3 py-2 mb-3"></select>
-  <div class="overflow-auto">
-    <table class="min-w-full text-sm" id="previewTable">
-      <thead></thead>
-      <tbody></tbody>
-    </table>
+      <button id="btnExportHtml" class="px-3 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-sm" disabled>
+        Export Report (HTML)
+      </button>
+
+      <button id="btnPrint" class="px-3 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-sm">
+        Print / Save PDF
+      </button>
+    </div>
   </div>
-</div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 py-6 space-y-6">
+  <!-- Executive Summary + Overview -->
+  <section class="grid gap-4 md:grid-cols-12">
+    <div class="md:col-span-8 glass rounded-3xl shadow-soft border border-slate-200 p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <h1 class="text-xl font-semibold">Executive Summary</h1>
+          <p class="text-sm text-slate-600 mt-1">กด Generate เพื่อให้ระบบสร้างสรุปผู้บริหาร + แผนภาพ + Trend อัตโนมัติ</p>
+        </div>
+        <span id="statusPill" class="px-3 py-1 rounded-full text-xs bg-white border border-slate-200 text-slate-700">ยังไม่อัปโหลดไฟล์</span>
+      </div>
+
+      <div id="execSummary" class="mt-4 text-slate-800 leading-relaxed">
+        <div class="text-slate-500 text-sm">
+          ขั้นตอน: 1) Upload Excel 2) กด Generate ESG Report
+        </div>
+      </div>
+
+      <div class="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="rounded-2xl border border-slate-200 bg-white p-3">
+          <div class="text-xs text-slate-500">Sheets</div>
+          <div id="kpiSheets" class="text-2xl font-semibold tabular-nums">—</div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-3">
+          <div class="text-xs text-slate-500">Rows parsed</div>
+          <div id="kpiRows" class="text-2xl font-semibold tabular-nums">—</div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-3">
+          <div class="text-xs text-slate-500">Numeric cells</div>
+          <div id="kpiNums" class="text-2xl font-semibold tabular-nums">—</div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-3">
+          <div class="text-xs text-slate-500">Coverage score</div>
+          <div id="kpiCoverage" class="text-2xl font-semibold tabular-nums">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="md:col-span-4 glass rounded-3xl shadow-soft border border-slate-200 p-5">
+      <h2 class="text-base font-semibold">Coverage Overview</h2>
+      <p class="text-sm text-slate-600 mt-1">สัดส่วนการจับคู่ข้อมูลเข้าหมวด ESG (จากชื่อชีต + หัวคอลัมน์)</p>
+      <div class="mt-4">
+        <canvas id="chartCoverage" height="170"></canvas>
+      </div>
+      <div class="mt-4 text-xs text-slate-500">
+        *หากไฟล์ไม่มีคีย์เวิร์ดในหัวคอลัมน์ แนะนำตั้งชื่อคอลัมน์ให้สื่อ KPI (เช่น TRIR, kWh, Water m3)
+      </div>
+    </div>
+  </section>
+
+  <!-- ESG Standard Mapping -->
+  <section class="glass rounded-3xl shadow-soft border border-slate-200 p-5">
+    <div class="flex items-center justify-between gap-3">
+      <div>
+        <h2 class="text-lg font-semibold">ESG Standard Mapping</h2>
+        <p class="text-sm text-slate-600 mt-1">จับคู่หมวดกับมาตรฐาน (GRI / SDGs / TCFD) + แหล่งข้อมูลที่พบใน Excel</p>
+      </div>
+    </div>
+
+    <div class="mt-4 overflow-auto hide-scroll rounded-2xl border border-slate-200 bg-white">
+      <table class="min-w-full text-sm">
+        <thead class="bg-slate-50 text-slate-600">
+          <tr>
+            <th class="text-left px-3 py-2">Topic</th>
+            <th class="text-left px-3 py-2">GRI (suggested)</th>
+            <th class="text-left px-3 py-2">SDGs (suggested)</th>
+            <th class="text-left px-3 py-2">TCFD / Climate</th>
+            <th class="text-left px-3 py-2">Data Signals Found</th>
+          </tr>
+        </thead>
+        <tbody id="mappingTbody" class="text-slate-800"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Cards (Infographic + Trend) -->
+  <section>
+    <div class="flex items-center justify-between gap-3">
+      <h2 class="text-lg font-semibold">Infographic Dashboard (7 Topics)</h2>
+      <div class="no-print flex items-center gap-2">
+        <input id="searchBox" class="px-3 py-2 rounded-xl border border-slate-200 bg-white w-72" placeholder="ค้นหา (เช่น injury, kWh, water)" />
+        <button id="btnExpandAll" class="px-3 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-sm">Expand all</button>
+        <button id="btnCollapseAll" class="px-3 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-sm">Collapse all</button>
+      </div>
+    </div>
+    <div id="cards" class="mt-4 grid gap-4 md:grid-cols-2"></div>
+  </section>
+
+  <!-- Data Explorer -->
+  <section class="glass rounded-3xl shadow-soft border border-slate-200 p-5">
+    <div class="flex items-start justify-between gap-3">
+      <div>
+        <h2 class="text-lg font-semibold">Data Explorer</h2>
+        <p class="text-sm text-slate-600 mt-1">ดูโครงสร้างชีต/คอลัมน์/ตัวอย่างแถว</p>
+      </div>
+      <div class="no-print flex items-center gap-2">
+        <select id="sheetSelect" class="px-3 py-2 rounded-xl border border-slate-200 bg-white">
+          <option value="">— เลือกชีต —</option>
+        </select>
+        <button id="btnDownloadJson" class="px-3 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-sm" disabled>Download JSON</button>
+      </div>
+    </div>
+
+    <div id="sheetMeta" class="mt-4 grid gap-3 md:grid-cols-3"></div>
+
+    <div class="mt-4 rounded-2xl border border-slate-200 bg-white overflow-auto hide-scroll">
+      <table class="min-w-full text-sm" id="previewTable">
+        <thead class="bg-slate-50 text-slate-600"></thead>
+        <tbody class="text-slate-800"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="text-xs text-slate-500 pb-10">
+    <div>© Single HTML. ประมวลผลในเบราว์เซอร์ ไม่อัปโหลดขึ้นเซิร์ฟเวอร์</div>
+  </footer>
+</main>
 
 <script>
-const CATEGORIES = [
-  { id:"Safety Health", kw:["injury","accident","safety","ltifr","trir"] },
-  { id:"Human Capital", kw:["employee","training","turnover","headcount"] },
-  { id:"Human Rights", kw:["grievance","harassment","ethics","human rights"] },
-  { id:"Climate Resilience", kw:["climate","flood","risk","tcfd"] },
-  { id:"Energy Efficiency", kw:["energy","kwh","fuel","electric"] },
-  { id:"Waste to Wise", kw:["waste","recycle","landfill"] },
-  { id:"Water Stewardship", kw:["water","wastewater","m3"] }
+/* ---------------------------
+   ESG Topics + Standard Mapping
+--------------------------- */
+const TOPICS = [
+  {
+    id:"safety_health",
+    title:"Safety Health",
+    icon:"🦺",
+    desc:"อุบัติเหตุ/บาดเจ็บ/อาชีวอนามัย (TRIR/LTIFR/near miss)",
+    keywords:["safety","ohs","hse","incident","injury","accident","near miss","lost time","ltifr","trir","medical","first aid","hazard","ppe","health","illness"],
+    standards: {
+      gri:["GRI 403 Occupational Health and Safety"],
+      sdgs:["SDG 3 Good Health and Well-being","SDG 8 Decent Work"],
+      tcfd:["—"]
+    }
+  },
+  {
+    id:"human_capital",
+    title:"Human Capital",
+    icon:"👥",
+    desc:"พนักงาน/ฝึกอบรม/turnover/diversity",
+    keywords:["headcount","employee","workforce","training","hours","turnover","attrition","engagement","talent","recruit","hire","resign","diversity","gender","age","wage","salary","benefit"],
+    standards: {
+      gri:["GRI 401 Employment","GRI 404 Training and Education","GRI 405 Diversity and Equal Opportunity"],
+      sdgs:["SDG 4 Quality Education","SDG 5 Gender Equality","SDG 8 Decent Work"],
+      tcfd:["—"]
+    }
+  },
+  {
+    id:"human_rights",
+    title:"Human Rights",
+    icon:"⚖️",
+    desc:"สิทธิมนุษยชน/ร้องเรียน/ซัพพลายเชน",
+    keywords:["human rights","grievance","complaint","harassment","discrimination","child labor","forced labor","modern slavery","supplier","supply chain","audit","code of conduct","ethics","whistle","privacy"],
+    standards: {
+      gri:["GRI 406 Non-discrimination","GRI 408 Child Labor","GRI 409 Forced or Compulsory Labor","GRI 414 Supplier Social Assessment"],
+      sdgs:["SDG 10 Reduced Inequalities","SDG 16 Peace, Justice and Strong Institutions"],
+      tcfd:["—"]
+    }
+  },
+  {
+    id:"climate_resilience",
+    title:"Climate Resilience",
+    icon:"🌦️",
+    desc:"ความเสี่ยงสภาพภูมิอากาศ/การปรับตัว/BCP",
+    keywords:["climate","resilience","adaptation","risk","scenario","flood","drought","heat","storm","tcfd","physical risk","transition risk","bcp","emergency"],
+    standards: {
+      gri:["GRI 201 (climate-related impacts in risk context)"],
+      sdgs:["SDG 13 Climate Action"],
+      tcfd:["TCFD Governance / Strategy / Risk Mgmt / Metrics & Targets"]
+    }
+  },
+  {
+    id:"energy_efficiency",
+    title:"Energy Efficiency",
+    icon:"⚡",
+    desc:"ไฟฟ้า/เชื้อเพลิง/kWh/MWh/Intensity/Renewable",
+    keywords:["energy","electricity","kwh","mwh","gj","fuel","diesel","gasoline","natural gas","steam","boiler","intensity","efficiency","renewable","solar","wind","scope 2"],
+    standards: {
+      gri:["GRI 302 Energy","GRI 305 Emissions (related)"],
+      sdgs:["SDG 7 Affordable and Clean Energy","SDG 13 Climate Action"],
+      tcfd:["Metrics & Targets (energy/emissions)"]
+    }
+  },
+  {
+    id:"waste_to_wise",
+    title:"Waste to Wise",
+    icon:"♻️",
+    desc:"ของเสีย/รีไซเคิล/landfill diversion/hazardous",
+    keywords:["waste","recycle","recycling","landfill","diversion","hazardous","non-hazardous","scrap","plastic","paper","organic","incineration","compost","circular","reuse","reduce"],
+    standards: {
+      gri:["GRI 306 Waste"],
+      sdgs:["SDG 12 Responsible Consumption and Production"],
+      tcfd:["—"]
+    }
+  },
+  {
+    id:"water_stewardship",
+    title:"Water Stewardship",
+    icon:"💧",
+    desc:"ใช้น้ำ/น้ำเสีย/m3/BOD/COD/Reuse",
+    keywords:["water","m3","intake","withdrawal","consumption","intensity","wastewater","effluent","discharge","bod","cod","tss","ph","treatment","reuse","groundwater","stormwater"],
+    standards: {
+      gri:["GRI 303 Water and Effluents"],
+      sdgs:["SDG 6 Clean Water and Sanitation"],
+      tcfd:["Physical risk (water stress) — if applicable"]
+    }
+  }
 ];
 
-let workbook = null;
+/* ---------------------------
+   State
+--------------------------- */
+let workbookJson = null; // { sheetNames, sheets: {name:{rows, stats}} }
+let analysis = null;     // coverage + signals
+let charts = [];         // Chart.js instances
+let chartCoverage = null;
 
-document.getElementById("fileInput").addEventListener("change", async e => {
-  if (typeof XLSX === "undefined") {
-    alert("XLSX library not loaded (check internet/firewall)");
-    return;
+/* ---------------------------
+   Helpers
+--------------------------- */
+const $ = (id)=>document.getElementById(id);
+
+function setStatus(text, tone="neutral") {
+  const el = $("statusPill");
+  el.textContent = text;
+  el.className = "px-3 py-1 rounded-full text-xs border " + (
+    tone==="ok" ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
+    tone==="warn" ? "bg-amber-50 text-amber-700 border-amber-200" :
+    tone==="bad" ? "bg-rose-50 text-rose-700 border-rose-200" :
+    "bg-white text-slate-700 border-slate-200"
+  );
+}
+
+function safeText(v){ return (v===null || v===undefined) ? "" : String(v); }
+function normalize(s){ return safeText(s).toLowerCase().replace(/\s+/g," ").trim(); }
+function isNumberLike(v){
+  if (v===null||v===undefined) return false;
+  if (typeof v==="number" && Number.isFinite(v)) return true;
+  if (typeof v==="string"){
+    const s=v.trim().replaceAll(",","");
+    if(!s) return false;
+    const n=Number(s);
+    return Number.isFinite(n);
+  }
+  return false;
+}
+function toNumber(v){
+  if (typeof v==="number") return v;
+  const s=safeText(v).trim().replaceAll(",","");
+  const n=Number(s);
+  return Number.isFinite(n) ? n : null;
+}
+function scoreMatch(text, keywords){
+  const t=normalize(text);
+  let score=0;
+  for (const k of keywords){
+    const kk=normalize(k);
+    if(!kk) continue;
+    if (t.includes(kk)) score+=2;
+    const parts=kk.split(" ").filter(Boolean);
+    if (parts.length>1){
+      const hit=parts.filter(p=>t.includes(p)).length;
+      score += hit*0.5;
+    }
+  }
+  return score;
+}
+
+/* ---------------------------
+   Excel parsing
+--------------------------- */
+function computeStats(rows){
+  let rowCount = rows.length;
+  let colSet = new Set();
+  let numericCells = 0;
+  for (const r of rows){
+    for (const k of Object.keys(r||{})) colSet.add(k);
+    for (const v of Object.values(r||{})) if (isNumberLike(v)) numericCells++;
+  }
+  return { rowCount, colCount: colSet.size, numericCells, columns:[...colSet] };
+}
+
+function buildWorkbookJson(wb){
+  const sheets = {};
+  wb.SheetNames.forEach(name=>{
+    const ws = wb.Sheets[name];
+    const rows = XLSX.utils.sheet_to_json(ws, { defval:"" });
+    sheets[name] = { name, rows, stats: computeStats(rows) };
+  });
+  return { sheetNames: wb.SheetNames, sheets };
+}
+
+/* ---------------------------
+   Time inference (for trend)
+--------------------------- */
+function inferTimeKey(columns){
+  const prefs = ["date","วันที่","เดือน","month","ปี","year","period","quarter","qtr","time"];
+  let best=null, bestScore=-1;
+  for (const c of columns){
+    const s=normalize(c);
+    let score=0;
+    for (const p of prefs) if (s.includes(normalize(p))) score+=2;
+    if (score>bestScore){ bestScore=score; best=c; }
+  }
+  return bestScore>=2 ? best : null;
+}
+
+function parsePeriod(v){
+  // return {key, label, sortKey} or null
+  // supports: Date object, excel date number (rough), "YYYY-MM", "YYYY/MM", "YYYY", "MMM YYYY"
+  if (v instanceof Date && !isNaN(v)) {
+    const y=v.getFullYear(), m=v.getMonth()+1;
+    return { key: `${y}-${String(m).padStart(2,"0")}`, label: `${y}-${String(m).padStart(2,"0")}`, sortKey: y*100+m };
+  }
+  if (typeof v === "number" && Number.isFinite(v)) {
+    // excel date serial (rough): days since 1899-12-30
+    // only treat as date if in plausible range
+    if (v > 20000 && v < 80000) {
+      const d = new Date(Date.UTC(1899, 11, 30) + v*86400000);
+      const y=d.getUTCFullYear(), m=d.getUTCMonth()+1;
+      return { key: `${y}-${String(m).padStart(2,"0")}`, label: `${y}-${String(m).padStart(2,"0")}`, sortKey: y*100+m };
+    }
+  }
+  const s = normalize(v);
+  if(!s) return null;
+
+  // YYYY-MM or YYYY/MM
+  let m = s.match(/^(\d{4})[-\/](\d{1,2})$/);
+  if (m){
+    const y=Number(m[1]), mo=Number(m[2]);
+    return { key:`${y}-${String(mo).padStart(2,"0")}`, label:`${y}-${String(mo).padStart(2,"0")}`, sortKey: y*100+mo };
+  }
+  // YYYY
+  m = s.match(/^(\d{4})$/);
+  if (m){
+    const y=Number(m[1]);
+    return { key:`${y}`, label:`${y}`, sortKey: y*100 };
+  }
+  // Try Date.parse
+  const dp = Date.parse(s);
+  if (!Number.isNaN(dp)){
+    const d = new Date(dp);
+    const y=d.getFullYear(), mo=d.getMonth()+1;
+    return { key:`${y}-${String(mo).padStart(2,"0")}`, label:`${y}-${String(mo).padStart(2,"0")}`, sortKey: y*100+mo };
+  }
+  return null;
+}
+
+/* ---------------------------
+   Category analysis & metric selection
+--------------------------- */
+function summarizeNumericColumns(rows, columns, maxCols=10){
+  const metrics=[];
+  for (const c of columns){
+    let count=0, num=0, sum=0, min=null, max=null;
+    for (const r of rows){
+      if (!(c in r)) continue;
+      count++;
+      const n=toNumber(r[c]);
+      if (n===null) continue;
+      num++; sum+=n;
+      min=(min===null)?n:Math.min(min,n);
+      max=(max===null)?n:Math.max(max,n);
+    }
+    if (num >= Math.max(5, Math.floor(rows.length*0.2))){
+      metrics.push({ col:c, num, count, ratio:num/Math.max(count,1), sum, min, max, avg:sum/num });
+    }
+  }
+  metrics.sort((a,b)=>(b.ratio-a.ratio)||(b.num-a.num));
+  return metrics.slice(0,maxCols);
+}
+
+function analyzeWorkbook(wbjson){
+  const sheetCount = wbjson.sheetNames.length;
+  let totalRows=0, totalNums=0;
+
+  const catSignals = Object.fromEntries(TOPICS.map(t=>[t.id, { score:0, hits:[], metrics:[], examples:[], timeSeries:null, chosen:null }]));
+  const perSheet=[];
+
+  for (const sname of wbjson.sheetNames){
+    const sh = wbjson.sheets[sname];
+    const {rowCount,colCount,numericCells,columns}=sh.stats;
+    totalRows += rowCount;
+    totalNums += numericCells;
+
+    const sheetText = sname + " " + columns.join(" ");
+    const sheetCatScores = TOPICS.map(t=>({id:t.id, score: scoreMatch(sheetText, t.keywords)})).sort((a,b)=>b.score-a.score);
+    const best = sheetCatScores[0];
+
+    const timeKey = inferTimeKey(columns);
+    const numericSummary = summarizeNumericColumns(sh.rows, columns, 12);
+
+    if (best && best.score>0){
+      catSignals[best.id].score += best.score;
+      catSignals[best.id].hits.push({type:"sheet", name:sname, score:best.score});
+      numericSummary.slice(0,6).forEach(m=>catSignals[best.id].metrics.push({sheet:sname, ...m}));
+      catSignals[best.id].examples.push({sheet:sname, columns: columns.slice(0,20)});
+    } else {
+      for (const c of columns){
+        const colScores = TOPICS.map(t=>({id:t.id, score: scoreMatch(c,t.keywords)})).sort((a,b)=>b.score-a.score);
+        if (colScores[0].score>0){
+          catSignals[colScores[0].id].score += colScores[0].score;
+          catSignals[colScores[0].id].hits.push({type:"column", sheet:sname, name:c, score:colScores[0].score});
+        }
+      }
+    }
+
+    perSheet.push({ name:sname,rowCount,colCount,numericCells,timeKey,bestCategory:best?.id||null,bestScore:best?.score||0, topNumeric:numericSummary });
   }
 
-  const file = e.target.files[0];
-  const data = await file.arrayBuffer();
-  workbook = XLSX.read(data, { type:"array" });
+  const maxScore = Math.max(1, ...TOPICS.map(t=>catSignals[t.id].score));
+  const coverage = TOPICS.map(t=>({
+    id:t.id, title:t.title,
+    value: Math.round((catSignals[t.id].score / maxScore) * 100)
+  }));
+  const coverageAvg = Math.round(coverage.reduce((a,b)=>a+b.value,0)/coverage.length);
 
-  analyze(workbook);
-});
-
-function analyze(wb) {
-  const sheets = wb.SheetNames;
-  let rows = 0, nums = 0;
-  let coverage = Object.fromEntries(CATEGORIES.map(c=>[c.id,0]));
-
-  sheets.forEach(name=>{
-    const json = XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:""});
-    rows += json.length;
-
-    json.forEach(r=>{
-      Object.entries(r).forEach(([k,v])=>{
-        if (!isNaN(Number(v))) nums++;
-        CATEGORIES.forEach(c=>{
-          c.kw.forEach(k2=>{
-            if ((k+" "+name).toLowerCase().includes(k2)) coverage[c.id]++;
-          });
-        });
-      });
-    });
-  });
-
-  document.getElementById("kpiSheets").textContent = sheets.length;
-  document.getElementById("kpiRows").textContent = rows;
-  document.getElementById("kpiNums").textContent = nums;
-
-  const max = Math.max(...Object.values(coverage),1);
-  const covPct = Math.round(
-    Object.values(coverage).reduce((a,b)=>a+b,0) /
-    (max * CATEGORIES.length) * 100
-  );
-  document.getElementById("kpiCoverage").textContent = covPct + "%";
-
-  document.getElementById("summary").innerHTML =
-    `พบข้อมูลรวม <b>${rows}</b> แถว จาก <b>${sheets.length}</b> ชีต
-     ครอบคลุม ESG โดยเฉลี่ย <b>${covPct}%</b>`;
-
-  renderChart(coverage);
-  renderCards(coverage);
-  renderExplorer(wb);
+  return { sheetCount, totalRows, totalNums, coverage, coverageAvg, perSheet, catSignals };
 }
 
-function renderChart(data) {
-  new Chart(document.getElementById("coverageChart"),{
+/* ---------------------------
+   Build time-series for charts (after Generate)
+--------------------------- */
+function buildCategoryTimeSeries(wbjson, a){
+  // For each category: choose a metric column likely relevant, then aggregate by period
+  for (const topic of TOPICS){
+    const sig = a.catSignals[topic.id];
+
+    // pick best metric: keyword match on column name first, then highest ratio
+    const allMetrics = (sig.metrics || []).slice();
+    allMetrics.sort((m1,m2)=>{
+      const s1 = scoreMatch(m1.col, topic.keywords);
+      const s2 = scoreMatch(m2.col, topic.keywords);
+      if (s2 !== s1) return s2 - s1;
+      return (m2.ratio - m1.ratio) || (m2.num - m1.num);
+    });
+    const chosen = allMetrics[0] || null;
+    sig.chosen = chosen;
+
+    // find best sheet/timeKey where chosen exists
+    let bestSheet = null;
+    let timeKey = null;
+    if (chosen){
+      const sheet = wbjson.sheets[chosen.sheet];
+      if (sheet){
+        timeKey = inferTimeKey(sheet.stats.columns);
+        bestSheet = sheet;
+      }
+    } else {
+      // fallback: search all sheets for any timeKey + numeric col matching topic keywords
+      for (const sname of wbjson.sheetNames){
+        const sheet = wbjson.sheets[sname];
+        const tk = inferTimeKey(sheet.stats.columns);
+        if (!tk) continue;
+        const ns = summarizeNumericColumns(sheet.rows, sheet.stats.columns, 12);
+        ns.sort((m1,m2)=> scoreMatch(m2.col, topic.keywords)-scoreMatch(m1.col, topic.keywords));
+        if (ns[0] && scoreMatch(ns[0].col, topic.keywords) > 0){
+          bestSheet = sheet;
+          timeKey = tk;
+          sig.chosen = { sheet:sname, ...ns[0] };
+          break;
+        }
+      }
+    }
+
+    if (!bestSheet || !timeKey || !sig.chosen){
+      sig.timeSeries = null;
+      continue;
+    }
+
+    const metricCol = sig.chosen.col;
+    const rows = bestSheet.rows;
+
+    // aggregate sum by period; if you prefer average, change below
+    const map = new Map(); // periodKey -> {label, sortKey, sum, count}
+    for (const r of rows){
+      const p = parsePeriod(r[timeKey]);
+      if (!p) continue;
+      const n = toNumber(r[metricCol]);
+      if (n === null) continue;
+      if (!map.has(p.key)) map.set(p.key, { label:p.label, sortKey:p.sortKey, sum:0, count:0 });
+      const it = map.get(p.key);
+      it.sum += n;
+      it.count += 1;
+    }
+
+    const series = [...map.values()].sort((x,y)=>x.sortKey-y.sortKey);
+    if (series.length < 2){
+      sig.timeSeries = null;
+      continue;
+    }
+
+    // choose aggregation display: average if many rows per period
+    const useAvg = series.some(x=>x.count>1);
+    const labels = series.map(x=>x.label);
+    const values = series.map(x=> useAvg ? (x.sum/x.count) : x.sum);
+
+    sig.timeSeries = { sheet: bestSheet.name, timeKey, metricCol, labels, values, agg: useAvg ? "avg" : "sum" };
+  }
+}
+
+/* ---------------------------
+   Rendering
+--------------------------- */
+function destroyCharts(){
+  charts.forEach(c=>{ try{ c.destroy(); }catch(e){} });
+  charts = [];
+  if (chartCoverage){ try{ chartCoverage.destroy(); }catch(e){} }
+}
+
+function renderCoverageChart(a){
+  const ctx = $("chartCoverage").getContext("2d");
+  if (chartCoverage) chartCoverage.destroy();
+  chartCoverage = new Chart(ctx, {
     type:"bar",
     data:{
-      labels:Object.keys(data),
-      datasets:[{data:Object.values(data)}]
+      labels: a.coverage.map(x=>x.title),
+      datasets:[{ label:"Coverage (%)", data: a.coverage.map(x=>x.value) }]
     },
-    options:{plugins:{legend:{display:false}}}
+    options:{
+      responsive:true,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{ label:(c)=>`${c.parsed.y}%` } } },
+      scales:{ y:{ beginAtZero:true, max:100, ticks:{ callback:(v)=>v+"%" } } }
+    }
   });
 }
 
-function renderCards(data) {
-  const el = document.getElementById("cards");
-  el.innerHTML="";
-  Object.entries(data).forEach(([k,v])=>{
-    el.innerHTML+=`
-      <div class="card">
-        <h3 class="font-semibold">${k}</h3>
-        <p class="text-slate-600 mt-2">
-          พบสัญญาณข้อมูล ${v} รายการ<br>
-          แนะนำจัดทำ KPI + Trend Dashboard
-        </p>
-      </div>`;
+function renderExecutiveSummary(a){
+  $("kpiSheets").textContent = a.sheetCount.toLocaleString();
+  $("kpiRows").textContent = a.totalRows.toLocaleString();
+  $("kpiNums").textContent = a.totalNums.toLocaleString();
+  $("kpiCoverage").textContent = a.coverageAvg + "%";
+
+  const top = [...a.coverage].sort((x,y)=>y.value-x.value).slice(0,3);
+  const weak = [...a.coverage].sort((x,y)=>x.value-y.value).slice(0,2);
+
+  const topPills = top.map(x=>`<span class="px-2 py-1 rounded-full border bg-white text-xs">${x.title}: <b class="tabular-nums">${x.value}%</b></span>`).join(" ");
+  const weakPills = weak.map(x=>`<span class="px-2 py-1 rounded-full border bg-white text-xs">${x.title}: <b class="tabular-nums">${x.value}%</b></span>`).join(" ");
+
+  $("execSummary").innerHTML = `
+    <div class="space-y-3">
+      <p>
+        ระบบอ่าน Excel แล้วพบความครอบคลุมโดยรวม <b class="tabular-nums">${a.coverageAvg}%</b>.
+        หมวดเด่น: ${topPills}. หมวดที่ข้อมูลยังบาง: ${weakPills}.
+      </p>
+      <div class="rounded-2xl border border-slate-200 bg-white p-4">
+        <div class="text-sm font-semibold">Executive Actions (แนะนำ)</div>
+        <ul class="text-sm text-slate-700 mt-2 list-disc pl-5">
+          <li>มาตรฐานข้อมูล: เพิ่มคอลัมน์ “ช่วงเวลา / หน่วย / ขอบเขต / สถานที่” เพื่อสร้าง Trend & Benchmark</li>
+          <li>กำหนด KPI Owner ต่อหมวด และทำรายงานรูปแบบเดียวกันทุกเดือน/ไตรมาส</li>
+          <li>ทำ Data Dictionary ของ KPI สำคัญ (เช่น TRIR/LTIFR, kWh, m³, diversion rate)</li>
+        </ul>
+      </div>
+      <div class="text-xs text-slate-500">*กด Generate ESG Report เพื่อให้ระบบเลือกกราฟและสร้าง Trend line ต่อหมวด</div>
+    </div>
+  `;
+}
+
+function renderMappingTable(a){
+  const tbody = $("mappingTbody");
+  tbody.innerHTML = "";
+  for (const topic of TOPICS){
+    const sig = a.catSignals[topic.id];
+    const hits = (sig.hits||[]).slice(0,6).map(h=>{
+      if (h.type==="sheet") return `Sheet: ${h.name}`;
+      return `Col: ${h.name} (${h.sheet})`;
+    }).join(" • ") || "—";
+
+    const tr = document.createElement("tr");
+    tr.className = "border-t border-slate-100";
+    tr.innerHTML = `
+      <td class="px-3 py-2 whitespace-nowrap font-medium">${topic.icon} ${topic.title}</td>
+      <td class="px-3 py-2">${topic.standards.gri.join("<br>")}</td>
+      <td class="px-3 py-2">${topic.standards.sdgs.join("<br>")}</td>
+      <td class="px-3 py-2">${topic.standards.tcfd.join("<br>")}</td>
+      <td class="px-3 py-2 text-slate-700">${hits}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+
+function trendDirection(values){
+  if (!values || values.length<2) return null;
+  const first = values[0], last = values[values.length-1];
+  if (!isFinite(first) || !isFinite(last)) return null;
+  const diff = last - first;
+  const pct = first !== 0 ? (diff/first)*100 : null;
+  return { diff, pct };
+}
+
+function buildInsight(topic, sig, cov){
+  // If trend exists, add direction narrative
+  const ts = sig.timeSeries;
+  const base = (cov>=70) ? "ข้อมูลค่อนข้างครบ เหมาะทำรายงานเชิงผู้บริหารแบบต่อเนื่อง" :
+               (cov>=40) ? "ข้อมูลใช้งานได้บางส่วน แนะนำมาตรฐานหัวคอลัมน์/หน่วย/ช่วงเวลาให้ชัด" :
+               "ข้อมูลยังบาง แนะนำเพิ่ม KPI เชิงตัวเลขและคอลัมน์เวลาเพื่อทำ Trend";
+  if (!ts) return base + ". (ยังไม่พบคอลัมน์เวลา+ตัวเลขที่พอทำ Trend ได้)";
+
+  const td = trendDirection(ts.values);
+  if (!td) return base + ".";
+  const dir = td.diff>0 ? "เพิ่มขึ้น" : td.diff<0 ? "ลดลง" : "ทรงตัว";
+  const pct = (td.pct===null) ? "" : ` (~${td.pct.toFixed(1)}%)`;
+  return `${base}. แนวโน้มของ <b>${safeText(ts.metricCol)}</b> ${dir}${pct} (จากช่วงแรก → ช่วงล่าสุด).`;
+}
+
+function renderCards(a){
+  const container = $("cards");
+  container.innerHTML = "";
+  destroyInlineCharts();
+
+  for (const topic of TOPICS){
+    const sig = a.catSignals[topic.id];
+    const cov = a.coverage.find(x=>x.id===topic.id)?.value ?? 0;
+
+    const chosen = sig.chosen ? `${sig.chosen.col} <span class="text-slate-400">(${sig.chosen.sheet})</span>` : "—";
+    const ts = sig.timeSeries;
+
+    const hitList = (sig.hits||[]).slice(0,8).map(h=>{
+      const label = h.type==="sheet" ? `Sheet: ${h.name}` : `Col: ${h.name} <span class="text-slate-400">(${h.sheet})</span>`;
+      return `<li class="mt-1">${label} <span class="text-slate-500">score</span> <span class="tabular-nums">${h.score}</span></li>`;
+    }).join("") || `<li class="text-slate-500">ยังไม่พบสัญญาณข้อมูลที่ชัดเจน</li>`;
+
+    const insight = buildInsight(topic, sig, cov);
+
+    const card = document.createElement("article");
+    card.className = "glass rounded-3xl shadow-soft border border-slate-200 p-5";
+    card.dataset.cat = topic.id;
+
+    const chartId = `chart_${topic.id}`;
+
+    card.innerHTML = `
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <div class="text-2xl">${topic.icon}</div>
+            <h3 class="text-base font-semibold">${topic.title}</h3>
+          </div>
+          <p class="text-sm text-slate-600 mt-1">${topic.desc}</p>
+        </div>
+        <div class="text-right">
+          <div class="text-xs text-slate-500">Coverage</div>
+          <div class="text-2xl font-semibold tabular-nums">${cov}%</div>
+        </div>
+      </div>
+
+      <div class="mt-4 grid gap-3 sm:grid-cols-3">
+        <div class="rounded-2xl border border-slate-200 bg-white p-4 sm:col-span-2">
+          <div class="text-sm font-semibold">Trend / Chart</div>
+          <div class="text-xs text-slate-500 mt-1">${ts ? `Sheet: <b>${safeText(ts.sheet)}</b> • Time: <b>${safeText(ts.timeKey)}</b> • Metric: <b>${safeText(ts.metricCol)}</b> • Agg: <b>${ts.agg}</b>` : `ยังไม่สามารถสร้าง Trend ได้ (ไม่พบคอลัมน์เวลา + ตัวเลขที่เหมาะสม)`}</div>
+          <div class="mt-3">
+            <canvas id="${chartId}" height="150"></canvas>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-4">
+          <div class="text-sm font-semibold">Selected KPI</div>
+          <div class="mt-2 text-sm text-slate-700">${chosen}</div>
+          <div class="mt-3 text-sm text-slate-700 leading-relaxed">${insight}</div>
+        </div>
+      </div>
+
+      <details class="mt-4 group">
+        <summary class="cursor-pointer select-none text-sm font-semibold flex items-center justify-between">
+          <span>Signals & Mapping Evidence</span>
+          <span class="text-slate-500 group-open:rotate-180 transition">▾</span>
+        </summary>
+        <div class="mt-3 text-sm text-slate-700">
+          <ul class="list-disc pl-5">${hitList}</ul>
+        </div>
+      </details>
+    `;
+
+    container.appendChild(card);
+
+    // Create chart
+    renderTopicChart(chartId, topic, sig);
+  }
+}
+
+function destroyInlineCharts(){
+  charts.forEach(c=>{ try{c.destroy()}catch(e){} });
+  charts = [];
+}
+
+function renderTopicChart(canvasId, topic, sig){
+  const el = document.getElementById(canvasId);
+  if (!el) return;
+  const ctx = el.getContext("2d");
+
+  const ts = sig.timeSeries;
+  if (ts){
+    // line chart for trend
+    const c = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: ts.labels,
+        datasets: [{ label: ts.metricCol, data: ts.values, tension: 0.25 }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: false } }
+      }
+    });
+    charts.push(c);
+  } else {
+    // fallback: show donut coverage
+    const cov = analysis.coverage.find(x=>x.id===topic.id)?.value ?? 0;
+    const c = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Coverage", "Gap"],
+        datasets: [{ data: [cov, Math.max(0, 100-cov)] }]
+      },
+      options: { responsive:true, plugins:{ legend:{ display:false } }, cutout:"70%" }
+    });
+    charts.push(c);
+  }
+}
+
+/* ---------------------------
+   Data Explorer
+--------------------------- */
+function renderSheetSelector(wbjson){
+  const sel = $("sheetSelect");
+  sel.innerHTML = `<option value="">— เลือกชีต —</option>`;
+  for (const name of wbjson.sheetNames){
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    sel.appendChild(opt);
+  }
+}
+
+function renderSheetPreview(sheetName){
+  if (!workbookJson || !sheetName) return;
+  const sheet = workbookJson.sheets[sheetName];
+  const rows = sheet.rows || [];
+  const stats = sheet.stats;
+
+  $("sheetMeta").innerHTML = `
+    <div class="rounded-2xl border border-slate-200 bg-white p-4">
+      <div class="text-xs text-slate-500">Sheet</div>
+      <div class="font-semibold">${safeText(sheetName)}</div>
+    </div>
+    <div class="rounded-2xl border border-slate-200 bg-white p-4">
+      <div class="text-xs text-slate-500">Rows / Cols</div>
+      <div class="font-semibold tabular-nums">${stats.rowCount} / ${stats.colCount}</div>
+    </div>
+    <div class="rounded-2xl border border-slate-200 bg-white p-4">
+      <div class="text-xs text-slate-500">Numeric cells</div>
+      <div class="font-semibold tabular-nums">${stats.numericCells}</div>
+    </div>
+  `;
+
+  const columns = stats.columns.slice(0, 20);
+  const head = $("previewTable").querySelector("thead");
+  const body = $("previewTable").querySelector("tbody");
+  head.innerHTML = `<tr>${columns.map(c=>`<th class="text-left px-3 py-2 whitespace-nowrap">${safeText(c)}</th>`).join("")}</tr>`;
+  body.innerHTML = rows.slice(0,20).map(r=>`
+    <tr class="border-t border-slate-100">
+      ${columns.map(c=>`<td class="px-3 py-2 whitespace-nowrap">${safeText(r[c])}</td>`).join("")}
+    </tr>
+  `).join("");
+}
+
+/* ---------------------------
+   Export / Download
+--------------------------- */
+function downloadText(filename, text){
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function exportStandaloneHtml(){
+  const clone = document.documentElement.cloneNode(true);
+  clone.querySelectorAll(".no-print").forEach(el=>el.remove());
+
+  const note = clone.createElement("div");
+  note.className = "max-w-7xl mx-auto px-4 py-3 text-xs text-slate-500";
+  note.textContent = "Exported report snapshot. Generated in-browser.";
+  clone.querySelector("body").prepend(note);
+
+  downloadText("esg_report_snapshot.html", "<!doctype html>\n" + clone.outerHTML);
+}
+
+function downloadJson(){
+  if (!workbookJson) return;
+  downloadText("workbook_esg_parsed.json", JSON.stringify({ workbookJson, analysis }, null, 2));
+}
+
+/* ---------------------------
+   UI actions
+--------------------------- */
+function expandCollapseAll(expand=true){
+  document.querySelectorAll("#cards details").forEach(d=>d.open=expand);
+}
+function applySearchFilter(q){
+  const query = normalize(q);
+  document.querySelectorAll("#cards article").forEach(card=>{
+    const t = normalize(card.innerText);
+    card.style.display = (!query || t.includes(query)) ? "" : "none";
   });
 }
 
-function renderExplorer(wb) {
-  const sel = document.getElementById("sheetSelect");
-  sel.innerHTML="";
-  wb.SheetNames.forEach(s=>{
-    sel.innerHTML+=`<option>${s}</option>`;
-  });
-  sel.onchange=()=>previewSheet(wb,sel.value);
-  previewSheet(wb,wb.SheetNames[0]);
-}
+/* ---------------------------
+   Main flow
+--------------------------- */
+$("fileInput").addEventListener("change", async (e)=>{
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-function previewSheet(wb,name){
-  const json = XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:""});
-  const cols = Object.keys(json[0]||{});
-  const head = document.querySelector("#previewTable thead");
-  const body = document.querySelector("#previewTable tbody");
-  head.innerHTML="<tr>"+cols.map(c=>`<th class="p-2 border">${c}</th>`).join("")+"</tr>";
-  body.innerHTML=json.slice(0,20).map(r=>
-    "<tr>"+cols.map(c=>`<td class="p-2 border">${r[c]}</td>`).join("")+"</tr>"
-  ).join("");
-}
+  try{
+    if (typeof XLSX === "undefined") throw new Error("XLSX library not loaded (check internet/firewall/CDN).");
+
+    setStatus("กำลังอ่านไฟล์…", "neutral");
+    const data = await file.arrayBuffer();
+    const wb = XLSX.read(data, { type:"array" });
+
+    workbookJson = buildWorkbookJson(wb);
+    analysis = analyzeWorkbook(workbookJson);
+
+    // render base (pre-generate)
+    renderExecutiveSummary(analysis);
+    renderCoverageChart(analysis);
+    renderMappingTable(analysis);
+    renderSheetSelector(workbookJson);
+
+    $("sheetSelect").value = workbookJson.sheetNames[0] || "";
+    renderSheetPreview($("sheetSelect").value);
+
+    $("btnGenerate").disabled = false;
+    $("btnDownloadJson").disabled = false;
+    $("btnExportHtml").disabled = true;
+
+    const cov = analysis.coverageAvg;
+    setStatus(`อัปโหลดแล้ว • Ready to Generate (Coverage ${cov}%)`, cov>=60?"ok":cov>=35?"warn":"bad");
+    $("execSummary").insertAdjacentHTML("beforeend", `<div class="mt-3 text-sm text-slate-700"><b>พร้อมแล้ว:</b> กด <b>Generate ESG Report</b> เพื่อสร้าง Trend/Infographic</div>`);
+
+    // clear cards until generate
+    $("cards").innerHTML = `<div class="md:col-span-2 glass rounded-3xl shadow-soft border border-slate-200 p-6 text-slate-600">
+      อัปโหลดแล้ว ✅ กด <b>Generate ESG Report</b> เพื่อสร้าง Infographic + Trend line ต่อหมวด
+    </div>`;
+    destroyInlineCharts();
+  }catch(err){
+    console.error(err);
+    setStatus("อ่านไฟล์ไม่สำเร็จ", "bad");
+    $("execSummary").innerHTML = `<div class="text-sm text-rose-700">เกิดข้อผิดพลาด: ${safeText(err?.message||err)}</div>`;
+  }
+});
+
+$("btnGenerate").addEventListener("click", ()=>{
+  if (!workbookJson || !analysis) return;
+
+  setStatus("กำลัง Generate Report…", "neutral");
+
+  // build time-series & then render cards with charts
+  buildCategoryTimeSeries(workbookJson, analysis);
+
+  // upgrade executive summary with trend highlights
+  const withTrend = TOPICS.map(t=>{
+    const ts = analysis.catSignals[t.id].timeSeries;
+    if (!ts) return null;
+    const td = trendDirection(ts.values);
+    if (!td) return null;
+    return { topic: t.title, metric: ts.metricCol, diff: td.diff, pct: td.pct };
+  }).filter(Boolean);
+
+  const topTrend = withTrend
+    .slice()
+    .sort((a,b)=>Math.abs((b.pct??b.diff)) - Math.abs((a.pct??a.diff)))
+    .slice(0,3);
+
+  const trendHtml = topTrend.length ? `
+    <div class="rounded-2xl border border-slate-200 bg-white p-4">
+      <div class="text-sm font-semibold">Trend Highlights (auto)</div>
+      <ul class="text-sm text-slate-700 mt-2 list-disc pl-5">
+        ${topTrend.map(x=>{
+          const dir = x.diff>0 ? "เพิ่มขึ้น" : x.diff<0 ? "ลดลง" : "ทรงตัว";
+          const pct = (x.pct===null || x.pct===undefined) ? "" : ` (~${x.pct.toFixed(1)}%)`;
+          return `<li><b>${x.topic}</b>: <span class="text-slate-600">${safeText(x.metric)}</span> ${dir}${pct}</li>`;
+        }).join("")}
+      </ul>
+      <div class="text-xs text-slate-500 mt-2">*Trend คำนวณจากค่าแรก→ค่าสุดท้ายของช่วงเวลาที่ตรวจพบ</div>
+    </div>
+  ` : `
+    <div class="rounded-2xl border border-slate-200 bg-white p-4 text-sm text-slate-600">
+      ยังไม่พบคอลัมน์เวลา+ตัวเลขที่พอทำ Trend ได้ในหลายหมวด (แนะนำมีคอลัมน์ Date/Month/Year)
+    </div>
+  `;
+
+  $("execSummary").insertAdjacentHTML("beforeend", `<div class="mt-3">${trendHtml}</div>`);
+
+  renderCards(analysis);
+  $("btnExportHtml").disabled = false;
+
+  const cov = analysis.coverageAvg;
+  setStatus(`Generate สำเร็จ • Coverage ${cov}%`, cov>=60?"ok":cov>=35?"warn":"bad");
+});
+
+$("sheetSelect").addEventListener("change", (e)=>renderSheetPreview(e.target.value));
+$("btnExpandAll").addEventListener("click", ()=>expandCollapseAll(true));
+$("btnCollapseAll").addEventListener("click", ()=>expandCollapseAll(false));
+$("searchBox").addEventListener("input", (e)=>applySearchFilter(e.target.value));
+$("btnExportHtml").addEventListener("click", ()=>exportStandaloneHtml());
+$("btnPrint").addEventListener("click", ()=>window.print());
+$("btnDownloadJson").addEventListener("click", ()=>downloadJson());
 </script>
-
 </body>
 </html>
