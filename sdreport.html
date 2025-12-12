@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Excel → ESG/SD Dashboard (HTML Infographic)</title>
+
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- SheetJS (XLSX) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.19.3/dist/xlsx.full.min.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <style>
+    /* subtle glass */
+    .glass { background: rgba(255,255,255,0.75); backdrop-filter: blur(10px); }
+    .shadow-soft { box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+    .mono { font-variant-numeric: tabular-nums; }
+    .badge { border: 1px solid rgba(0,0,0,.08); }
+    .hide-scroll::-webkit-scrollbar{ height: 10px; width: 10px;}
+    .hide-scroll::-webkit-scrollbar-thumb{ background: rgba(0,0,0,.12); border-radius: 999px;}
+    .hide-scroll::-webkit-scrollbar-track{ background: rgba(0,0,0,.05); border-radius: 999px;}
+    @media print { .no-print { display:none !important; } }
+  </style>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 text-slate-900">
+  <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur no-print">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-2xl bg-slate-900 text-white grid place-items-center shadow-soft">AI</div>
+        <div>
+          <div class="font-semibold leading-tight">Excel → ESG/SD Dashboard</div>
+          <div class="text-xs text-slate-500">อ่าน Excel ละเอียด + สร้าง HTML Infographic + Executive Summary</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <label class="px-3 py-2 rounded-xl bg-slate-900 text-white cursor-pointer hover:opacity-95 text-sm">
+          <input id="fileInput" type="file" accept=".xlsx,.xls" class="hidden" />
+          Upload Excel
+        </label>
+
+        <button id="btnExportHtml" class="px-3 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-sm">
+          Export Report (HTML)
+        </button>
+
+        <button id="btnPrint" class="px-3 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-sm">
+          Print / Save PDF
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-6">
+    <!-- Top status -->
+    <section class="grid gap-4 md:grid-cols-12">
+      <div class="md:col-span-8 glass rounded-3xl shadow-soft border border-slate-200 p-5">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h1 class="text-xl font-semibold">Executive Summary</h1>
+            <p class="text-sm text-slate-600 mt-1">สรุปอัตโนมัติจากข้อมูลใน Excel (Smart Heuristic + Keyword Mapping)</p>
+          </div>
+          <span id="statusPill" class="badge px-3 py-1 rounded-full text-xs bg-white text-slate-700">ยังไม่อัปโหลดไฟล์</span>
+        </div>
+
+        <div id="execSummary" class="mt-4 text-slate-800 leading-relaxed">
+          <div class="text-slate-500 text-sm">
+            อัปโหลดไฟล์ Excel เพื่อเริ่มวิเคราะห์: ระบบจะอ่านทุกชีต, ตรวจหัวคอลัมน์, ประมวลผลตัวเลข/แนวโน้ม, จับคู่หมวด ESG/SD และสร้างแดชบอร์ดเป็นการ์ด
+          </div>
+        </div>
+
+        <div class="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div class="rounded-2xl border border-slate-200 bg-white p-3">
+            <div class="text-xs text-slate-500">Sheets</div>
+            <div id="kpiSheets" class="text-2xl font-semibold mono">—</div>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-white p-3">
+            <div class="text-xs text-slate-500">Rows parsed</div>
+            <div id="kpiRows" class="text-2xl font-semibold mono">—</div>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-white p-3">
+            <div class="text-xs text-slate-500">Numeric cells</div>
+            <div id="kpiNums" class="text-2xl font-semibold mono">—</div>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-white p-3">
+            <div class="text-xs text-slate-500">Coverage score</div>
+            <div id="kpiCoverage" class="text-2xl font-semibold mono">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="md:col-span-4 glass rounded-3xl shadow-soft border border-slate-200 p-5">
+        <h2 class="text-base font-semibold">Dashboard Overview</h2>
+        <p class="text-sm text-slate-600 mt-1">สัดส่วน “สัญญาณข้อมูล” ที่ถูกจับคู่เข้าหมวด</p>
+
+        <div class="mt-4">
+          <canvas id="chartCoverage" height="170"></canvas>
+        </div>
+
+        <div class="mt-4 text-xs text-slate-500">
+          *สัญญาณข้อมูล = คีย์เวิร์ดหัวคอลัมน์/ชื่อชีต/หน่วย + การพบตัวเลขที่มีความหมายในหมวดนั้น
+        </div>
+      </div>
+    </section>
+
+    <!-- Category cards -->
+    <section class="mt-6">
+      <div class="flex items-center justify-between gap-3">
+        <h2 class="text-lg font-semibold">Report Cards (7 Topics)</h2>
+        <div class="no-print flex items-center gap-2">
+          <input id="searchBox" class="px-3 py-2 rounded-xl border border-slate-200 bg-white w-64" placeholder="ค้นหาในรายงาน (เช่น injury, kWh, water)" />
+          <button id="btnExpandAll" class="px-3 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-sm">Expand all</button>
+          <button id="btnCollapseAll" class="px-3 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-sm">Collapse all</button>
+        </div>
+      </div>
+
+      <div id="cards" class="mt-4 grid gap-4 md:grid-cols-2">
+        <!-- cards injected -->
+      </div>
+    </section>
+
+    <!-- Data explorer -->
+    <section class="mt-6 glass rounded-3xl shadow-soft border border-slate-200 p-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <h2 class="text-lg font-semibold">Data Explorer</h2>
+          <p class="text-sm text-slate-600 mt-1">ดูโครงสร้างข้อมูล: ชีต/คอลัมน์/ตัวอย่างแถว เพื่อใช้ตรวจสอบความถูกต้อง</p>
+        </div>
+        <div class="no-print flex items-center gap-2">
+          <select id="sheetSelect" class="px-3 py-2 rounded-xl border border-slate-200 bg-white">
+            <option value="">— เลือกชีต —</option>
+          </select>
+          <button id="btnDownloadJson" class="px-3 py-2 rounded-xl bg-white border border-slate-200 hover:bg-slate-50 text-sm">Download JSON</button>
+        </div>
+      </div>
+
+      <div id="sheetMeta" class="mt-4 grid gap-3 md:grid-cols-3"></div>
+
+      <div class="mt-4 rounded-2xl border border-slate-200 bg-white overflow-auto hide-scroll">
+        <table class="min-w-full text-sm" id="previewTable">
+          <thead class="bg-slate-50 text-slate-600"></thead>
+          <tbody class="text-slate-800"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="mt-8 text-xs text-slate-500 pb-10">
+      <div>© Report Generator (Single HTML). ข้อมูลไม่ถูกอัปโหลดไปที่เซิร์ฟเวอร์ (ประมวลผลในเบราว์เซอร์)</div>
+    </footer>
+  </main>
+
+  <script>
+    // ----------------------------
+    // Config: ESG categories
+    // ----------------------------
+    const CATEGORIES = [
+      {
+        id: "safety_health",
+        title: "Safety Health",
+        desc: "อุบัติเหตุ, การบาดเจ็บ, near miss, อาชีวอนามัย, incident rate",
+        icon: "🦺",
+        keywords: ["safety","ohs","hse","incident","injury","accident","near miss","lost time","ltifr","trir","medical","first aid","hazard","ppe","health","illness","clinic","training safety"]
+      },
+      {
+        id: "human_capital",
+        title: "Human Capital",
+        desc: "พนักงาน, ฝึกอบรม, turnover, engagement, diversity",
+        icon: "👥",
+        keywords: ["headcount","employee","workforce","training","hours","turnover","attrition","engagement","performance","talent","recruit","hire","resign","diversity","gender","age","wage","salary","benefit","union","skills","competency"]
+      },
+      {
+        id: "human_rights",
+        title: "Human Rights",
+        desc: "สิทธิมนุษยชน, labor practice, grievance, supply chain",
+        icon: "⚖️",
+        keywords: ["human rights","grievance","complaint","harassment","discrimination","child labor","forced labor","modern slavery","supplier","supply chain","audit","code of conduct","ethics","whistle","freedom","privacy","data protection","community impact"]
+      },
+      {
+        id: "climate_resilience",
+        title: "Climate Resilience",
+        desc: "ความเสี่ยงสภาพภูมิอากาศ, น้ำท่วม, drought, adaptation, scenario",
+        icon: "🌦️",
+        keywords: ["climate","resilience","adaptation","risk","scenario","flood","drought","heat","storm","typhoon","business continuity","bcp","hazard map","tcfd","physical risk","transition risk","insurance","emergency"]
+      },
+      {
+        id: "energy_efficiency",
+        title: "Energy Efficiency",
+        desc: "พลังงาน, kWh, fuel, intensity, renewable",
+        icon: "⚡",
+        keywords: ["energy","electricity","kwh","mwh","gj","fuel","diesel","gasoline","natural gas","steam","boiler","intensity","efficiency","renewable","solar","wind","led","hvac","compressor","power factor","demand","scope 2"]
+      },
+      {
+        id: "waste_to_wise",
+        title: "Waste to Wise",
+        desc: "ของเสีย, recycle, landfill diversion, hazardous waste",
+        icon: "♻️",
+        keywords: ["waste","recycle","recycling","landfill","diversion","hazardous","non-hazardous","scrap","plastic","paper","organic","food waste","incineration","compost","circular","reuse","reduce","byproduct"]
+      },
+      {
+        id: "water_stewardship",
+        title: "Water Stewardship",
+        desc: "การใช้น้ำ, m3, water intensity, wastewater, discharge",
+        icon: "💧",
+        keywords: ["water","m3","cubic","intake","withdrawal","consumption","intensity","wastewater","effluent","discharge","bod","cod","tss","ph","treatment","reuse","reclaimed","groundwater","stormwater"]
+      }
+    ];
+
+    // ----------------------------
+    // State
+    // ----------------------------
+    let workbookJson = null;        // { sheets: {name: {rows, cols, data}} ... }
+    let analysis = null;            // computed insights
+    let chartCoverage = null;
+
+    // ----------------------------
+    // Utilities
+    // ----------------------------
+    const $ = (id) => document.getElementById(id);
+
+    function safeText(v) {
+      if (v === null || v === undefined) return "";
+      return String(v);
+    }
+
+    function isNumberLike(v) {
+      if (v === null || v === undefined) return false;
+      if (typeof v === "number" && Number.isFinite(v)) return true;
+      if (typeof v === "string") {
+        const s = v.trim().replaceAll(",", "");
+        if (!s) return false;
+        return !Number.isNaN(Number(s)) && Number.isFinite(Number(s));
+      }
+      return false;
+    }
+
+    function toNumber(v) {
+      if (typeof v === "number") return v;
+      const s = String(v).trim().replaceAll(",", "");
+      const n = Number(s);
+      return Number.isFinite(n) ? n : null;
+    }
+
+    function pickFirstNonEmpty(arr) {
+      for (const v of arr) if (safeText(v).trim()) return safeText(v).trim();
+      return "";
+    }
+
+    function normalizeToken(s) {
+      return safeText(s).toLowerCase().replace(/\s+/g, " ").trim();
+    }
+
+    function scoreMatch(text, keywords) {
+      const t = normalizeToken(text);
+      let score = 0;
+      for (const k of keywords) {
+        const kk = normalizeToken(k);
+        if (!kk) continue;
+        if (t.includes(kk)) score += 2;
+        // partial token boost
+        const parts = kk.split(" ").filter(Boolean);
+        if (parts.length > 1) {
+          const hit = parts.filter(p => t.includes(p)).length;
+          score += hit * 0.5;
+        }
+      }
+      return score;
+    }
+
+    function computeBasicStats(rows) {
+      // rows: array of objects
+      let rowCount = rows.length;
+      let colSet = new Set();
+      let numericCells = 0;
+
+      for (const r of rows) {
+        Object.keys(r || {}).forEach(k => colSet.add(k));
+        for (const [k, v] of Object.entries(r || {})) {
+          if (isNumberLike(v)) numericCells++;
+        }
+      }
+      return { rowCount, colCount: colSet.size, numericCells, columns: [...colSet] };
+    }
+
+    function inferTimeKey(columns) {
+      // find likely date/year/month column
+      const prefs = ["date","เดือน","month","ปี","year","period","quarter","qtr","time","timestamp"];
+      let best = null;
+      let bestScore = -1;
+      for (const c of columns) {
+        const s = normalizeToken(c);
+        let score = 0;
+        for (const p of prefs) if (s.includes(normalizeToken(p))) score += 2;
+        if (score > bestScore) { bestScore = score; best = c; }
+      }
+      return bestScore >= 2 ? best : null;
+    }
+
+    function summarizeNumericColumns(rows, columns, maxCols = 8) {
+      // pick top numeric columns by numeric ratio
+      const metrics = [];
+      for (const c of columns) {
+        let count = 0, num = 0, sum = 0, min = null, max = null;
+        for (const r of rows) {
+          if (!(c in r)) continue;
+          count++;
+          const n = toNumber(r[c]);
+          if (n === null) continue;
+          num++;
+          sum += n;
+          min = (min === null) ? n : Math.min(min, n);
+          max = (max === null) ? n : Math.max(max, n);
+        }
+        if (num >= Math.max(5, Math.floor(rows.length * 0.2))) {
+          metrics.push({ col: c, num, count, ratio: num / Math.max(count, 1), sum, min, max, avg: sum / num });
+        }
+      }
+      metrics.sort((a,b) => (b.ratio - a.ratio) || (b.num - a.num));
+      return metrics.slice(0, maxCols);
+    }
+
+    function buildWorkbookJson(wb) {
+      const sheets = {};
+      wb.SheetNames.forEach((name) => {
+        const ws = wb.Sheets[name];
+        // defval ensures empty cells exist
+        const rows = XLSX.utils.sheet_to_json(ws, { defval: "" });
+        const stats = computeBasicStats(rows);
+        sheets[name] = {
+          name,
+          rows,
+          stats
+        };
+      });
+      return { sheetNames: wb.SheetNames, sheets };
+    }
+
+    function analyzeWorkbook(wbjson) {
+      // 1) overall stats
+      const sheetCount = wbjson.sheetNames.length;
+      let totalRows = 0;
+      let totalNumericCells = 0;
+
+      // 2) signals by category
+      const catSignals = Object.fromEntries(CATEGORIES.map(c => [c.id, { score: 0, hits: [], metrics: [], examples: [] }]));
+
+      // 3) per-sheet
+      const perSheet = [];
+
+      for (const sname of wbjson.sheetNames) {
+        const sheet = wbjson.sheets[sname];
+        const { rowCount, colCount, numericCells, columns } = sheet.stats;
+        totalRows += rowCount;
+        totalNumericCells += numericCells;
+
+        const sheetText = sname + " " + columns.join(" ");
+        // category mapping using sheet name + headers
+        const sheetCatScores = CATEGORIES.map(cat => ({
+          id: cat.id,
+          score: scoreMatch(sheetText, cat.keywords)
+        })).sort((a,b)=>b.score-a.score);
+
+        const timeKey = inferTimeKey(columns);
+        const numericSummary = summarizeNumericColumns(sheet.rows, columns, 10);
+
+        // attach numeric columns to best-matching category if any
+        const best = sheetCatScores[0];
+        if (best && best.score > 0) {
+          catSignals[best.id].score += best.score;
+          catSignals[best.id].hits.push({ type: "sheet", name: sname, score: best.score });
+          // add top metrics
+          for (const m of numericSummary.slice(0, 4)) {
+            catSignals[best.id].metrics.push({ sheet: sname, ...m });
+          }
+          // add examples
+          catSignals[best.id].examples.push({ sheet: sname, columns: columns.slice(0, 12) });
+        } else {
+          // still search per-column signals
+          for (const c of columns) {
+            const colScores = CATEGORIES.map(cat => ({ id: cat.id, score: scoreMatch(c, cat.keywords) }))
+              .sort((a,b)=>b.score-a.score);
+            if (colScores[0].score > 0) {
+              catSignals[colScores[0].id].score += colScores[0].score;
+              catSignals[colScores[0].id].hits.push({ type: "column", sheet: sname, name: c, score: colScores[0].score });
+            }
+          }
+        }
+
+        perSheet.push({
+          name: sname,
+          rowCount, colCount, numericCells,
+          bestCategory: best?.id || null,
+          bestScore: best?.score || 0,
+          timeKey,
+          topNumeric: numericSummary
+        });
+      }
+
+      // normalize category scores
+      const scores = CATEGORIES.map(c => catSignals[c.id].score);
+      const maxScore = Math.max(1, ...scores);
+      const coverage = CATEGORIES.map(c => ({
+        id: c.id,
+        title: c.title,
+        value: Math.round((catSignals[c.id].score / maxScore) * 100)
+      }));
+
+      // executive summary (heuristic)
+      const topCats = [...coverage].sort((a,b)=>b.value-a.value).slice(0,3);
+      const weakCats = [...coverage].sort((a,b)=>a.value-b.value).slice(0,2);
+      const coverageAvg = Math.round(coverage.reduce((a,b)=>a+b.value,0)/coverage.length);
+
+      const summary = {
+        sheetCount,
+        totalRows,
+        totalNumericCells,
+        coverage,
+        coverageAvg,
+        topCats,
+        weakCats,
+        perSheet,
+        catSignals
+      };
+      return summary;
+    }
+
+    // ----------------------------
+    // Rendering
+    // ----------------------------
+    function setStatus(text, tone="neutral") {
+      const el = $("statusPill");
+      el.textContent = text;
+      el.className = "badge px-3 py-1 rounded-full text-xs " +
+        (tone==="ok" ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
+         tone==="warn" ? "bg-amber-50 text-amber-700 border-amber-200" :
+         tone==="bad" ? "bg-rose-50 text-rose-700 border-rose-200" :
+         "bg-white text-slate-700 border-slate-200");
+    }
+
+    function renderExecutiveSummary(a) {
+      $("kpiSheets").textContent = a.sheetCount.toLocaleString();
+      $("kpiRows").textContent = a.totalRows.toLocaleString();
+      $("kpiNums").textContent = a.totalNumericCells.toLocaleString();
+      $("kpiCoverage").textContent = (a.coverageAvg + "%");
+
+      const top = a.topCats.map(x => `<span class="badge px-2 py-1 rounded-full bg-white">${x.title}: <b class="mono">${x.value}%</b></span>`).join(" ");
+      const weak = a.weakCats.map(x => `<span class="badge px-2 py-1 rounded-full bg-white">${x.title}: <b class="mono">${x.value}%</b></span>`).join(" ");
+
+      const sheetInsights = a.perSheet
+        .slice()
+        .sort((p,q)=> (q.bestScore - p.bestScore) || (q.rowCount - p.rowCount))
+        .slice(0, 4)
+        .map(s => {
+          const cat = CATEGORIES.find(c=>c.id===s.bestCategory)?.title || "Unmapped";
+          return `
+            <li class="mt-1">
+              <span class="font-medium">${safeText(s.name)}</span>
+              <span class="text-slate-500">— แถว:</span> <span class="mono">${s.rowCount}</span>,
+              <span class="text-slate-500">คอลัมน์:</span> <span class="mono">${s.colCount}</span>,
+              <span class="text-slate-500">หมวดเด่น:</span> <span class="mono">${cat}</span>
+            </li>
+          `;
+        }).join("");
+
+      $("execSummary").innerHTML = `
+        <div class="space-y-3">
+          <p>
+            จากไฟล์ Excel นี้ ระบบพบ “สัญญาณข้อมูล” ที่ครอบคลุมโดยเฉลี่ย <b class="mono">${a.coverageAvg}%</b>.
+            หมวดที่เด่นที่สุดคือ ${top}.
+            หมวดที่ข้อมูลยังบางคือ ${weak}.
+          </p>
+
+          <div class="rounded-2xl border border-slate-200 bg-white p-4">
+            <div class="text-sm font-semibold">Highlights ที่พบจากโครงสร้างไฟล์</div>
+            <ul class="text-sm text-slate-700 mt-2 list-disc pl-5">
+              ${sheetInsights || `<li>ยังไม่มีข้อมูล</li>`}
+            </ul>
+          </div>
+
+          <div class="rounded-2xl border border-slate-200 bg-white p-4">
+            <div class="text-sm font-semibold">คำแนะนำเชิงผู้บริหาร (Executive Actions)</div>
+            <ul class="text-sm text-slate-700 mt-2 list-disc pl-5">
+              <li>โฟกัสหมวดที่เด่น: ตั้ง KPI/Owner และทำ Trend รายเดือน/ไตรมาส เพื่อเล่าเรื่อง “การพัฒนา” ให้ชัด</li>
+              <li>เสริมหมวดที่อ่อน: เพิ่มคอลัมน์มาตรฐาน (หน่วย/ช่วงเวลา/ไซต์/ขอบเขต) เพื่อทำ Benchmark และ Audit trail</li>
+              <li>ทำ Data Dictionary: ระบุคำจำกัดความ KPI เช่น TRIR, LTIFR, kWh, m³, diversion rate เพื่อความสอดคล้อง</li>
+            </ul>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCoverageChart(a) {
+      const labels = a.coverage.map(x => x.title);
+      const data = a.coverage.map(x => x.value);
+
+      const ctx = $("chartCoverage").getContext("2d");
+      if (chartCoverage) chartCoverage.destroy();
+
+      chartCoverage = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [{ label: "Coverage (%)", data }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: (c)=> `${c.parsed.y}%` } }
+          },
+          scales: {
+            y: { beginAtZero: true, max: 100, ticks: { callback: (v)=> v + "%" } }
+          }
+        }
+      });
+    }
+
+    function formatMetric(m) {
+      return `
+        <div class="rounded-xl border border-slate-200 bg-white p-3">
+          <div class="text-xs text-slate-500">${safeText(m.sheet)}</div>
+          <div class="text-sm font-semibold mt-1">${safeText(m.col)}</div>
+          <div class="mt-2 grid grid-cols-3 gap-2 text-xs text-slate-600">
+            <div><span class="text-slate-500">avg</span><div class="mono text-slate-900 font-medium">${m.avg.toFixed(2)}</div></div>
+            <div><span class="text-slate-500">min</span><div class="mono text-slate-900 font-medium">${m.min.toFixed(2)}</div></div>
+            <div><span class="text-slate-500">max</span><div class="mono text-slate-900 font-medium">${m.max.toFixed(2)}</div></div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCards(a) {
+      const container = $("cards");
+      container.innerHTML = "";
+
+      for (const cat of CATEGORIES) {
+        const signal = a.catSignals[cat.id];
+        const cov = a.coverage.find(x=>x.id===cat.id)?.value ?? 0;
+
+        const topMetrics = (signal.metrics || []).slice(0, 6);
+        const hits = (signal.hits || []).slice(0, 8);
+
+        const hitHtml = hits.length
+          ? hits.map(h => {
+              const label = h.type === "sheet"
+                ? `Sheet: ${h.name}`
+                : `Col: ${h.name} <span class="text-slate-400">(${h.sheet})</span>`;
+              return `<li class="mt-1"><span class="mono">${label}</span> <span class="text-slate-500">score</span> <span class="mono">${h.score}</span></li>`;
+            }).join("")
+          : `<li class="text-slate-500">ยังไม่พบคีย์เวิร์ด/ตัวชี้วัดที่ชัดเจนในหมวดนี้</li>`;
+
+        const metricHtml = topMetrics.length
+          ? topMetrics.map(formatMetric).join("")
+          : `<div class="text-sm text-slate-500">ยังไม่มีคอลัมน์ตัวเลขที่เข้าข่ายในหมวดนี้</div>`;
+
+        // Insights (heuristic)
+        const insight = buildCategoryInsight(cat, signal, cov);
+
+        const card = document.createElement("article");
+        card.className = "glass rounded-3xl shadow-soft border border-slate-200 p-5";
+        card.dataset.cat = cat.id;
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <div class="flex items-center gap-2">
+                <div class="text-2xl">${cat.icon}</div>
+                <h3 class="text-base font-semibold">${cat.title}</h3>
+              </div>
+              <p class="text-sm text-slate-600 mt-1">${cat.desc}</p>
+            </div>
+            <div class="text-right">
+              <div class="text-xs text-slate-500">Coverage</div>
+              <div class="text-2xl font-semibold mono">${cov}%</div>
+            </div>
+          </div>
+
+          <div class="mt-4 rounded-2xl border border-slate-200 bg-white p-4">
+            <div class="text-sm font-semibold">AI Insight</div>
+            <div class="text-sm text-slate-700 mt-2 leading-relaxed">${insight}</div>
+          </div>
+
+          <details class="mt-4 group" open>
+            <summary class="cursor-pointer select-none text-sm font-semibold flex items-center justify-between">
+              <span>Key Signals & Mapping</span>
+              <span class="text-slate-500 group-open:rotate-180 transition">▾</span>
+            </summary>
+            <div class="mt-3 text-sm text-slate-700">
+              <ul class="list-disc pl-5">${hitHtml}</ul>
+            </div>
+          </details>
+
+          <details class="mt-3 group" open>
+            <summary class="cursor-pointer select-none text-sm font-semibold flex items-center justify-between">
+              <span>Top Numeric Metrics (auto)</span>
+              <span class="text-slate-500 group-open:rotate-180 transition">▾</span>
+            </summary>
+            <div class="mt-3 grid gap-3 sm:grid-cols-2">${metricHtml}</div>
+          </details>
+
+          <details class="mt-3 group">
+            <summary class="cursor-pointer select-none text-sm font-semibold flex items-center justify-between">
+              <span>Recommended Card Layout (for your stakeholders)</span>
+              <span class="text-slate-500 group-open:rotate-180 transition">▾</span>
+            </summary>
+            <div class="mt-3 text-sm text-slate-700 leading-relaxed">
+              <ul class="list-disc pl-5">
+                <li><b>KPI headline</b> (ค่าเดือนล่าสุด + เปรียบเทียบ MoM/YoY)</li>
+                <li><b>Trend chart</b> (12 เดือนหรือ 8 ไตรมาส)</li>
+                <li><b>Hotspot</b> (ไซต์/หน่วยงานที่สูงสุด 3 อันดับ)</li>
+                <li><b>Actions & Owner</b> (สิ่งที่ทำแล้ว/กำลังทำ/กำหนดเสร็จ)</li>
+              </ul>
+            </div>
+          </details>
+        `;
+
+        container.appendChild(card);
+      }
+    }
+
+    function buildCategoryInsight(cat, signal, cov) {
+      // heuristic narrative based on coverage + presence of metrics
+      const m = (signal.metrics || []);
+      const hasMetrics = m.length > 0;
+      const hitCount = (signal.hits || []).length;
+
+      if (cov >= 70 && hasMetrics) {
+        return `หมวดนี้มีสัญญาณข้อมูลค่อนข้างครบ (${cov}%). แนะนำทำ “Trend รายเดือน/ไตรมาส” จากคอลัมน์ตัวเลขที่พบ และกำหนด KPI Owner ชัดเจนเพื่อเล่าเรื่องความคืบหน้าเชิงผู้บริหาร.`;
+      }
+      if (cov >= 40 && hasMetrics) {
+        return `หมวดนี้พอมีข้อมูลใช้งานได้ (${cov}%) และพบตัวชี้วัดเชิงตัวเลขบางส่วน. ถ้าต้องการทำ Dashboard ให้แน่นขึ้น ให้เพิ่มมิติ “เวลา/ไซต์/ขอบเขต” และทำ Data Dictionary ของ KPI ที่ใช้.`;
+      }
+      if (hitCount > 0 && !hasMetrics) {
+        return `หมวดนี้มีคีย์เวิร์ด/หัวข้อที่เกี่ยวข้อง แต่ยังไม่เห็นคอลัมน์ตัวเลขที่สรุปเป็น KPI ได้ชัด. แนะนำเพิ่มคอลัมน์ตัวเลข (เช่น count, rate, intensity) และหน่วย (เช่น %, kWh, m³) เพื่อทำ infographic ได้.`;
+      }
+      return `ยังไม่พบสัญญาณข้อมูลชัดเจนในหมวดนี้. ถ้าข้อมูลมีอยู่แต่ชื่อคอลัมน์ไม่มาตรฐาน ให้ปรับหัวคอลัมน์ให้สื่อความหมาย (เช่น “TRIR”, “kWh”, “Water m3”, “Waste recycled (kg)”) แล้วลองอัปโหลดใหม่.`;
+    }
+
+    function renderSheetSelector(wbjson) {
+      const sel = $("sheetSelect");
+      sel.innerHTML = `<option value="">— เลือกชีต —</option>`;
+      for (const name of wbjson.sheetNames) {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        sel.appendChild(opt);
+      }
+    }
+
+    function renderSheetPreview(sheetName) {
+      if (!workbookJson || !sheetName) return;
+      const sheet = workbookJson.sheets[sheetName];
+      const rows = sheet.rows || [];
+      const stats = sheet.stats;
+
+      // meta cards
+      $("sheetMeta").innerHTML = `
+        <div class="rounded-2xl border border-slate-200 bg-white p-4">
+          <div class="text-xs text-slate-500">Sheet</div>
+          <div class="font-semibold">${safeText(sheetName)}</div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-4">
+          <div class="text-xs text-slate-500">Rows / Cols</div>
+          <div class="font-semibold mono">${stats.rowCount} / ${stats.colCount}</div>
+        </div>
+        <div class="rounded-2xl border border-slate-200 bg-white p-4">
+          <div class="text-xs text-slate-500">Numeric cells</div>
+          <div class="font-semibold mono">${stats.numericCells}</div>
+        </div>
+      `;
+
+      // preview table: first 20 rows
+      const columns = stats.columns.slice(0, 20);
+      const head = $("previewTable").querySelector("thead");
+      const body = $("previewTable").querySelector("tbody");
+
+      head.innerHTML = `
+        <tr>
+          ${columns.map(c => `<th class="text-left px-3 py-2 whitespace-nowrap">${safeText(c)}</th>`).join("")}
+        </tr>
+      `;
+      body.innerHTML = rows.slice(0, 20).map(r => `
+        <tr class="border-t border-slate-100">
+          ${columns.map(c => `<td class="px-3 py-2 whitespace-nowrap">${safeText(r[c])}</td>`).join("")}
+        </tr>
+      `).join("");
+    }
+
+    function expandCollapseAll(expand=true) {
+      document.querySelectorAll("#cards details").forEach(d => d.open = expand);
+    }
+
+    function applySearchFilter(q) {
+      const query = normalizeToken(q);
+      document.querySelectorAll("#cards article").forEach(card => {
+        const t = normalizeToken(card.innerText);
+        card.style.display = (!query || t.includes(query)) ? "" : "none";
+      });
+    }
+
+    // ----------------------------
+    // Export / Download helpers
+    // ----------------------------
+    function downloadText(filename, text) {
+      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function exportStandaloneHtml() {
+      // Create a self-contained report snapshot (without external libs bundling)
+      // For a true offline export, you'd inline libs. Here we export the rendered DOM for sharing quickly.
+      const clone = document.documentElement.cloneNode(true);
+
+      // remove file input / no-print header
+      clone.querySelectorAll(".no-print").forEach(el => el.remove());
+
+      // add a header note
+      const note = clone.createElement("div");
+      note.className = "max-w-7xl mx-auto px-4 py-3 text-xs text-slate-500";
+      note.textContent = "Exported report snapshot. Generated in-browser.";
+      clone.querySelector("body").prepend(note);
+
+      const html = "<!doctype html>\n" + clone.outerHTML;
+      downloadText("report_snapshot.html", html);
+    }
+
+    function downloadJson() {
+      if (!workbookJson) return;
+      downloadText("workbook_parsed.json", JSON.stringify({ workbookJson, analysis }, null, 2));
+    }
+
+    // ----------------------------
+    // Events
+    // ----------------------------
+    $("fileInput").addEventListener("change", async (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+
+      try {
+        setStatus("กำลังอ่านไฟล์…", "neutral");
+        const data = await file.arrayBuffer();
+        const wb = XLSX.read(data, { type: "array" });
+
+        workbookJson = buildWorkbookJson(wb);
+        analysis = analyzeWorkbook(workbookJson);
+
+        renderSheetSelector(workbookJson);
+        renderExecutiveSummary(analysis);
+        renderCoverageChart(analysis);
+        renderCards(analysis);
+
+        // auto select first sheet
+        $("sheetSelect").value = workbookJson.sheetNames[0] || "";
+        renderSheetPreview($("sheetSelect").value);
+
+        // status
+        const cov = analysis.coverageAvg;
+        setStatus(`วิเคราะห์แล้ว • Coverage ${cov}%`, cov >= 60 ? "ok" : cov >= 35 ? "warn" : "bad");
+      } catch (err) {
+        console.error(err);
+        setStatus("อ่านไฟล์ไม่สำเร็จ", "bad");
+        $("execSummary").innerHTML = `<div class="text-sm text-rose-700">เกิดข้อผิดพลาด: ${safeText(err?.message || err)}</div>`;
+      }
+    });
+
+    $("sheetSelect").addEventListener("change", (e) => {
+      renderSheetPreview(e.target.value);
+    });
+
+    $("btnExpandAll").addEventListener("click", () => expandCollapseAll(true));
+    $("btnCollapseAll").addEventListener("click", () => expandCollapseAll(false));
+
+    $("searchBox").addEventListener("input", (e) => applySearchFilter(e.target.value));
+
+    $("btnExportHtml").addEventListener("click", () => exportStandaloneHtml());
+    $("btnPrint").addEventListener("click", () => window.print());
+    $("btnDownloadJson").addEventListener("click", () => downloadJson());
+
+    // ----------------------------
+    // Optional: Real AI hook (disabled by default)
+    // ----------------------------
+    // If you want to call an AI API, you can:
+    // 1) Create a small backend (recommended) to protect API keys,
+    // 2) Send "analysis-ready" JSON (workbookJson/analysis) to backend,
+    // 3) Return a richer executive summary + recommendations.
+    //
+    // Client-side direct API calls require exposing keys (NOT recommended).
+  </script>
+</body>
+</html>
