@@ -374,8 +374,9 @@
 
             useEffect(() => {
                 setMounted(true);
-                // Force update key to v12 to clear old cache on GitHub Pages
-                const savedApps = localStorage.getItem('dss-portal-v12'); 
+                // Force update key to v13 to clear old cache on GitHub Pages
+                // This ensures users see the new app list, not their locally saved old list.
+                const savedApps = localStorage.getItem('dss-portal-v13'); 
                 if (savedApps) {
                     setApps(JSON.parse(savedApps));
                 } else {
@@ -384,7 +385,7 @@
             }, []);
 
             useEffect(() => {
-                localStorage.setItem('dss-portal-v12', JSON.stringify(apps));
+                localStorage.setItem('dss-portal-v13', JSON.stringify(apps));
             }, [apps]);
 
             const handleAddApp = (newApp) => {
