@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NSL Foods Interview Guide - Factory Manager (Step-by-Step)</title>
+    <title>NSL Foods Interview Guide - Compact (20 Questions)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -22,6 +22,13 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -30,14 +37,16 @@
     <header class="nsl-gradient text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <img src="logo-NSL.png" alt="NSL Foods Logo" class="h-12 w-auto bg-white rounded p-1 shadow-sm">
+                <div class="bg-white text-orange-600 rounded p-1 shadow-sm h-12 w-12 flex items-center justify-center font-bold text-xl">
+                    NSL
+                </div>
                 <div>
                     <h1 class="text-xl md:text-2xl font-bold">NSL Foods PLC.</h1>
-                    <p class="text-xs md:text-sm text-orange-100">Factory Manager Interview</p>
+                    <p class="text-xs md:text-sm text-orange-100">Factory Manager Interview (Compact)</p>
                 </div>
             </div>
             <div class="text-right hidden md:block">
-                <p class="text-sm font-light">Mode: Step-by-Step</p>
+                <p class="text-sm font-light">Mode: 20 Questions</p>
             </div>
         </div>
     </header>
@@ -48,19 +57,19 @@
             <p class="text-xs text-gray-400 mb-1 ml-1 uppercase tracking-wide">ไปที่หัวข้อ (Jump to Section):</p>
             <div class="overflow-x-auto whitespace-nowrap scrollbar-hide pb-1">
                 <button onclick="jumpToCategory('strategy')" class="section-btn px-3 py-1.5 rounded-full text-xs font-medium text-gray-600 bg-gray-100 hover:bg-orange-100 hover:text-orange-700 transition mr-2 focus:outline-none">
-                    1. บริหารจัดการ
+                    1. Strategy (1-5)
                 </button>
                 <button onclick="jumpToCategory('leadership')" class="section-btn px-3 py-1.5 rounded-full text-xs font-medium text-gray-600 bg-gray-100 hover:bg-orange-100 hover:text-orange-700 transition mr-2 focus:outline-none">
-                    2. ภาวะผู้นำ
+                    2. Leadership (6-9)
                 </button>
                 <button onclick="jumpToCategory('tech')" class="section-btn px-3 py-1.5 rounded-full text-xs font-medium text-gray-600 bg-gray-100 hover:bg-orange-100 hover:text-orange-700 transition mr-2 focus:outline-none">
-                    3. AI & Tech
+                    3. AI & Tech (10-12)
                 </button>
                 <button onclick="jumpToCategory('english')" class="section-btn px-3 py-1.5 rounded-full text-xs font-medium text-gray-600 bg-gray-100 hover:bg-orange-100 hover:text-orange-700 transition mr-2 focus:outline-none">
-                    4. English
+                    4. English (13-16)
                 </button>
                 <button onclick="jumpToCategory('scenario')" class="section-btn px-3 py-1.5 rounded-full text-xs font-medium text-gray-600 bg-gray-100 hover:bg-orange-100 hover:text-orange-700 transition mr-2 focus:outline-none">
-                    5. Problem Solving
+                    5. Problem Solving (17-20)
                 </button>
             </div>
         </div>
@@ -72,11 +81,11 @@
         <!-- Progress Bar -->
         <div class="w-full mb-6">
             <div class="flex justify-between text-sm text-gray-500 mb-2">
-                <span id="progress-text">Question 1 of 30</span>
+                <span id="progress-text">Question 1 of 20</span>
                 <span id="category-label" class="font-medium text-orange-600">Category Name</span>
             </div>
             <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div id="progress-bar" class="bg-orange-500 h-2.5 rounded-full transition-all duration-300" style="width: 3.33%"></div>
+                <div id="progress-bar" class="bg-orange-500 h-2.5 rounded-full transition-all duration-300" style="width: 5%"></div>
             </div>
         </div>
 
@@ -88,7 +97,7 @@
                     Category
                 </span>
                 
-                <!-- Audio Button (Default Hidden) -->
+                <!-- Audio Button -->
                 <button id="btn-speak" onclick="speakQuestion()" class="hidden text-gray-500 hover:text-orange-600 transition-colors focus:outline-none flex items-center gap-2 text-sm font-medium px-2 py-1 rounded hover:bg-orange-50">
                     <i class="fas fa-volume-up text-lg"></i> <span class="hidden sm:inline">ฟังคำถาม (Listen)</span>
                 </button>
@@ -135,243 +144,173 @@
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-4 mt-auto">
         <div class="container mx-auto px-4 text-center">
-            <p class="text-xs text-gray-400">© 2025 Interview Guide System for NSL Foods PLC. Developed by DSS NSL</p>
+            <p class="text-xs text-gray-400">© 2025 Interview Guide System for NSL Foods PLC.</p>
         </div>
     </footer>
 
     <!-- JavaScript -->
     <script>
-        // Data
+        // Data - Total 20 Questions
         const questions = [
-            // --- หมวด 1: Strategy ---
+            // --- FIXED 1 & 2 ---
             {
-                id: 1,
+                id: 'new-1',
                 category: 'strategy',
-                categoryName: 'การบริหารโรงงานและกลยุทธ์',
+                categoryName: '1. Feasibility & Investment',
+                question: '<b>Scenario:</b> บริษัทต้องการลดต้นทุนและเพิ่มประสิทธิภาพ จึงพิจารณาซื้อเครื่องจักรอัตโนมัติราคา 6 ล้านบาท (ยอดขาย 140,000 ชิ้น/วัน, พนักงาน 140 คน)<br><br><b>ในฐานะผู้จัดการโรงงาน ให้ทำ Feasibility Study:</b><br>1.1 ควรลงทุนหรือไม่<br>1.2 วิเคราะห์ด้านการเงิน (Financial) และไม่ใช่การเงิน (Non-financial)<br>1.3 วิธีหา ROI / Payback Period / IRR<br>1.4 ความเสี่ยงของการลงทุน',
+                answer: '<b>1.1 ควรลงทุน:</b> หากคำนวณแล้วคืนทุนเร็ว (เช่น < 2-3 ปี) และเพิ่ม Cap ได้<br><b>1.2 วิเคราะห์:</b><br>- <i>Financial:</i> เปรียบเทียบค่าเครื่อง 6M vs ค่าแรงที่ลดได้ + ค่า Maintenance<br>- <i>Non-Financial:</i> แก้ปัญหาขาดแคลนแรงงาน, Hygiene ดีขึ้น<br><b>1.3 สูตร:</b><br>- <i>ROI:</i> (กำไรสุทธิ / เงินลงทุน) x 100<br>- <i>Payback:</i> เงินลงทุน / Cash Flow ต่อปี<br><b>1.4 ความเสี่ยง:</b> เครื่องเสีย, เทคโนโลยีตกรุ่น, ความยืดหยุ่นน้อยกว่าคน'
+            },
+            {
+                id: 'new-2',
+                category: 'tech',
+                categoryName: '2. AI & Quality Solutions',
+                question: '<b>Scenario:</b> ปัจจุบันโรงงานมีข้อร้องเรียนเรื่อง "เส้นผม" ในสินค้าเฉลี่ยเดือนละ 2 ครั้ง ต้องการลดให้เป็นศูนย์ (Zero Complaint)<br><br><b>Question:</b> จงเสนอแนวคิดการนำ AI หรือเทคโนโลยีเข้ามาใช้ในการตรวจสอบเพื่อแก้ปัญหานี้',
+                answer: '<b>แนวทาง AI Solution:</b><br>1. <b>AI Vision Inspection:</b> ติดตั้งกล้อง High-speed + AI Deep Learning ที่สายพานก่อนแพ็ค<br>2. <b>Hygiene Monitoring AI:</b> กล้องตรวจจับพนักงาน (หมวกคลุมผม) หน้าไลน์ผลิต<br>3. <b>Process Control:</b> ใช้ Sensor ตรวจจับไฟฟ้าสถิต/ลม Air Curtain ควบคุมด้วย AI'
+            },
+
+            // --- STRATEGY (Selected) ---
+            {
+                id: 3,
+                category: 'strategy',
+                categoryName: 'Strategy: Planning',
                 question: 'โรงงานอาหารมีความท้าทายเรื่องอายุสินค้า (Shelf-life) ที่สั้น คุณมีกลยุทธ์ในการวางแผนการผลิตอย่างไรให้สัมพันธ์กับยอดสั่งซื้อ (JIT) เพื่อลดของเสีย (Waste)?',
                 answer: 'ใช้ Demand Planning ที่แม่นยำ, ประสานงานฝ่ายขาย/โลจิสติกส์, ใช้ระบบ FIFO/FEFO เคร่งครัด และวางแผนการผลิตแบบยืดหยุ่น'
             },
             {
-                id: 2,
+                id: 4,
                 category: 'strategy',
-                categoryName: 'การบริหารโรงงานและกลยุทธ์',
-                question: 'คุณมีประสบการณ์ในการเตรียมโรงงานเพื่อรองรับการตรวจประเมินมาตรฐานสากล (เช่น BRC, ISO 22000) อย่างไร และเมื่อเกิดข้อบกพร่อง (Non-conformance) คุณจัดการอย่างไร?',
-                answer: 'เข้าใจมาตรฐาน Food Safety ลึกซึ้ง, ทำ Root Cause Analysis (RCA) จริงจัง และวางมาตรการป้องกัน (Preventive Action) ไม่ให้เกิดซ้ำ'
-            },
-            {
-                id: 3,
-                category: 'strategy',
-                categoryName: 'การบริหารโรงงานและกลยุทธ์',
+                categoryName: 'Strategy: Cost Control',
                 question: 'หากต้นทุนวัตถุดิบแป้งและน้ำตาลปรับตัวสูงขึ้น คุณมีแนวทางในการบริหารจัดการต้นทุนการผลิต (Cost Control) ภายในโรงงานอย่างไรโดยไม่ลดคุณภาพสินค้า?',
                 answer: 'เน้นลด Loss ในกระบวนการ (Yield Improvement), เพิ่ม OEE เครื่องจักร, และบริหารจัดการพลังงาน (Energy Saving)'
             },
             {
-                id: 4,
-                category: 'strategy',
-                categoryName: 'การบริหารโรงงานและกลยุทธ์',
-                question: 'อธิบายแนวคิดการนำระบบ Lean Manufacturing หรือ Kaizen มาใช้ในสายการผลิตเบเกอรี่ เพื่อเพิ่ม Productivity',
-                answer: 'ลดขั้นตอนซ้ำซ้อน (Non-value added), จัด Layout ใหม่ให้ Flow ดีขึ้น, ลดการเคลื่อนไหวที่สูญเปล่า'
-            },
-            {
                 id: 5,
                 category: 'strategy',
-                categoryName: 'การบริหารโรงงานและกลยุทธ์',
+                categoryName: 'Strategy: Maintenance',
                 question: 'คุณมีวิธีบริหารจัดการ Maintenance Plan อย่างไร เพื่อให้มั่นใจว่าเครื่องจักรจะไม่ Breakdown ในช่วง Peak Season?',
                 answer: 'ทำ Preventive Maintenance (PM) อย่างเคร่งครัด และขยับสู่ Predictive Maintenance โดยวิเคราะห์อายุอะไหล่'
             },
+
+            // --- LEADERSHIP (Selected) ---
             {
                 id: 6,
-                category: 'strategy',
-                categoryName: 'การบริหารโรงงานและกลยุทธ์',
-                question: 'หากต้องขยายกำลังการผลิตสินค้าใหม่ (New Product Launch) ภายใน 1 เดือน คุณจะบริหารจัดการทรัพยากร (คน เครื่องจักร วัตถุดิบ) อย่างไรให้ทันเวลา?',
-                answer: 'ประเมิน Capacity Gap, วางแผน Manpower ชั่วคราว/OT, หรือปรับไลน์แบบ Quick Changeover'
-            },
-
-            // --- หมวด 2: Leadership ---
-            {
-                id: 7,
                 category: 'leadership',
-                categoryName: 'ภาวะผู้นำและทัศนคติ',
+                categoryName: 'Leadership: Style',
                 question: 'สไตล์การบริหารงานของคุณเป็นแบบไหน และคุณคิดว่าจะปรับตัวเข้ากับวัฒนธรรมองค์กรของ NSL ที่ต้องรวดเร็วและตื่นตัวตลอดเวลาได้อย่างไร?',
                 answer: 'เน้น Situational Leadership (ปรับตามสถานการณ์), เน้นผลลัพธ์ (Result-oriented) แต่ใส่ใจคน และมีความ Proactive สูง'
             },
             {
-                id: 8,
+                id: 7,
                 category: 'leadership',
-                categoryName: 'ภาวะผู้นำและทัศนคติ',
+                categoryName: 'Leadership: Conflict Mgmt',
                 question: 'หากฝ่ายผลิต (Production) มีความขัดแย้งกับฝ่ายควบคุมคุณภาพ (QC) เรื่องการปล่อยสินค้า คุณจะเข้าไปไกล่เกลี่ยและตัดสินใจบนพื้นฐานอะไร?',
                 answer: 'ตัดสินใจบนพื้นฐาน "Food Safety & Quality Standard" เป็นอันดับแรก (Customer Focus) ไม่ประนีประนอม แต่หาทางออกร่วมกัน'
             },
             {
-                id: 9,
+                id: 8,
                 category: 'leadership',
-                categoryName: 'ภาวะผู้นำและทัศนคติ',
+                categoryName: 'Leadership: Safety Culture',
                 question: 'คุณมีวิธีจูงใจพนักงานระดับปฏิบัติการ (Operator) ให้ตระหนักเรื่องสุขอนามัย (Hygiene) และความปลอดภัย (Safety) จนกลายเป็นนิสัยได้อย่างไร?',
                 answer: 'สร้าง Safety Culture, ทำ Morning Talk ทุกวัน, มีระบบ Incentive/Reward, และทำเป็น KPI ที่ชัดเจน'
             },
             {
-                id: 10,
+                id: 9,
                 category: 'leadership',
-                categoryName: 'ภาวะผู้นำและทัศนคติ',
-                question: 'เล่าประสบการณ์ที่คุณต้องตัดสินใจเรื่องยากที่สุดในการบริหารคน (เช่น การเลิกจ้าง หรือปรับโครงสร้าง) คุณจัดการอารมณ์และสถานการณ์นั้นอย่างไร?',
-                answer: 'มีความเห็นอกเห็นใจ (Empathy) แต่เด็ดขาดบนความถูกต้อง สื่อสารโปร่งใส และปฏิบัติตามกฎหมายแรงงาน'
-            },
-            {
-                id: 11,
-                category: 'leadership',
-                categoryName: 'ภาวะผู้นำและทัศนคติ',
-                question: 'คุณจัดการกับพนักงานระดับหัวหน้างาน (Supervisor) ที่เก่งงานเทคนิคแต่ขาดทักษะในการบริหารลูกน้องอย่างไร?',
-                answer: 'ใช้การ Coaching ส่วนตัว, ส่งอบรม Soft Skills, หรือทำระบบ Mentoring ประกบ'
-            },
-            {
-                id: 12,
-                category: 'leadership',
-                categoryName: 'ภาวะผู้นำและทัศนคติ',
-                question: 'ในการบริหารโรงงานที่มีพนักงานเก่าแก่ (Senior Staff) ที่คุ้นชินกับวิธีการเดิมๆ หากคุณต้องการนำระบบใหม่มาใช้แล้วเกิดแรงต้าน (Resistance) คุณมีจิตวิทยาในการโน้มน้าวใจอย่างไรให้พวกเขายยอมรับ?',
-                answer: 'ใช้หลักการ "Change Management": เน้นการรับฟัง (Empathy), ชี้ให้เห็นประโยชน์ที่เขาจะได้รับ (What\'s in it for me), สร้าง Change Agents จากคนในกลุ่มนั้น และสื่อสารอย่างให้เกียรติ ไม่ใช่ออกคำสั่งหักดิบ'
+                categoryName: 'Leadership: Change Mgmt',
+                question: 'ในการบริหารโรงงานที่มีพนักงานเก่าแก่ (Senior Staff) ที่คุ้นชินกับวิธีการเดิมๆ หากคุณต้องการนำระบบใหม่มาใช้แล้วเกิดแรงต้าน (Resistance) คุณมีจิตวิทยาในการโน้มน้าวใจอย่างไร?',
+                answer: 'ใช้หลักการ "Change Management": เน้นการรับฟัง (Empathy), ชี้ให้เห็นประโยชน์ที่เขาจะได้รับ (What\'s in it for me), สร้าง Change Agents จากคนในกลุ่มนั้น'
             },
 
-            // --- หมวด 3: Tech ---
+            // --- TECH (Selected) ---
             {
-                id: 13,
+                id: 10,
                 category: 'tech',
-                categoryName: 'AI และเทคโนโลยี (Smart Factory)',
+                categoryName: 'Tech: Industry 4.0',
                 question: 'ในยุค Industry 4.0 คุณคิดว่าเทคโนโลยีใดมีความจำเป็นที่สุดสำหรับโรงงานผลิตอาหารของ NSL และเพราะเหตุใด?',
                 answer: 'IoT Sensors วัดอุณหภูมิ/ความชื้น Real-time, Vision Inspection ตรวจจับสิ่งแปลกปลอม, หรือ Robot Packing ท้ายไลน์'
             },
             {
-                id: 14,
+                id: 11,
                 category: 'tech',
-                categoryName: 'AI และเทคโนโลยี (Smart Factory)',
-                question: 'คุณเคยมีประสบการณ์การใช้ระบบ ERP (เช่น SAP) หรือ MES ในการเชื่อมโยงข้อมูลการผลิตหรือไม่?',
-                answer: 'อธิบายการใช้ Data จากระบบมาตัดสินใจ เช่น ดู Real-time Yield, Downtime Monitoring หรือ Traceability'
-            },
-            {
-                id: 15,
-                category: 'tech',
-                categoryName: 'AI และเทคโนโลยี (Smart Factory)',
+                categoryName: 'Tech: Forecasting',
                 question: 'หากเราต้องการนำ AI มาช่วยพยากรณ์ยอดการผลิต (Demand Forecasting) เพื่อลดสินค้าเหลือทิ้ง คุณมองว่าข้อมูลชุดใด (Data Set) ที่จำเป็นต้องนำมาวิเคราะห์บ้าง?',
                 answer: 'ยอดขายย้อนหลัง, เทศกาล/วันหยุด, โปรโมชั่น, สภาพอากาศ, ข้อมูล Waste ย้อนหลัง'
             },
             {
-                id: 16,
+                id: 12,
                 category: 'tech',
-                categoryName: 'AI และเทคโนโลยี (Smart Factory)',
+                categoryName: 'Tech: Man vs Machine',
                 question: 'คุณจะบริหารจัดการ "ความกลัว" ของพนักงานอย่างไร หากบริษัทมีนโยบายนำหุ่นยนต์ (Automation) มาทดแทนแรงงานคนในบางจุด?',
                 answer: 'สื่อสารว่าเทคโนโลยีมาทุ่นแรง ไม่ใช่แย่งงาน และมีแผน Upskill พนักงานไปคุมเครื่องจักรแทน (Human-Machine Collaboration)'
             },
+
+            // --- ENGLISH (Selected) ---
+            {
+                id: 13,
+                category: 'english',
+                categoryName: 'English: Speaking',
+                question: '(Interview in English) Could you please briefly introduce yourself and highlight your key achievements in your previous factory management role?',
+                answer: '<b>เกณฑ์:</b> แนะนำตัวและสรุปประสบการณ์ได้คล่องแคล่ว เน้นผลงานที่เป็นตัวเลข (KPIs) หรือโปรเจกต์ลดต้นทุน'
+            },
+            {
+                id: 14,
+                category: 'english',
+                categoryName: 'English: Crisis (Speaking)',
+                question: '(Interview in English) <b>Crisis:</b> Ammonia Leak reported. CEO wants to keep running for a big order. Convince him to stop immediately.',
+                content: '<div class="bg-yellow-50 p-3 rounded border border-yellow-200 text-sm">Use a simple analogy to explain why a "Quick Fix" is deadly.</div>',
+                answer: '<b>Key Points:</b> Safety First (Life threatening), Analogy (Like driving with a bulging tire), Solution (Suggest OT later instead).'
+            },
+            {
+                id: 15,
+                category: 'english',
+                categoryName: 'English: Reading',
+                question: 'Please read the text below and answer: <br>1. What is the main technical problem? <br>2. What is the consequence of operator action?',
+                content: '<div class="bg-gray-50 p-3 rounded border border-gray-200 text-sm italic">"The machine successfully detects Ferrous... but struggles with Stainless Steel (SS) fragments smaller than 2.0mm... especially with high moisture content... operators reduce sensitivity..."</div>',
+                answer: '1. <b>Problem:</b> Detector misses small SS due to moisture (product effect).<br>2. <b>Consequence:</b> Operators lower sensitivity -> Risk of contamination.'
+            },
+            {
+                id: 16,
+                category: 'english',
+                categoryName: 'English: Writing',
+                question: '<b>Scenario:</b> เครื่อง "NSL-X500" เสีย (Temp Unstable).<br><b>Task:</b> เขียนอีเมลหา Mr. David (Supplier) แจ้งปัญหาและขอ Video Conference ด่วน',
+                answer: '<b>Key Content:</b> Subject: URGENT / Machine Name, Problem Description, Action taken (failed), Request Video Call.'
+            },
+
+            // --- SCENARIO (Selected) ---
             {
                 id: 17,
-                category: 'tech',
-                categoryName: 'AI และเทคโนโลยี (Smart Factory)',
-                question: 'คุณมีความเห็นอย่างไรเกี่ยวกับการใช้ Data Analytics เพื่อวิเคราะห์จุดคอขวด (Bottleneck) ในไลน์การผลิต?',
-                answer: 'เก็บข้อมูล Cycle Time แต่ละจุดมา Plot กราฟ หาจุดที่ช้าที่สุดเพื่อปรับปรุง (Line Balancing)'
-            },
-            {
-                id: 18,
-                category: 'tech',
-                categoryName: 'AI และเทคโนโลยี (Smart Factory)',
-                question: 'หากต้องเลือกระหว่างลงทุนเครื่องจักรใหม่ราคาสูง (High Tech) กับการโมดิฟายเครื่องเดิมใส่ Sensor/Automation คุณมีหลักเกณฑ์ตัดสินใจอย่างไร?',
-                answer: 'วิเคราะห์ ROI (จุดคุ้มทุน), ความเสี่ยงระยะยาว, และความสามารถในการ Maintenance ของทีมงานปัจจุบัน'
-            },
-
-            // --- หมวด 4: English ---
-            {
-                id: 19,
-                category: 'english',
-                categoryName: 'English Proficiency (Speaking)',
-                question: '(Interview in English) Could you please briefly introduce yourself and highlight your key achievements in your previous factory management role?',
-                answer: '<div class="mb-4 p-3 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-100 font-medium"><b><i class="fas fa-language mr-1"></i> คำแปลโจทย์:</b> ช่วยแนะนำตัวสั้นๆ และเล่าถึงผลงานเด่นของคุณในงานบริหารโรงงานที่ผ่านมาให้ฟังหน่อยครับ</div><b>เกณฑ์การให้คะแนน:</b> ผู้สมัครควรแนะนำตัวและสรุปประสบการณ์การทำงานได้คล่องแคล่ว โดยเน้นผลงานที่เป็นตัวเลข (KPIs) หรือโปรเจกต์ลดต้นทุน (Cost Saving)<br><br><i>(Candidate should summarize experience and highlight KPIs/Cost saving projects fluently.)</i>'
-            },
-            {
-                id: 20,
-                category: 'english',
-                categoryName: 'English Proficiency (Speaking)',
-                question: '(Interview in English) How would you handle a situation where a foreign supplier sends us a machine that doesn\'t meet the agreed specifications?',
-                answer: '<div class="mb-4 p-3 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-100 font-medium"><b><i class="fas fa-language mr-1"></i> คำแปลโจทย์:</b> คุณจะจัดการอย่างไรหาก Supplier ต่างประเทศส่งเครื่องจักรมาให้เรา ไม่ตรงตามสเปกที่ตกลงกันไว้?</div><b>จุดที่ต้องประเมินทักษะ (Key Points):</b><br>1. ตรวจสอบสัญญา (Check Contract)<br>2. เจรจาโดยใช้หลักฐาน (Evidence-based)<br>3. ต่อรองขอเปลี่ยนเครื่องหรือชดเชยค่าเสียหาย (Replacement/Compensation)'
-            },
-            {
-                id: 21,
-                category: 'english',
-                categoryName: 'English Proficiency (Speaking)',
-                question: '(Interview in English) Please read the crisis situation below. As a Factory Manager, convince the CEO to stop the line immediately.',
-                content: '<div class="bg-yellow-50 p-4 rounded border border-yellow-200 text-sm text-gray-700 leading-relaxed"><h4 class="font-bold text-yellow-800 mb-2"><i class="fas fa-exclamation-triangle mr-2"></i>Crisis: Ammonia Leak in Spiral Freezer</h4>The Engineering Manager reports a <b>minor Ammonia leak</b> at the main valve of the Spiral Freezer. He says:<br><i>"We can patch it temporarily (Quick Fix) to finish the production lot, but there is a 20% risk the valve blows off completely."</i><br><br><b>The CEO says:</b> <i>"We cannot stop! We have a big 7-Eleven order due tomorrow. Just patch it and keep running!"</i><br><br><b>Task:</b> Explain to the CEO why we <u>MUST</u> stop now, using a simple analogy (No technical jargon).</div>',
-                answer: '<div class="mb-4 p-3 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-100 font-medium"><b><i class="fas fa-language mr-1"></i> คำแปลโจทย์:</b> โปรดอ่านสถานการณ์วิกฤตด้านล่าง (แอมโมเนียรั่ว) ในฐานะผู้จัดการโรงงาน จงโน้มน้าว CEO ให้หยุดไลน์การผลิตเดี๋ยวนี้</div><b>เกณฑ์การประเมิน (Evaluation Criteria):</b><br>1. <b>Safety First:</b> ต้องปฏิเสธการซ่อมชั่วคราว (Quick Fix) เด็ดขาดเพราะแอมโมเนียอันตรายถึงชีวิต<br>2. <b>Analogy (การเปรียบเปรย):</b> ใช้คำเปรียบเทียบง่ายๆ เช่น <i>"เหมือนขับรถยางบวมเป่ง ถ้าฝืนขับต่อยางระเบิดคือตายกันหมด"</i><br>3. <b>Solution:</b> เสนอทางออกอื่น เช่น เพิ่มกะวันหยุด (OT) แทนการเสี่ยงเดินเครื่อง'
-            },
-            {
-                id: 22,
-                category: 'english',
-                categoryName: 'English Proficiency (Reading)',
-                question: 'Please read the text below and answer: <br>1. What is the main technical problem? <br>2. What is the consequence of operator action?',
-                content: '<div class="bg-gray-50 p-4 rounded border border-gray-200 text-sm italic font-serif text-gray-600 leading-relaxed">"Regarding the recent audit on Line 4... the machine successfully detects Ferrous... but struggles with Stainless Steel (SS) fragments smaller than 2.0mm... especially with high moisture content... This \'product effect\' creates a false signal... operators reduce sensitivity... compromising Foreign Object Control standards..."</div>',
-                answer: '<div class="mb-4 p-3 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-100 font-medium"><b><i class="fas fa-language mr-1"></i> คำแปลโจทย์:</b> 1. ปัญหาทางเทคนิคหลักคืออะไร? <br>2. ผลกระทบจากการกระทำของพนักงานคืออะไร?</div><b>เฉลย (Summary):</b><br>1. <b>ปัญหา:</b> เครื่องตรวจจับโลหะหาสแตนเลสชิ้นเล็ก (<2.0mm) ไม่เจอ เพราะความชื้นในสินค้ากวนสัญญาณ (Product effect)<br>2. <b>ผลกระทบ:</b> พนักงานไปลดความไวเครื่องลง (Lower sensitivity) -> ทำให้เสี่ยงมีสิ่งแปลกปลอมหลุดไปถึงลูกค้า'
-            },
-            {
-                id: 23,
-                category: 'english',
-                categoryName: 'English Proficiency (Reading)',
-                question: 'Please read the technical highlight of "UltraCut-S300" and summarize its <b>Key Features</b> for us.',
-                content: '<div class="bg-blue-50 p-4 rounded border border-blue-200 text-sm text-gray-700 leading-relaxed"><h4 class="font-bold text-blue-800 mb-2">Product: UltraCut-S300 (Ultrasonic Sandwich Cutter)</h4>The UltraCut-S300 utilizes <b>20kHz ultrasonic blade technology</b> to slice through multi-layered sandwiches without compressing or displacing ingredients.<br><br><ul class="list-disc pl-5"><li><b>Zero-Friction Cut:</b> The vibrating blade prevents cheese and sauces from sticking, ensuring a perfect cross-section.</li><li><b>Hygiene:</b> Minimal food residue on blades reduces cleaning downtime and cross-contamination risks.</li><li><b>Capacity:</b> High-speed processing up to 60 cycles/minute.</li></ul></div>',
-                answer: '<div class="mb-4 p-3 bg-blue-50 text-blue-800 rounded-lg text-sm border border-blue-100 font-medium"><b><i class="fas fa-language mr-1"></i> คำแปลโจทย์:</b> โปรดอ่านข้อมูลทางเทคนิคของ "UltraCut-S300" และสรุป <b>ฟีเจอร์หลัก (Key Features)</b> ให้เราฟังหน่อย</div><b>เฉลยจุดเด่น (Key Features):</b><br>1. ใช้ระบบคลื่นเสียงความถี่สูง (Ultrasonic 20kHz) ตัดแล้วไม่เละ<br>2. ไม่ติดใบมีด (Zero-friction) ไส้แซนวิชไม่เลื่อน<br>3. ถูกสุขลักษณะ (Hygiene) เศษอาหารติดใบมีดน้อย/ทำความสะอาดง่าย<br>4. ความเร็วสูง (60 รอบ/นาที)'
-            },
-            {
-                id: 24,
-                category: 'english',
-                categoryName: 'English Proficiency (Writing)',
-                question: '<b>Scenario:</b> เครื่อง "High-Speed Flow Wrapper (NSL-X500)" เสีย อาการคือ "Sealing jaw อุณหภูมิแกว่ง (Unstable temp)" ทำให้ซีลไม่สนิท ช่างซ่อมไม่ได้<br><br><b>Task:</b> เขียนอีเมลหา Mr. David (Supplier) เพื่อแจ้งปัญหาและขอ Video Conference ด่วน',
-                answer: '<b>แนวคำตอบ (Key Content):</b><br>1. <b>Subject:</b> ต้องระบุความเร่งด่วน (URGENT) และชื่อเครื่องจักรชัดเจน<br>2. <b>ปัญหา:</b> แจ้งเรื่องอุณหภูมิแกว่ง (120-160°C) และซีลไม่ติด<br>3. <b>การแก้ไขเบื้องต้น:</b> ระบุว่าช่างซ่อมพยายามแก้แล้วแต่ไม่หาย<br>4. <b>สิ่งที่ขอ:</b> ขอคู่มือ หรือขอ Video Conference ด่วน'
-            },
-
-            // --- หมวด 5: Scenario ---
-            {
-                id: 25,
                 category: 'scenario',
-                categoryName: 'การแก้ปัญหาเฉพาะหน้า (Scenario)',
+                categoryName: 'Scenario: Emergency',
                 question: 'ไฟดับกะทันหันขณะวัตถุดิบอยู่ในเตาอบ (Oven) ไฟสำรองไม่พอเดินเครื่องจักรหลัก คุณจะตัดสินใจอย่างไรกับสินค้านั้น?',
                 answer: 'ประเมินความเสี่ยง Food Safety ทันที ถ้าอุณหภูมิตกจนเสี่ยงเชื้อโรค ต้องกล้าสั่งทำลาย (Scrap) ห้ามเสียดาย เพื่อรักษาแบรนด์'
             },
             {
-                id: 26,
+                id: 18,
                 category: 'scenario',
-                categoryName: 'การแก้ปัญหาเฉพาะหน้า (Scenario)',
+                categoryName: 'Scenario: Resource',
                 question: 'ยอดสั่งซื้อพุ่งสูง 200% ช่วงเทศกาล แต่พนักงานขาดงาน 30% จากโรคระบาด คุณมีแผนรับมือฉุกเฉินอย่างไร?',
                 answer: 'จ้าง Sub-contract, เกลี่ยคนข้ามแผนก, จ่าย OT เรทพิเศษ, เจรจาฝ่ายขายเพื่อจัด Priority ลูกค้า'
             },
             {
-                id: 27,
+                id: 19,
                 category: 'scenario',
-                categoryName: 'การแก้ปัญหาเฉพาะหน้า (Scenario)',
+                categoryName: 'Scenario: Quality',
                 question: 'ตรวจพบเศษพลาสติกในสินค้า Lot ใหญ่ที่ผลิตเสร็จแล้วกำลังจะส่งออก คุณจะตัดสินใจอย่างไร?',
                 answer: 'สั่ง Hold Shipment ทันที, ใช้ X-Ray/Metal Detector ตรวจ 100% ถ้าทำไม่ได้ต้องทำลายทิ้ง (Safety First)'
             },
             {
-                id: 28,
+                id: 20,
                 category: 'scenario',
-                categoryName: 'การแก้ปัญหาเฉพาะหน้า (Scenario)',
+                categoryName: 'Scenario: Ethics',
                 question: 'พบการทุจริตเล็กน้อย (เช่น ขโมยวัตถุดิบ) โดยพนักงานเก่าแก่ที่ทำงานดีมาตลอด คุณจะจัดการอย่างไร?',
-                answer: 'Zero Tolerance for Fraud: ต้องดำเนินการตามระเบียบวินัย/กฎหมายอย่างยุติธรรม ไม่เลือกปฏิบัติ เพื่อรักษามาตรฐานองค์กร'
-            },
-            {
-                id: 29,
-                category: 'scenario',
-                categoryName: 'การแก้ปัญหาเฉพาะหน้า (Scenario)',
-                question: 'บริษัทต้องการลด Carbon Footprint ลง 20% ใน 2 ปี คุณจะเสนอโครงการอะไรเป็น Project แรก?',
-                answer: 'โครงการที่เห็นผลเร็วและคุ้มค่า เช่น เปลี่ยนหลอดไฟ LED ทั้งโรงงาน, ปรับปรุงประสิทธิภาพ Boiler, หรือติดตั้ง Solar Rooftop'
-            },
-            {
-                id: 30,
-                category: 'scenario',
-                categoryName: 'การแก้ปัญหาเฉพาะหน้า (Scenario)',
-                question: 'หากเราจ้างคุณ สิ่งแรกที่คุณจะทำในสัปดาห์แรกของการทำงานที่ NSL คืออะไร?',
-                answer: 'Gemba Walk (เดินหน้างานจริง), รับฟังพนักงานทุกระดับ (Listening), เรียนรู้ Process และวัฒนธรรมองค์กร ก่อนสั่งการเปลี่ยนแปลง'
+                answer: 'Zero Tolerance: ดำเนินการตามระเบียบวินัย/กฎหมายอย่างยุติธรรม ไม่เลือกปฏิบัติ เพื่อรักษามาตรฐานองค์กร'
             }
         ];
 
-        // State
+        // State & Logic
         let currentIndex = 0;
         let isAnswerVisible = false;
 
-        // Elements
         const qCard = document.getElementById('question-card');
         const qText = document.getElementById('q-text');
         const qBadge = document.getElementById('q-badge');
@@ -389,16 +328,13 @@
         function renderQuestion() {
             const q = questions[currentIndex];
             
-            // Animation reset
             qCard.classList.remove('card-enter');
-            void qCard.offsetWidth; // trigger reflow
+            void qCard.offsetWidth;
             qCard.classList.add('card-enter');
 
-            // Set Content
             qText.innerHTML = q.question;
             qBadge.innerText = q.categoryName;
             
-            // Set Badge Color
             let badgeClass = 'bg-gray-100 text-gray-800';
             if(q.category === 'strategy') badgeClass = 'bg-blue-100 text-blue-800';
             if(q.category === 'leadership') badgeClass = 'bg-purple-100 text-purple-800';
@@ -407,18 +343,14 @@
             if(q.category === 'scenario') badgeClass = 'bg-red-100 text-red-800';
             qBadge.className = `inline-block px-3 py-1 rounded-full text-xs font-semibold ${badgeClass}`;
 
-            // Show/Hide Speak Button
-            // ** Modified: Hide button if Question ID is 24 **
-            if (q.category === 'english' && q.id !== 24) {
+            if (q.category === 'english' && q.id !== 16) {
                 btnSpeak.classList.remove('hidden');
             } else {
                 btnSpeak.classList.add('hidden');
             }
 
-            // Category Label Top
             categoryLabel.innerText = q.categoryName;
 
-            // Optional Content (for reading test)
             if (q.content) {
                 qContent.innerHTML = q.content;
                 qContent.classList.remove('hidden');
@@ -426,13 +358,11 @@
                 qContent.classList.add('hidden');
             }
 
-            // Reset Answer View
             isAnswerVisible = false;
             aBox.classList.add('hidden');
             aText.innerHTML = q.answer;
             btnReveal.innerHTML = '<i class="fas fa-eye mr-1"></i> ดูแนวคำตอบ';
 
-            // Update Buttons
             btnPrev.disabled = currentIndex === 0;
             if (currentIndex === questions.length - 1) {
                 btnNext.innerHTML = 'จบการสัมภาษณ์ <i class="fas fa-flag-checkered ml-2"></i>';
@@ -444,7 +374,6 @@
                 btnNext.classList.replace('hover:bg-green-700', 'hover:bg-orange-700');
             }
 
-            // Update Progress
             const progress = ((currentIndex + 1) / questions.length) * 100;
             progressBar.style.width = `${progress}%`;
             progressText.innerText = `Question ${currentIndex + 1} of ${questions.length}`;
@@ -463,13 +392,12 @@
 
         function speakQuestion() {
             const q = questions[currentIndex];
-            // Only speak question text by default (strip HTML tags)
             const div = document.createElement("div");
             div.innerHTML = q.question;
             const textToSpeak = div.textContent || div.innerText || "";
 
             if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); // Cancel previous speech
+                window.speechSynthesis.cancel();
                 const utterance = new SpeechSynthesisUtterance(textToSpeak);
                 utterance.lang = 'en-US'; 
                 utterance.rate = 0.9;
@@ -505,7 +433,6 @@
             }
         }
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             renderQuestion();
         });
