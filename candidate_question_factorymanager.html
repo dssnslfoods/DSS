@@ -3,411 +3,440 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIS Report: Candidate Analysis - Suthep H.</title>
+    <title>NSL Foods Interview Guide - Compact (20 Questions)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chart.js for MIS Graphics if needed (using CSS for lightweight) -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Sarabun', sans-serif; background-color: #f0f2f5; color: #334155; }
-        .report-header { background: #1e293b; color: white; padding: 20px; border-radius: 0 0 12px 12px; }
-        .card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); padding: 20px; margin-bottom: 16px; border: 1px solid #e2e8f0; }
-        .kpi-box { text-align: center; padding: 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; }
-        .kpi-value { font-size: 1.5rem; font-weight: 700; color: #1e293b; }
-        .kpi-label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
-        .status-risk { color: #ef4444; background: #fef2f2; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
-        .status-good { color: #10b981; background: #ecfdf5; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
-        .table-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.875rem; }
-        .table-row:last-child { border-bottom: none; }
-        .bar-bg { background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; }
-        .bar-fill { height: 100%; border-radius: 4px; }
-        .astro-badge { background: linear-gradient(135deg, #4f46e5, #9333ea); color: white; font-size: 0.7rem; padding: 4px 8px; border-radius: 99px; }
-        
-        /* New Styles for Detailed Table */
-        .detail-table th { background-color: #f8fafc; color: #64748b; font-weight: 600; padding: 10px; text-align: left; font-size: 0.8rem; border-bottom: 2px solid #e2e8f0; }
-        .detail-table td { padding: 10px; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
-        .section-header { font-size: 1.1rem; font-weight: 700; color: #1e293b; border-left: 4px solid #3b82f6; padding-left: 10px; margin-bottom: 15px; margin-top: 10px; }
-        
-        /* Deep Dive Styles */
-        .deep-dive-card { border: 1px dashed #cbd5e1; background: #f8fafc; }
-        .insight-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-right: 5px; }
-        .tag-red { background: #fee2e2; color: #991b1b; }
-        .tag-yellow { background: #fef9c3; color: #854d0e; }
-        .tag-blue { background: #dbeafe; color: #1e40af; }
-
-        /* Astro Premium Styles */
-        .astro-card { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: white; border: none; }
-        .astro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-        .zodiac-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-        .prophecy-box { background: rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); }
-        .lucky-tag { background: #f59e0b; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; display: inline-block; margin-right: 5px; }
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .nsl-gradient {
+            background: linear-gradient(135deg, #FF6B00 0%, #FF9900 100%);
+        }
+        .card-enter {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
-<body class="p-2 md:p-6 max-w-6xl mx-auto">
+<body class="flex flex-col min-h-screen">
 
     <!-- Header -->
-    <div class="report-header flex justify-between items-center mb-6 shadow-md">
-        <div>
-            <h1 class="text-2xl font-bold">MIS CANDIDATE REPORT</h1>
-            <p class="text-sm text-gray-400">Position: Factory Manager | Ref: Suthep Heammarattanakorn</p>
-        </div>
-        <div class="text-right hidden md:block">
-            <div class="text-xs text-gray-400">REPORT DATE</div>
-            <div class="font-mono font-bold">14 DEC 2025</div>
-        </div>
-    </div>
-
-    <!-- Executive KPI Dashboard -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div class="card p-4 flex flex-col justify-center items-center">
-            <div class="kpi-value text-blue-600">45</div>
-            <div class="kpi-label">Age (Maturity)</div>
-        </div>
-        <div class="card p-4 flex flex-col justify-center items-center">
-            <div class="kpi-value text-red-500">1.25</div>
-            <div class="kpi-label">Avg. Tenure (Yrs) <span class="status-risk">RISK</span></div>
-        </div>
-        <div class="card p-4 flex flex-col justify-center items-center">
-            <div class="kpi-value text-green-600">100%</div>
-            <div class="kpi-label">Cert. Match</div>
-        </div>
-        <div class="card p-4 flex flex-col justify-center items-center">
-            <div class="kpi-value text-orange-500">7-10%</div>
-            <div class="kpi-label">Salary Growth Req.</div>
-        </div>
-    </div>
-
-    <!-- Deep Dive Section -->
-    <div class="card bg-gray-50 border-blue-200 mb-6">
-        <h2 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4 flex items-center">
-            🕵️‍♂️ Deep Dive: Hidden Risks & Unspoken Truths
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- 1. The Missing History -->
-            <div class="deep-dive-card p-4 rounded-lg">
-                <div class="flex items-center mb-2">
-                    <span class="insight-tag tag-red">CRITICAL GAP</span>
-                    <h4 class="font-bold text-gray-700">The "Iceberg" Career History</h4>
+    <header class="nsl-gradient text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-white text-orange-600 rounded p-1 shadow-sm h-12 w-12 flex items-center justify-center font-bold text-xl">
+                    NSL
                 </div>
-                <p class="text-sm text-gray-600 mb-2">ประวัติช่วง 2005-2023 หายไป (18 ปี) ระบุเพียง 2 ปีล่าสุด ต้องตรวจสอบเพิ่มด่วน</p>
-                <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden flex text-xs text-white text-center leading-4">
-                    <div class="bg-gray-400 w-3/4 flex items-center justify-center">❓ Unlisted (18 Years)</div>
-                    <div class="bg-blue-500 w-1/4 flex items-center justify-center">Listed (2 Yrs)</div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold">NSL Foods PLC.</h1>
+                    <p class="text-xs md:text-sm text-orange-100">Factory Manager Interview (Compact)</p>
                 </div>
             </div>
-            <!-- 2. Managerial DNA -->
-            <div class="deep-dive-card p-4 rounded-lg">
-                <div class="flex items-center mb-2">
-                    <span class="insight-tag tag-blue">PROFILE MATCH</span>
-                    <h4 class="font-bold text-gray-700">Compliance vs. Efficiency DNA</h4>
-                </div>
-                <p class="text-xs text-blue-800 mt-2 bg-blue-50 p-2 rounded">
-                    <strong>Insight:</strong> DNA คือ "ผู้คุมกฎ" (Safety/Audit) เหมาะกับการวางระบบพื้นฐาน แต่ไม่ใช่สาย "Strategy/Lean"
+            <div class="text-right hidden md:block">
+                <p class="text-sm font-light">Mode: 20 Questions</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation / Quick Jump -->
+    <div class="bg-white shadow-sm sticky top-20 z-40">
+        <div class="container mx-auto px-4 py-3">
+            <p class="text-xs text-gray-400 mb-1 ml-1 uppercase tracking-wide">ไปที่หัวข้อ (Jump to Section):</p>
+            <div class="overflow-x-auto whitespace-nowrap scrollbar-hide pb-1">
+                <button onclick="jumpToCategory('strategy')" class="section-btn px-3 py-1.5 rounded-full text-xs font-medium text-gray-600 bg-gray-100 hover:bg-orange-100 hover:text-orange-700 transition mr-2 focus:outline-none">
+                    1. Strategy (1-5)
+                </button>
+                <button onclick="jumpToCategory('leadership')" class="section-btn px-3 py-1.5 rounded-full text-xs font-medium text-gray-600 bg-gray-100 hover:bg-orange-100 hover:text-orange-700 transition mr-2 focus:outline-none">
+                    2. Leadership (6-9)
+                </button>
+                <button onclick="jumpToCategory('tech')" class="section-btn px-3 py-1.5 rounded-full text-xs font-medium text-gray-600 bg-gray-100 hover:bg-orange-100 hover:text-orange-700 transition mr-2 focus:outline-none">
+                    3. AI & Tech (10-12)
+                </button>
+                <button onclick="jumpToCategory('english')" class="section-btn px-3 py-1.5 rounded-full text-xs font-medium text-gray-600 bg-gray-100 hover:bg-orange-100 hover:text-orange-700 transition mr-2 focus:outline-none">
+                    4. English (13-16)
+                </button>
+                <button onclick="jumpToCategory('scenario')" class="section-btn px-3 py-1.5 rounded-full text-xs font-medium text-gray-600 bg-gray-100 hover:bg-orange-100 hover:text-orange-700 transition mr-2 focus:outline-none">
+                    5. Problem Solving (17-20)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6 flex-grow flex flex-col justify-center items-center max-w-3xl">
+        
+        <!-- Progress Bar -->
+        <div class="w-full mb-6">
+            <div class="flex justify-between text-sm text-gray-500 mb-2">
+                <span id="progress-text">Question 1 of 20</span>
+                <span id="category-label" class="font-medium text-orange-600">Category Name</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div id="progress-bar" class="bg-orange-500 h-2.5 rounded-full transition-all duration-300" style="width: 5%"></div>
+            </div>
+        </div>
+
+        <!-- Question Card -->
+        <div id="question-card" class="bg-white w-full rounded-2xl shadow-xl border border-gray-100 p-6 md:p-10 card-enter relative min-h-[400px] flex flex-col">
+            <!-- Badge & Audio Button Header -->
+            <div class="flex justify-between items-start mb-4">
+                <span id="q-badge" class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
+                    Category
+                </span>
+                
+                <!-- Audio Button -->
+                <button id="btn-speak" onclick="speakQuestion()" class="hidden text-gray-500 hover:text-orange-600 transition-colors focus:outline-none flex items-center gap-2 text-sm font-medium px-2 py-1 rounded hover:bg-orange-50">
+                    <i class="fas fa-volume-up text-lg"></i> <span class="hidden sm:inline">ฟังคำถาม (Listen)</span>
+                </button>
+            </div>
+
+            <!-- Question Text -->
+            <h2 id="q-text" class="text-xl md:text-2xl font-medium text-gray-800 mb-6 leading-relaxed flex-grow">
+                Question goes here...
+            </h2>
+            
+            <!-- Extra Content (for English Reading) -->
+            <div id="q-content" class="mb-6 hidden"></div>
+
+            <!-- Answer Section -->
+            <div id="answer-box" class="hidden bg-green-50 rounded-xl p-5 border border-green-100 mb-6 animate-fade-in">
+                <p class="text-sm font-bold text-green-700 mb-2 flex items-center">
+                    <i class="fas fa-check-circle mr-2"></i>แนวคำตอบ (Guideline):
+                </p>
+                <p id="a-text" class="text-gray-700 text-base leading-relaxed">
+                    Answer goes here...
                 </p>
             </div>
-        </div>
-    </div>
 
-    <!-- 🔮 PREMIUM ASTRO-ANALYTICS -->
-    <div class="card astro-card mb-6">
-        <h2 class="text-xl font-bold text-white border-b border-indigo-400 pb-2 mb-4 flex items-center gap-2">
-            🔮 Deep Astro-Analytics (วิเคราะห์ดวงชะตาผู้บริหาร)
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Reveal Button -->
+            <div class="text-center mt-auto">
+                <button onclick="toggleAnswer()" id="btn-reveal" class="text-orange-600 font-medium hover:text-orange-800 text-sm focus:outline-none transition underline decoration-dotted">
+                    <i class="fas fa-eye mr-1"></i> ดูแนวคำตอบ
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between w-full mt-8 gap-4">
+            <button onclick="prevQuestion()" id="btn-prev" class="flex-1 px-6 py-3 bg-white border border-gray-300 text-gray-600 rounded-xl hover:bg-gray-50 transition shadow-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+                <i class="fas fa-arrow-left mr-2"></i> ข้อก่อนหน้า
+            </button>
+            <button onclick="nextQuestion()" id="btn-next" class="flex-1 px-6 py-3 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition shadow-lg font-medium">
+                ข้อถัดไป <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-4 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-xs text-gray-400">© 2025 Interview Guide System for NSL Foods PLC.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Data - Total 20 Questions
+        const questions = [
+            // --- FIXED 1 & 2 ---
+            {
+                id: 'new-1',
+                category: 'strategy',
+                categoryName: '1. Feasibility & Investment',
+                question: '<b>Scenario:</b> บริษัทต้องการลดต้นทุนและเพิ่มประสิทธิภาพ จึงพิจารณาซื้อเครื่องจักรอัตโนมัติราคา 6 ล้านบาท (ยอดขาย 140,000 ชิ้น/วัน, พนักงาน 140 คน)<br><br><b>ในฐานะผู้จัดการโรงงาน ให้ทำ Feasibility Study:</b><br>1.1 ควรลงทุนหรือไม่<br>1.2 วิเคราะห์ด้านการเงิน (Financial) และไม่ใช่การเงิน (Non-financial)<br>1.3 วิธีหา ROI / Payback Period / IRR<br>1.4 ความเสี่ยงของการลงทุน',
+                answer: '<b>1.1 ควรลงทุน:</b> หากคำนวณแล้วคืนทุนเร็ว (เช่น < 2-3 ปี) และเพิ่ม Cap ได้<br><b>1.2 วิเคราะห์:</b><br>- <i>Financial:</i> เปรียบเทียบค่าเครื่อง 6M vs ค่าแรงที่ลดได้ + ค่า Maintenance<br>- <i>Non-Financial:</i> แก้ปัญหาขาดแคลนแรงงาน, Hygiene ดีขึ้น<br><b>1.3 สูตร:</b><br>- <i>ROI:</i> (กำไรสุทธิ / เงินลงทุน) x 100<br>- <i>Payback:</i> เงินลงทุน / Cash Flow ต่อปี<br><b>1.4 ความเสี่ยง:</b> เครื่องเสีย, เทคโนโลยีตกรุ่น, ความยืดหยุ่นน้อยกว่าคน'
+            },
+            {
+                id: 'new-2',
+                category: 'tech',
+                categoryName: '2. AI & Quality Solutions',
+                question: '<b>Scenario:</b> ปัจจุบันโรงงานมีข้อร้องเรียนเรื่อง "เส้นผม" ในสินค้าเฉลี่ยเดือนละ 2 ครั้ง ต้องการลดให้เป็นศูนย์ (Zero Complaint)<br><br><b>Question:</b> จงเสนอแนวคิดการนำ AI หรือเทคโนโลยีเข้ามาใช้ในการตรวจสอบเพื่อแก้ปัญหานี้',
+                answer: '<b>แนวทาง AI Solution:</b><br>1. <b>AI Vision Inspection:</b> ติดตั้งกล้อง High-speed + AI Deep Learning ที่สายพานก่อนแพ็ค<br>2. <b>Hygiene Monitoring AI:</b> กล้องตรวจจับพนักงาน (หมวกคลุมผม) หน้าไลน์ผลิต<br>3. <b>Process Control:</b> ใช้ Sensor ตรวจจับไฟฟ้าสถิต/ลม Air Curtain ควบคุมด้วย AI'
+            },
+
+            // --- STRATEGY (Selected) ---
+            {
+                id: 3,
+                category: 'strategy',
+                categoryName: 'Strategy: Planning',
+                question: 'โรงงานอาหารมีความท้าทายเรื่องอายุสินค้า (Shelf-life) ที่สั้น คุณมีกลยุทธ์ในการวางแผนการผลิตอย่างไรให้สัมพันธ์กับยอดสั่งซื้อ (JIT) เพื่อลดของเสีย (Waste)?',
+                answer: 'ใช้ Demand Planning ที่แม่นยำ, ประสานงานฝ่ายขาย/โลจิสติกส์, ใช้ระบบ FIFO/FEFO เคร่งครัด และวางแผนการผลิตแบบยืดหยุ่น'
+            },
+            {
+                id: 4,
+                category: 'strategy',
+                categoryName: 'Strategy: Cost Control',
+                question: 'หากต้นทุนวัตถุดิบแป้งและน้ำตาลปรับตัวสูงขึ้น คุณมีแนวทางในการบริหารจัดการต้นทุนการผลิต (Cost Control) ภายในโรงงานอย่างไรโดยไม่ลดคุณภาพสินค้า?',
+                answer: 'เน้นลด Loss ในกระบวนการ (Yield Improvement), เพิ่ม OEE เครื่องจักร, และบริหารจัดการพลังงาน (Energy Saving)'
+            },
+            {
+                id: 5,
+                category: 'strategy',
+                categoryName: 'Strategy: Maintenance',
+                question: 'คุณมีวิธีบริหารจัดการ Maintenance Plan อย่างไร เพื่อให้มั่นใจว่าเครื่องจักรจะไม่ Breakdown ในช่วง Peak Season?',
+                answer: 'ทำ Preventive Maintenance (PM) อย่างเคร่งครัด และขยับสู่ Predictive Maintenance โดยวิเคราะห์อายุอะไหล่'
+            },
+
+            // --- LEADERSHIP (Selected) ---
+            {
+                id: 6,
+                category: 'leadership',
+                categoryName: 'Leadership: Style',
+                question: 'สไตล์การบริหารงานของคุณเป็นแบบไหน และคุณคิดว่าจะปรับตัวเข้ากับวัฒนธรรมองค์กรของ NSL ที่ต้องรวดเร็วและตื่นตัวตลอดเวลาได้อย่างไร?',
+                answer: 'เน้น Situational Leadership (ปรับตามสถานการณ์), เน้นผลลัพธ์ (Result-oriented) แต่ใส่ใจคน และมีความ Proactive สูง'
+            },
+            {
+                id: 7,
+                category: 'leadership',
+                categoryName: 'Leadership: Conflict Mgmt',
+                question: 'หากฝ่ายผลิต (Production) มีความขัดแย้งกับฝ่ายควบคุมคุณภาพ (QC) เรื่องการปล่อยสินค้า คุณจะเข้าไปไกล่เกลี่ยและตัดสินใจบนพื้นฐานอะไร?',
+                answer: 'ตัดสินใจบนพื้นฐาน "Food Safety & Quality Standard" เป็นอันดับแรก (Customer Focus) ไม่ประนีประนอม แต่หาทางออกร่วมกัน'
+            },
+            {
+                id: 8,
+                category: 'leadership',
+                categoryName: 'Leadership: Safety Culture',
+                question: 'คุณมีวิธีจูงใจพนักงานระดับปฏิบัติการ (Operator) ให้ตระหนักเรื่องสุขอนามัย (Hygiene) และความปลอดภัย (Safety) จนกลายเป็นนิสัยได้อย่างไร?',
+                answer: 'สร้าง Safety Culture, ทำ Morning Talk ทุกวัน, มีระบบ Incentive/Reward, และทำเป็น KPI ที่ชัดเจน'
+            },
+            {
+                id: 9,
+                category: 'leadership',
+                categoryName: 'Leadership: Change Mgmt',
+                question: 'ในการบริหารโรงงานที่มีพนักงานเก่าแก่ (Senior Staff) ที่คุ้นชินกับวิธีการเดิมๆ หากคุณต้องการนำระบบใหม่มาใช้แล้วเกิดแรงต้าน (Resistance) คุณมีจิตวิทยาในการโน้มน้าวใจอย่างไร?',
+                answer: 'ใช้หลักการ "Change Management": เน้นการรับฟัง (Empathy), ชี้ให้เห็นประโยชน์ที่เขาจะได้รับ (What\'s in it for me), สร้าง Change Agents จากคนในกลุ่มนั้น'
+            },
+
+            // --- TECH (Selected) ---
+            {
+                id: 10,
+                category: 'tech',
+                categoryName: 'Tech: Industry 4.0',
+                question: 'ในยุค Industry 4.0 คุณคิดว่าเทคโนโลยีใดมีความจำเป็นที่สุดสำหรับโรงงานผลิตอาหารของ NSL และเพราะเหตุใด?',
+                answer: 'IoT Sensors วัดอุณหภูมิ/ความชื้น Real-time, Vision Inspection ตรวจจับสิ่งแปลกปลอม, หรือ Robot Packing ท้ายไลน์'
+            },
+            {
+                id: 11,
+                category: 'tech',
+                categoryName: 'Tech: Forecasting',
+                question: 'หากเราต้องการนำ AI มาช่วยพยากรณ์ยอดการผลิต (Demand Forecasting) เพื่อลดสินค้าเหลือทิ้ง คุณมองว่าข้อมูลชุดใด (Data Set) ที่จำเป็นต้องนำมาวิเคราะห์บ้าง?',
+                answer: 'ยอดขายย้อนหลัง, เทศกาล/วันหยุด, โปรโมชั่น, สภาพอากาศ, ข้อมูล Waste ย้อนหลัง'
+            },
+            {
+                id: 12,
+                category: 'tech',
+                categoryName: 'Tech: Man vs Machine',
+                question: 'คุณจะบริหารจัดการ "ความกลัว" ของพนักงานอย่างไร หากบริษัทมีนโยบายนำหุ่นยนต์ (Automation) มาทดแทนแรงงานคนในบางจุด?',
+                answer: 'สื่อสารว่าเทคโนโลยีมาทุ่นแรง ไม่ใช่แย่งงาน และมีแผน Upskill พนักงานไปคุมเครื่องจักรแทน (Human-Machine Collaboration)'
+            },
+
+            // --- ENGLISH (Selected) ---
+            {
+                id: 13,
+                category: 'english',
+                categoryName: 'English: Speaking',
+                question: '(Interview in English) Could you please briefly introduce yourself and highlight your key achievements in your previous factory management role?',
+                answer: '<b>เกณฑ์:</b> แนะนำตัวและสรุปประสบการณ์ได้คล่องแคล่ว เน้นผลงานที่เป็นตัวเลข (KPIs) หรือโปรเจกต์ลดต้นทุน'
+            },
+            {
+                id: 14,
+                category: 'english',
+                categoryName: 'English: Crisis (Speaking)',
+                question: '(Interview in English) <b>Crisis:</b> Ammonia Leak reported. CEO wants to keep running for a big order. Convince him to stop immediately.',
+                content: '<div class="bg-yellow-50 p-3 rounded border border-yellow-200 text-sm">Use a simple analogy to explain why a "Quick Fix" is deadly.</div>',
+                answer: '<b>Key Points:</b> Safety First (Life threatening), Analogy (Like driving with a bulging tire), Solution (Suggest OT later instead).'
+            },
+            {
+                id: 15,
+                category: 'english',
+                categoryName: 'English: Reading',
+                question: 'Please read the text below and answer: <br>1. What is the main technical problem? <br>2. What is the consequence of operator action?',
+                content: '<div class="bg-gray-50 p-3 rounded border border-gray-200 text-sm italic">"The machine successfully detects Ferrous... but struggles with Stainless Steel (SS) fragments smaller than 2.0mm... especially with high moisture content... operators reduce sensitivity..."</div>',
+                answer: '1. <b>Problem:</b> Detector misses small SS due to moisture (product effect).<br>2. <b>Consequence:</b> Operators lower sensitivity -> Risk of contamination.'
+            },
+            {
+                id: 16,
+                category: 'english',
+                categoryName: 'English: Writing',
+                question: '<b>Scenario:</b> เครื่อง "NSL-X500" เสีย (Temp Unstable).<br><b>Task:</b> เขียนอีเมลหา Mr. David (Supplier) แจ้งปัญหาและขอ Video Conference ด่วน',
+                answer: '<b>Key Content:</b> Subject: URGENT / Machine Name, Problem Description, Action taken (failed), Request Video Call.'
+            },
+
+            // --- SCENARIO (Selected) ---
+            {
+                id: 17,
+                category: 'scenario',
+                categoryName: 'Scenario: Emergency',
+                question: 'ไฟดับกะทันหันขณะวัตถุดิบอยู่ในเตาอบ (Oven) ไฟสำรองไม่พอเดินเครื่องจักรหลัก คุณจะตัดสินใจอย่างไรกับสินค้านั้น?',
+                answer: 'ประเมินความเสี่ยง Food Safety ทันที ถ้าอุณหภูมิตกจนเสี่ยงเชื้อโรค ต้องกล้าสั่งทำลาย (Scrap) ห้ามเสียดาย เพื่อรักษาแบรนด์'
+            },
+            {
+                id: 18,
+                category: 'scenario',
+                categoryName: 'Scenario: Resource',
+                question: 'ยอดสั่งซื้อพุ่งสูง 200% ช่วงเทศกาล แต่พนักงานขาดงาน 30% จากโรคระบาด คุณมีแผนรับมือฉุกเฉินอย่างไร?',
+                answer: 'จ้าง Sub-contract, เกลี่ยคนข้ามแผนก, จ่าย OT เรทพิเศษ, เจรจาฝ่ายขายเพื่อจัด Priority ลูกค้า'
+            },
+            {
+                id: 19,
+                category: 'scenario',
+                categoryName: 'Scenario: Quality',
+                question: 'ตรวจพบเศษพลาสติกในสินค้า Lot ใหญ่ที่ผลิตเสร็จแล้วกำลังจะส่งออก คุณจะตัดสินใจอย่างไร?',
+                answer: 'สั่ง Hold Shipment ทันที, ใช้ X-Ray/Metal Detector ตรวจ 100% ถ้าทำไม่ได้ต้องทำลายทิ้ง (Safety First)'
+            },
+            {
+                id: 20,
+                category: 'scenario',
+                categoryName: 'Scenario: Ethics',
+                question: 'พบการทุจริตเล็กน้อย (เช่น ขโมยวัตถุดิบ) โดยพนักงานเก่าแก่ที่ทำงานดีมาตลอด คุณจะจัดการอย่างไร?',
+                answer: 'Zero Tolerance: ดำเนินการตามระเบียบวินัย/กฎหมายอย่างยุติธรรม ไม่เลือกปฏิบัติ เพื่อรักษามาตรฐานองค์กร'
+            }
+        ];
+
+        // State & Logic
+        let currentIndex = 0;
+        let isAnswerVisible = false;
+
+        const qCard = document.getElementById('question-card');
+        const qText = document.getElementById('q-text');
+        const qBadge = document.getElementById('q-badge');
+        const qContent = document.getElementById('q-content');
+        const aBox = document.getElementById('answer-box');
+        const aText = document.getElementById('a-text');
+        const btnReveal = document.getElementById('btn-reveal');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const categoryLabel = document.getElementById('category-label');
+        const btnSpeak = document.getElementById('btn-speak');
+
+        function renderQuestion() {
+            const q = questions[currentIndex];
             
-            <!-- Column 1: Core Identity -->
-            <div class="md:col-span-1 border-r border-indigo-700 pr-4">
-                <div class="text-center mb-4">
-                    <div class="text-5xl mb-2">🐓</div>
-                    <h3 class="text-lg font-bold text-yellow-400">Metal Rooster (ระกาทอง)</h3>
-                    <p class="text-xs text-indigo-200">Born: 1981 (Year of the Rooster)</p>
-                </div>
-                <div class="space-y-3 text-sm text-indigo-100">
-                    <p><strong>ธาตุประจำตัว:</strong> <span class="text-white font-bold">ทอง (Metal)</span> <br>แข็งแกร่ง, เด็ดขาด, ปากคม, รักความถูกต้อง</p>
-                    <p><strong>จุดเด่น (The Good):</strong> สู้งานหนัก (Hardworking), ตรงต่อเวลามาก, บริหารเงินและทรัพยากรเก่ง (Financial Acumen)</p>
-                    <p><strong>จุดตาย (The Bad):</strong> ปากไว (Blunt), ชอบจับผิด (Critical), ยอมหักไม่ยอมงอ (Rigid)</p>
-                </div>
-            </div>
+            qCard.classList.remove('card-enter');
+            void qCard.offsetWidth;
+            qCard.classList.add('card-enter');
 
-            <!-- Column 2: Management Style -->
-            <div class="md:col-span-1 border-r border-indigo-700 pr-4">
-                <h4 class="text-sm font-bold text-indigo-300 mb-2 uppercase tracking-wider">Management & Conflict Style</h4>
-                <div class="prophecy-box mb-3">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span>☀️</span> <strong class="text-white">Sunday Born (วันอาทิตย์)</strong>
-                    </div>
-                    <p class="text-xs text-indigo-200">มีความเป็นผู้นำสูง (Natural Leader) แต่ <strong>Ego จัด</strong> ต้องการการยอมรับ ถ้าเจอลูกน้องดื้อ จะใช้อำนาจจัดการทันที (Authoritative)</p>
-                </div>
-                <div class="prophecy-box">
-                    <div class="flex items-center gap-2 mb-1">
-                        <span>♍</span> <strong class="text-white">Virgo (ราศีกันย์)</strong>
-                    </div>
-                    <p class="text-xs text-indigo-200">เจ้าพ่อรายละเอียด (Micromanager) งานทุกชิ้นต้องผ่านตา ไม่ไว้ใจให้ใครทำแทนง่ายๆ นี่คือเหตุผลที่เขาอาจจะเหนื่อยและ Burnout ง่าย</p>
-                </div>
-            </div>
-
-            <!-- Column 3: 2025 Prediction & Feng Shui -->
-            <div class="md:col-span-1">
-                <h4 class="text-sm font-bold text-indigo-300 mb-2 uppercase tracking-wider">2025 Fortune & Feng Shui</h4>
-                <div class="bg-indigo-900/50 p-3 rounded-lg border border-indigo-500 mb-3">
-                    <p class="text-sm font-bold text-green-400">🎯 2025 (Year of Snake) Prediction</p>
-                    <p class="text-xs text-white mt-1">ปี 2025 (มะเส็ง) เป็นปี <strong>"ฮะ" (สมพงศ์)</strong> กับปีระกา (ไก่+งู+วัว = สามประสาน) เป็นจังหวะที่ดีที่สุดในการ <strong>"เปลี่ยนงาน"</strong> เพื่อเติบโต การย้ายมา NSL ปีนี้ถือว่าถูกโฉลก จะได้รับความช่วยเหลือจากผู้ใหญ่</p>
-                </div>
-                
-                <div class="text-xs space-y-2">
-                    <div>
-                        <span class="lucky-tag">Lucky Colors</span>
-                        <span class="text-indigo-200">ขาว, เงิน, ทอง (เสริมอำนาจ) / เหลือง, น้ำตาล (เสริมบริวาร)</span>
-                    </div>
-                    <div>
-                        <span class="lucky-tag">Working Direction</span>
-                        <span class="text-indigo-200">หันหน้าโต๊ะไปทาง <strong>ทิศตะวันตกเฉียงเหนือ</strong> (เสริมบารมี)</span>
-                    </div>
-                    <div>
-                        <span class="lucky-tag">Compatibility</span>
-                        <span class="text-indigo-200">เข้ากันได้ดีกับ: ปีฉลู (วัว), ปีมะเส็ง (งู) / <strong>ระวัง: ปีเถาะ (กระต่าย)</strong></span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-        <!-- Column 1: Profile & Hard Data -->
-        <div class="md:col-span-1 space-y-6">
+            qText.innerHTML = q.question;
+            qBadge.innerText = q.categoryName;
             
-            <!-- Personal Info -->
-            <div class="card">
-                <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    👤 Candidate Profile
-                </h3>
-                <div class="space-y-3">
-                    <div class="table-row">
-                        <span class="text-gray-500">Nickname</span>
-                        <span class="font-medium">Daeng (แดง)</span>
-                    </div>
-                    <div class="table-row">
-                        <span class="text-gray-500">Status</span>
-                        <span class="font-medium">Married (2 Children)</span>
-                    </div>
-                    <div class="table-row">
-                        <span class="text-gray-500">Residence</span>
-                        <span class="font-medium">Phraeksa Mai, Samut Prakan</span>
-                    </div>
-                    <div class="table-row">
-                        <span class="text-gray-500">Education</span>
-                        <span class="font-medium">B.Sc. Env. Tech (GPA 2.46)</span>
-                    </div>
-                    <div class="table-row">
-                        <span class="text-gray-500">English</span>
-                        <span class="font-medium text-yellow-600">Fair (Self-Assessed)</span>
-                    </div>
-                </div>
-            </div>
+            let badgeClass = 'bg-gray-100 text-gray-800';
+            if(q.category === 'strategy') badgeClass = 'bg-blue-100 text-blue-800';
+            if(q.category === 'leadership') badgeClass = 'bg-purple-100 text-purple-800';
+            if(q.category === 'tech') badgeClass = 'bg-indigo-100 text-indigo-800';
+            if(q.category === 'english') badgeClass = 'bg-pink-100 text-pink-800';
+            if(q.category === 'scenario') badgeClass = 'bg-red-100 text-red-800';
+            qBadge.className = `inline-block px-3 py-1 rounded-full text-xs font-semibold ${badgeClass}`;
 
-            <!-- Logistics Analysis -->
-            <div class="card border-l-4 border-red-500">
-                <h3 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                    🚗 Logistics Risk Analysis
-                </h3>
-                <div class="text-sm space-y-2">
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Origin:</span>
-                        <span class="font-semibold">Phraeksa Mai (Samut Prakan)</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Dest:</span>
-                        <span class="font-semibold">NSL (Bang Bua Thong)</span>
-                    </div>
-                    <div class="bg-red-50 p-2 rounded text-xs text-red-700 mt-2">
-                        <strong>Impact:</strong> High risk of burnout (120km daily travel).
-                    </div>
-                </div>
-            </div>
-        </div>
+            if (q.category === 'english' && q.id !== 16) {
+                btnSpeak.classList.remove('hidden');
+            } else {
+                btnSpeak.classList.add('hidden');
+            }
 
-        <!-- Column 2 & 3: Detailed Analytics -->
-        <div class="md:col-span-2 space-y-6">
-            
-            <!-- Tenure Analysis -->
-            <div class="card">
-                <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">📉 Tenure Analysis (Last 2 Roles)</h3>
-                <div class="space-y-4">
-                    <!-- Job 1 -->
-                    <div>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="font-semibold">1. ICT Manufacturing (Current)</span>
-                            <span class="text-red-500 font-bold">~1.1 Years</span>
-                        </div>
-                        <div class="text-xs text-gray-400 mb-1">Nov 2024 - Dec 2025 (Present)</div>
-                        <div class="bar-bg"><div class="bar-fill bg-blue-500" style="width: 35%"></div></div>
-                    </div>
-                    <!-- Job 2 -->
-                    <div>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="font-semibold">2. Milott Laboratories</span>
-                            <span class="text-red-500 font-bold">1.3 Years</span>
-                        </div>
-                        <div class="text-xs text-gray-400 mb-1">Jul 2023 - Oct 2024</div>
-                        <div class="bar-bg"><div class="bar-fill bg-gray-400" style="width: 40%"></div></div>
-                    </div>
-                </div>
-            </div>
+            categoryLabel.innerText = q.categoryName;
 
-            <!-- Compensation Analysis -->
-            <div class="card">
-                <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">💰 Compensation Structure Analysis</h3>
-                <table class="w-full text-sm text-left text-gray-600">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                        <tr>
-                            <th class="px-4 py-2">Component</th>
-                            <th class="px-4 py-2">Previous (Milott)</th>
-                            <th class="px-4 py-2">Current (ICT)</th>
-                            <th class="px-4 py-2 text-blue-600">Requested</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="bg-gray-50 font-bold">
-                            <td class="px-4 py-2">Total Package</td>
-                            <td class="px-4 py-2">130,000</td>
-                            <td class="px-4 py-2">140,000</td>
-                            <td class="px-4 py-2 text-blue-600">150,000</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            if (q.content) {
+                qContent.innerHTML = q.content;
+                qContent.classList.remove('hidden');
+            } else {
+                qContent.classList.add('hidden');
+            }
 
-            <!-- Family & Social Stability -->
-            <div class="card">
-                <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">🧬 Family & Social Stability (Background Check)</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                    <div>
-                        <p class="font-semibold text-gray-700">Family Status</p>
-                        <p class="text-gray-600">Stable Middle-Upper Class Background. Siblings hold management/business owner roles.</p>
-                    </div>
-                    <div>
-                        <p class="font-semibold text-gray-700">Spouse Profile</p>
-                        <p class="text-gray-600">Sales Head @ Siam Raj (Public Co.). Indicates dual-income household with high stability.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            isAnswerVisible = false;
+            aBox.classList.add('hidden');
+            aText.innerHTML = q.answer;
+            btnReveal.innerHTML = '<i class="fas fa-eye mr-1"></i> ดูแนวคำตอบ';
 
-    <!-- Final Recommendation -->
-    <div class="card border-t-4 border-blue-600 mt-2 bg-blue-50">
-        <h3 class="font-bold text-gray-800 mb-2">📢 Executive Recommendation</h3>
-        <p class="text-sm text-gray-700 mb-2">
-            ผู้สมัครมีความพร้อมสูงด้าน Hard Skills และวุฒิภาวะ แต่มีความเสี่ยงสูงด้าน <strong>Retention (การลาออก)</strong> จากปัจจัยระยะทาง (Distance) และประวัติการเปลี่ยนงาน (History).
-        </p>
-        <div class="flex gap-2">
-            <span class="badge bg-white text-blue-600 border border-blue-200 px-3 py-1 rounded text-xs font-bold">Action: Interview to Clarify Stability</span>
-            <span class="badge bg-white text-red-600 border border-red-200 px-3 py-1 rounded text-xs font-bold">Focus: "Why Leave?" & "Commute Plan"</span>
-        </div>
-    </div>
+            btnPrev.disabled = currentIndex === 0;
+            if (currentIndex === questions.length - 1) {
+                btnNext.innerHTML = 'จบการสัมภาษณ์ <i class="fas fa-flag-checkered ml-2"></i>';
+                btnNext.classList.replace('bg-orange-600', 'bg-green-600');
+                btnNext.classList.replace('hover:bg-orange-700', 'hover:bg-green-700');
+            } else {
+                btnNext.innerHTML = 'ข้อถัดไป <i class="fas fa-arrow-right ml-2"></i>';
+                btnNext.classList.replace('bg-green-600', 'bg-orange-600');
+                btnNext.classList.replace('hover:bg-green-700', 'hover:bg-orange-700');
+            }
 
-    <!-- Detailed Data View Section -->
-    <div class="card mt-6">
-        <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4">📄 Full Candidate Details (Extracted)</h2>
-        
-        <!-- Work History Detail -->
-        <h4 class="section-header">🏢 Work History Details</h4>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left detail-table">
-                <thead>
-                    <tr>
-                        <th class="w-1/4">Period / Company</th>
-                        <th class="w-1/4">Position</th>
-                        <th class="w-1/5">Salary Structure</th>
-                        <th class="w-1/3">Reason for Leaving</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="font-bold">Nov 2024 - Present</div>
-                            <div class="text-sm text-gray-500">ICT Manufacturing</div>
-                            <div class="text-xs text-gray-400">(OEM Cosmetics)</div>
-                        </td>
-                        <td>
-                            <div class="font-semibold">Senior Factory Executive</div>
-                        </td>
-                        <td>
-                            <div>Base: 110,000</div>
-                            <div class="text-green-600">+Other: 30,000</div>
-                        </td>
-                        <td>
-                            <span class="italic text-gray-500">- (Current)</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="font-bold">Jul 2023 - Oct 2024</div>
-                            <div class="text-sm text-gray-500">Milott Laboratories</div>
-                            <div class="text-xs text-gray-400">(OEM Cosmetics/Supplements)</div>
-                        </td>
-                        <td>
-                            <div class="font-semibold">Factory Manager</div>
-                        </td>
-                        <td>
-                            <div>Start: 100,000</div>
-                            <div class="text-green-600">+Other: 20,000</div>
-                        </td>
-                        <td class="text-red-600 font-medium">
-                            "ลำดับการบริหารที่ไม่ชัดเจน" (Unclear Management Structure)
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            const progress = ((currentIndex + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.innerText = `Question ${currentIndex + 1} of ${questions.length}`;
+        }
 
-        <!-- Family Background -->
-        <h4 class="section-header">👨‍👩‍👧‍👦 Family Background</h4>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left detail-table">
-                <thead>
-                    <tr>
-                        <th>Relation</th>
-                        <th>Name</th>
-                        <th>Age</th>
-                        <th>Occupation / Position</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="font-semibold">Spouse</td>
-                        <td>Ms. Sujittra T.</td>
-                        <td>40</td>
-                        <td>Head of Sales @ Siam Raj PCL.</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">Sibling 1</td>
-                        <td>Mr. Porntep H.</td>
-                        <td>49</td>
-                        <td>Business Owner (Air Cond.)</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">Sibling 2</td>
-                        <td>Ms. Pornpen H.</td>
-                        <td>47</td>
-                        <td>Purchasing Mgr @ Thai Sanko Eng.</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">Sibling 3</td>
-                        <td>Mr. Chaithep H.</td>
-                        <td>42</td>
-                        <td>IE Manager @ Seagater (Thailand)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        function toggleAnswer() {
+            isAnswerVisible = !isAnswerVisible;
+            if (isAnswerVisible) {
+                aBox.classList.remove('hidden');
+                btnReveal.innerHTML = '<i class="fas fa-eye-slash mr-1"></i> ซ่อนแนวคำตอบ';
+            } else {
+                aBox.classList.add('hidden');
+                btnReveal.innerHTML = '<i class="fas fa-eye mr-1"></i> ดูแนวคำตอบ';
+            }
+        }
 
-    </div>
+        function speakQuestion() {
+            const q = questions[currentIndex];
+            const div = document.createElement("div");
+            div.innerHTML = q.question;
+            const textToSpeak = div.textContent || div.innerText || "";
 
-    <div class="text-center text-gray-400 text-xs mt-8 pb-8">
-        Powered by DSS NSL | Data Source: Application Form Rev.03 (01.02.25)
-    </div>
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(textToSpeak);
+                utterance.lang = 'en-US'; 
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("Browser does not support text-to-speech.");
+            }
+        }
 
+        function nextQuestion() {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                renderQuestion();
+            } else {
+                alert("สิ้นสุดการสัมภาษณ์ ขอบคุณครับ!");
+            }
+        }
+
+        function prevQuestion() {
+            if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        function jumpToCategory(category) {
+            const index = questions.findIndex(q => q.category === category);
+            if (index !== -1) {
+                currentIndex = index;
+                renderQuestion();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderQuestion();
+        });
+
+    </script>
 </body>
 </html>
