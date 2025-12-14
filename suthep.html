@@ -33,6 +33,7 @@
         .tag-red { background: #fee2e2; color: #991b1b; }
         .tag-yellow { background: #fef9c3; color: #854d0e; }
         .tag-blue { background: #dbeafe; color: #1e40af; }
+        .tag-green { background: #dcfce7; color: #166534; }
 
         /* Astro Premium Styles */
         .astro-card { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: white; border: none; }
@@ -71,7 +72,7 @@
             <div class="kpi-label">Cert. Match</div>
         </div>
         <div class="card p-4 flex flex-col justify-center items-center">
-            <div class="kpi-value text-red-500">12-18m</div>
+            <div class="kpi-value text-orange-500">Moderate</div>
             <div class="kpi-label">Retention Estimate</div>
         </div>
     </div>
@@ -123,7 +124,7 @@
         </div>
     </div>
 
-    <!-- AI Retention Prediction Section (NEW) -->
+    <!-- AI Retention Prediction Section (UPDATED FOR AMATA & RELOCATION) -->
     <div class="card bg-gradient-to-r from-slate-800 to-slate-900 text-white mb-6 border-none shadow-xl">
         <h2 class="text-xl font-bold border-b border-slate-600 pb-2 mb-4 flex items-center gap-2">
             🤖 AI Retention Prediction (ทำนายโอกาสการย้ายงาน)
@@ -132,31 +133,33 @@
             
             <div class="text-center p-4 border-r border-slate-600">
                 <div class="text-sm text-slate-400 mb-2">Predicted Tenure</div>
-                <div class="text-4xl font-bold text-yellow-400">12 - 18</div>
-                <div class="text-sm text-yellow-400">Months (เดือน)</div>
-                <div class="mt-3 inline-block px-3 py-1 bg-red-600 rounded text-xs font-bold animate-pulse">HIGH FLIGHT RISK</div>
+                <div class="text-4xl font-bold text-green-400">24+</div>
+                <div class="text-sm text-green-400">Months (เดือน)</div>
+                <div class="mt-3 inline-block px-3 py-1 bg-yellow-600 rounded text-xs font-bold">MODERATE RISK</div>
             </div>
 
             <div class="md:col-span-2 space-y-3">
                 <div class="flex items-start gap-3">
-                    <span class="text-2xl">🚧</span>
+                    <span class="text-2xl">🏠</span>
                     <div>
-                        <strong class="text-red-300">Factor 1: Commute Burnout (ความล้าสะสม)</strong>
-                        <p class="text-xs text-slate-300">การเดินทาง 120 กม./วัน (สมุทรปราการ-นนทบุรี) จะเริ่มส่งผลกระทบต่อร่างกายและจิตใจอย่างหนักในช่วง <strong>เดือนที่ 4-6</strong> หากไม่มีคนขับรถให้ จะเป็นตัวเร่งให้ลาออก</p>
+                        <strong class="text-green-300">Factor 1: Location Flexibility</strong>
+                        <p class="text-xs text-slate-300">
+                            ระยะทางปัจจุบัน (45 กม.) ถือว่าพอรับได้ แต่หากผู้สมัครยินดี <strong>"ย้ายที่พัก/เช่าคอนโด"</strong> ใกล้นิคมอมตะนคร ความเสี่ยงเรื่องความล้าและค่าเดินทางจะ <strong>ถูกตัดออกไปทันที (Risk Eliminated)</strong> ทำให้โอกาสอยู่ยาวสูงขึ้นมาก
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">⚠️</span>
+                    <div>
+                        <strong class="text-orange-300">Factor 2: Commute Cost vs. Salary</strong>
+                        <p class="text-xs text-slate-300">หากไม่ย้ายที่พัก ค่าทางด่วนและน้ำมันจะเป็น Hidden Cost ที่ทำให้เขารู้สึกว่าเงินเดือนเหลือน้อยลง (ต้องเจรจาเรื่องนี้ก่อนรับ)</p>
                     </div>
                 </div>
                 <div class="flex items-start gap-3">
                     <span class="text-2xl">🔄</span>
                     <div>
-                        <strong class="text-orange-300">Factor 2: History of Short Stints</strong>
-                        <p class="text-xs text-slate-300">Pattern การเปลี่ยนงานทุก 1.2 ปี สะท้อนว่าเขา "รอไม่ได้" และ "ทนแรงเสียดทานต่ำ" หากเจอ Culture Shock ในช่วงแรก มีโอกาสสูงที่จะถอดใจทันที</p>
-                    </div>
-                </div>
-                <div class="flex items-start gap-3">
-                    <span class="text-2xl">🐍</span>
-                    <div>
-                        <strong class="text-green-400">Factor 3: The "Snake Year" Paradox (ดวงปี 2025)</strong>
-                        <p class="text-xs text-slate-300">ปี 2025 (มะเส็ง) เป็นปี "ฮะ" (สมพงศ์) ของเขา ดวงการงานจะพุ่งแรงมาก (Peak Career) <strong>ข้อดี:</strong> ทำงานเข้าตาผู้ใหญ่ <strong>ข้อเสีย:</strong> จะเนื้อหอมมาก Headhunter จะรุมจีบ ถ้า NSL ให้ Offer ไม่ดีพอ เขาพร้อมไปที่ใหม่ทันทีกลางปี</p>
+                        <strong class="text-red-400">Factor 3: Job Hopping History (Still a concern)</strong>
+                        <p class="text-xs text-slate-300">แม้เรื่องการเดินทางจะผ่าน แต่ประวัติการเปลี่ยนงานบ่อย (ทุก 1 ปีนิดๆ) ยังเป็นความเสี่ยงหลักที่ติดตัวผู้สมัคร ไม่เกี่ยวกับสถานที่ทำงาน ต้องเช็คทัศนคติเป็นหลัก</p>
                     </div>
                 </div>
             </div>
@@ -164,7 +167,7 @@
         </div>
     </div>
 
-    <!-- 🔮 PREMIUM ASTRO-ANALYTICS (Modified) -->
+    <!-- 🔮 PREMIUM ASTRO-ANALYTICS -->
     <div class="card astro-card mb-6">
         <h2 class="text-xl font-bold text-white border-b border-indigo-400 pb-2 mb-4 flex items-center gap-2">
             🔮 Deep Astro-Analytics (วิเคราะห์ดวงชะตาผู้บริหาร)
@@ -239,10 +242,10 @@
                 </div>
             </div>
 
-            <!-- Logistics Analysis -->
-            <div class="card border-l-4 border-red-500">
+            <!-- Logistics Analysis (UPDATED FOR AMATA) -->
+            <div class="card border-l-4 border-yellow-500">
                 <h3 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                    🚗 Logistics Risk Analysis
+                    🚗 Logistics Analysis (Updated Location)
                 </h3>
                 <div class="text-sm space-y-2">
                     <div class="flex justify-between">
@@ -251,10 +254,21 @@
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-600">Dest:</span>
-                        <span class="font-semibold">NSL (Bang Bua Thong)</span>
+                        <span class="font-bold text-blue-600">Amata City Chonburi</span>
                     </div>
-                    <div class="bg-red-50 p-2 rounded text-xs text-red-700 mt-2">
-                        <strong>Impact:</strong> High risk of burnout (120km daily travel).
+                    <div class="mt-2 pt-2 border-t border-gray-100">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs text-gray-500">Distance (One-way)</span>
+                            <span class="font-bold text-gray-700">~45-50 km</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-gray-500">Est. Time (Expressway)</span>
+                            <span class="font-bold text-gray-700">45-60 Mins</span>
+                        </div>
+                    </div>
+                    <div class="bg-yellow-50 p-2 rounded text-xs text-yellow-800 mt-2">
+                        <strong>Impact:</strong> Moderate (Daily Commute). <br>
+                        <span class="text-green-600 font-bold">✅ Mitigation:</span> หากมีการ <strong>"เช่าหอพัก หรือ ย้ายที่อยู่"</strong> มาบริเวณใกล้เคียงอมตะนคร ข้อกังวลเรื่องระยะทางและค่าใช้จ่ายจะ <strong>"หมดไปทันที" (Eliminated)</strong>
                     </div>
                 </div>
             </div>
