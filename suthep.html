@@ -71,8 +71,8 @@
             <div class="kpi-label">Cert. Match</div>
         </div>
         <div class="card p-4 flex flex-col justify-center items-center">
-            <div class="kpi-value text-orange-500">7-10%</div>
-            <div class="kpi-label">Salary Growth Req.</div>
+            <div class="kpi-value text-red-500">12-18m</div>
+            <div class="kpi-label">Retention Estimate</div>
         </div>
     </div>
 
@@ -104,15 +104,72 @@
                     <strong>Insight:</strong> DNA คือ "ผู้คุมกฎ" (Safety/Audit) เหมาะกับการวางระบบพื้นฐาน แต่ไม่ใช่สาย "Strategy/Lean"
                 </p>
             </div>
+            <!-- 3. Other Income Risk (UPDATED) -->
+            <div class="deep-dive-card p-4 rounded-lg border-l-4 border-yellow-500 md:col-span-2">
+                <div class="flex items-center mb-2">
+                    <span class="insight-tag tag-yellow">CONFLICT RISK</span>
+                    <h4 class="font-bold text-gray-700">Side Hustle & Focus Risk (ความเสี่ยงเรื่องงานนอก)</h4>
+                </div>
+                <p class="text-sm text-gray-600 mb-2">
+                    รายได้อื่นๆ ที่สูงถึง 30,000 บาท/เดือน อาจไม่ใช่สวัสดิการปกติ แต่เป็นรายได้จาก <strong>"งานนอก" (Side Hustle)</strong> หรือธุรกิจส่วนตัว
+                </p>
+                <div class="bg-white p-3 rounded border border-gray-200 text-xs">
+                    <strong class="text-red-600">⚠️ Key Concern:</strong>
+                    <p class="text-gray-600 mt-1">
+                        ประเด็นที่น่ากังวลคือ รายได้ส่วนนี้จะยังคงทำต่อไปหรือไม่เมื่อเริ่มงานใหม่ หากยังทำอยู่ <strong>จะส่งผลกระทบต่อเวลาทำงานหลัก (Working Hours) หรือสมาธิในการบริหารโรงงาน (Focus & Efficiency) หรือไม่?</strong> จำเป็นต้องสอบถามให้ชัดเจนเพื่อป้องกันปัญหา Conflict of Interest ในภายหลัง
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- 🔮 PREMIUM ASTRO-ANALYTICS -->
+    <!-- AI Retention Prediction Section (NEW) -->
+    <div class="card bg-gradient-to-r from-slate-800 to-slate-900 text-white mb-6 border-none shadow-xl">
+        <h2 class="text-xl font-bold border-b border-slate-600 pb-2 mb-4 flex items-center gap-2">
+            🤖 AI Retention Prediction (ทำนายโอกาสการย้ายงาน)
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+            
+            <div class="text-center p-4 border-r border-slate-600">
+                <div class="text-sm text-slate-400 mb-2">Predicted Tenure</div>
+                <div class="text-4xl font-bold text-yellow-400">12 - 18</div>
+                <div class="text-sm text-yellow-400">Months (เดือน)</div>
+                <div class="mt-3 inline-block px-3 py-1 bg-red-600 rounded text-xs font-bold animate-pulse">HIGH FLIGHT RISK</div>
+            </div>
+
+            <div class="md:col-span-2 space-y-3">
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">🚧</span>
+                    <div>
+                        <strong class="text-red-300">Factor 1: Commute Burnout (ความล้าสะสม)</strong>
+                        <p class="text-xs text-slate-300">การเดินทาง 120 กม./วัน (สมุทรปราการ-นนทบุรี) จะเริ่มส่งผลกระทบต่อร่างกายและจิตใจอย่างหนักในช่วง <strong>เดือนที่ 4-6</strong> หากไม่มีคนขับรถให้ จะเป็นตัวเร่งให้ลาออก</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">🔄</span>
+                    <div>
+                        <strong class="text-orange-300">Factor 2: History of Short Stints</strong>
+                        <p class="text-xs text-slate-300">Pattern การเปลี่ยนงานทุก 1.2 ปี สะท้อนว่าเขา "รอไม่ได้" และ "ทนแรงเสียดทานต่ำ" หากเจอ Culture Shock ในช่วงแรก มีโอกาสสูงที่จะถอดใจทันที</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3">
+                    <span class="text-2xl">🐍</span>
+                    <div>
+                        <strong class="text-green-400">Factor 3: The "Snake Year" Paradox (ดวงปี 2025)</strong>
+                        <p class="text-xs text-slate-300">ปี 2025 (มะเส็ง) เป็นปี "ฮะ" (สมพงศ์) ของเขา ดวงการงานจะพุ่งแรงมาก (Peak Career) <strong>ข้อดี:</strong> ทำงานเข้าตาผู้ใหญ่ <strong>ข้อเสีย:</strong> จะเนื้อหอมมาก Headhunter จะรุมจีบ ถ้า NSL ให้ Offer ไม่ดีพอ เขาพร้อมไปที่ใหม่ทันทีกลางปี</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 🔮 PREMIUM ASTRO-ANALYTICS (Modified) -->
     <div class="card astro-card mb-6">
         <h2 class="text-xl font-bold text-white border-b border-indigo-400 pb-2 mb-4 flex items-center gap-2">
             🔮 Deep Astro-Analytics (วิเคราะห์ดวงชะตาผู้บริหาร)
         </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             <!-- Column 1: Core Identity -->
             <div class="md:col-span-1 border-r border-indigo-700 pr-4">
@@ -129,7 +186,7 @@
             </div>
 
             <!-- Column 2: Management Style -->
-            <div class="md:col-span-1 border-r border-indigo-700 pr-4">
+            <div class="md:col-span-1">
                 <h4 class="text-sm font-bold text-indigo-300 mb-2 uppercase tracking-wider">Management & Conflict Style</h4>
                 <div class="prophecy-box mb-3">
                     <div class="flex items-center gap-2 mb-1">
@@ -142,30 +199,6 @@
                         <span>♍</span> <strong class="text-white">Virgo (ราศีกันย์)</strong>
                     </div>
                     <p class="text-xs text-indigo-200">เจ้าพ่อรายละเอียด (Micromanager) งานทุกชิ้นต้องผ่านตา ไม่ไว้ใจให้ใครทำแทนง่ายๆ นี่คือเหตุผลที่เขาอาจจะเหนื่อยและ Burnout ง่าย</p>
-                </div>
-            </div>
-
-            <!-- Column 3: 2025 Prediction & Feng Shui -->
-            <div class="md:col-span-1">
-                <h4 class="text-sm font-bold text-indigo-300 mb-2 uppercase tracking-wider">2025 Fortune & Feng Shui</h4>
-                <div class="bg-indigo-900/50 p-3 rounded-lg border border-indigo-500 mb-3">
-                    <p class="text-sm font-bold text-green-400">🎯 2025 (Year of Snake) Prediction</p>
-                    <p class="text-xs text-white mt-1">ปี 2025 (มะเส็ง) เป็นปี <strong>"ฮะ" (สมพงศ์)</strong> กับปีระกา (ไก่+งู+วัว = สามประสาน) เป็นจังหวะที่ดีที่สุดในการ <strong>"เปลี่ยนงาน"</strong> เพื่อเติบโต การย้ายมา NSL ปีนี้ถือว่าถูกโฉลก จะได้รับความช่วยเหลือจากผู้ใหญ่</p>
-                </div>
-                
-                <div class="text-xs space-y-2">
-                    <div>
-                        <span class="lucky-tag">Lucky Colors</span>
-                        <span class="text-indigo-200">ขาว, เงิน, ทอง (เสริมอำนาจ) / เหลือง, น้ำตาล (เสริมบริวาร)</span>
-                    </div>
-                    <div>
-                        <span class="lucky-tag">Working Direction</span>
-                        <span class="text-indigo-200">หันหน้าโต๊ะไปทาง <strong>ทิศตะวันตกเฉียงเหนือ</strong> (เสริมบารมี)</span>
-                    </div>
-                    <div>
-                        <span class="lucky-tag">Compatibility</span>
-                        <span class="text-indigo-200">เข้ากันได้ดีกับ: ปีฉลู (วัว), ปีมะเส็ง (งู) / <strong>ระวัง: ปีเถาะ (กระต่าย)</strong></span>
-                    </div>
                 </div>
             </div>
 
@@ -255,10 +288,11 @@
                 </div>
             </div>
 
-            <!-- Compensation Analysis -->
+            <!-- Compensation Analysis (UPDATED) -->
             <div class="card">
-                <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">💰 Compensation Structure Analysis</h3>
-                <table class="w-full text-sm text-left text-gray-600">
+                <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">💰 Base Salary Analysis (Excluding Other Income)</h3>
+                
+                <table class="w-full text-sm text-left text-gray-600 mb-4">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
                             <th class="px-4 py-2">Component</th>
@@ -268,11 +302,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-gray-50 font-bold">
-                            <td class="px-4 py-2">Total Package</td>
-                            <td class="px-4 py-2">130,000</td>
-                            <td class="px-4 py-2">140,000</td>
-                            <td class="px-4 py-2 text-blue-600">150,000</td>
+                        <tr class="border-b">
+                            <td class="px-4 py-2 font-medium">Base Salary</td>
+                            <td class="px-4 py-2">110,000</td>
+                            <td class="px-4 py-2">110,000</td>
+                            <td class="px-4 py-2 font-bold text-blue-600">150,000</td>
+                        </tr>
+                        <tr class="text-xs text-gray-400">
+                            <td class="px-4 py-2 font-medium italic">Other Income (Excluded)</td>
+                            <td class="px-4 py-2 italic">20,000</td>
+                            <td class="px-4 py-2 italic">30,000</td>
+                            <td class="px-4 py-2 italic">-</td>
+                        </tr>
+                        <tr class="bg-blue-50 font-bold text-blue-800">
+                            <td class="px-4 py-2">% Increase (Base vs Base)</td>
+                            <td class="px-4 py-2"></td>
+                            <td class="px-4 py-2"></td>
+                            <td class="px-4 py-2 text-red-600">+36.3%</td>
                         </tr>
                     </tbody>
                 </table>
