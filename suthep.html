@@ -3,213 +3,410 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Candidate Analysis: Suthep Heammarattanakorn</title>
+    <title>MIS Report: Candidate Analysis - Suthep H.</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js for MIS Graphics if needed (using CSS for lightweight) -->
     <style>
-        body { font-family: 'Sarabun', sans-serif; background-color: #f3f4f6; }
-        .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 24px; margin-bottom: 20px; }
-        .badge { display: inline-block; padding: 4px 12px; border-radius: 9999px; font-size: 0.875rem; font-weight: 600; }
-        .bg-navy { background-color: #1e3a8a; color: white; }
-        .bg-gold { background-color: #d97706; color: white; }
-        .section-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem; color: #1f2937; border-left: 5px solid #1e3a8a; padding-left: 12px; }
+        body { font-family: 'Sarabun', sans-serif; background-color: #f0f2f5; color: #334155; }
+        .report-header { background: #1e293b; color: white; padding: 20px; border-radius: 0 0 12px 12px; }
+        .card { background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); padding: 20px; margin-bottom: 16px; border: 1px solid #e2e8f0; }
+        .kpi-box { text-align: center; padding: 12px; background: #f8fafc; border-radius: 8px; border: 1px solid #e2e8f0; }
+        .kpi-value { font-size: 1.5rem; font-weight: 700; color: #1e293b; }
+        .kpi-label { font-size: 0.75rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+        .status-risk { color: #ef4444; background: #fef2f2; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+        .status-good { color: #10b981; background: #ecfdf5; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+        .table-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.875rem; }
+        .table-row:last-child { border-bottom: none; }
+        .bar-bg { background: #e2e8f0; height: 8px; border-radius: 4px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 4px; }
+        .astro-badge { background: linear-gradient(135deg, #4f46e5, #9333ea); color: white; font-size: 0.7rem; padding: 4px 8px; border-radius: 99px; }
         
-        /* Astrology Theme */
-        .star-bg { background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%); color: white; }
+        /* New Styles for Detailed Table */
+        .detail-table th { background-color: #f8fafc; color: #64748b; font-weight: 600; padding: 10px; text-align: left; font-size: 0.8rem; border-bottom: 2px solid #e2e8f0; }
+        .detail-table td { padding: 10px; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+        .section-header { font-size: 1.1rem; font-weight: 700; color: #1e293b; border-left: 4px solid #3b82f6; padding-left: 10px; margin-bottom: 15px; margin-top: 10px; }
+        
+        /* Deep Dive Styles */
+        .deep-dive-card { border: 1px dashed #cbd5e1; background: #f8fafc; }
+        .insight-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; margin-right: 5px; }
+        .tag-red { background: #fee2e2; color: #991b1b; }
+        .tag-yellow { background: #fef9c3; color: #854d0e; }
+        .tag-blue { background: #dbeafe; color: #1e40af; }
+
+        /* Astro Premium Styles */
+        .astro-card { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: white; border: none; }
+        .astro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .zodiac-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .prophecy-box { background: rgba(255, 255, 255, 0.1); padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); }
+        .lucky-tag { background: #f59e0b; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; display: inline-block; margin-right: 5px; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-2 md:p-6 max-w-6xl mx-auto">
 
     <!-- Header -->
-    <div class="max-w-5xl mx-auto mb-8 flex flex-col md:flex-row justify-between items-start md:items-center">
+    <div class="report-header flex justify-between items-center mb-6 shadow-md">
         <div>
-            <h1 class="text-3xl font-bold text-gray-800">Executive Candidate Assessment</h1>
-            <p class="text-gray-500 mt-1">บทวิเคราะห์ผู้สมัครงาน: ตำแหน่ง Factory Manager</p>
+            <h1 class="text-2xl font-bold">MIS CANDIDATE REPORT</h1>
+            <p class="text-sm text-gray-400">Position: Factory Manager | Ref: Suthep Heammarattanakorn</p>
         </div>
-        <div class="mt-4 md:mt-0 text-right">
-            <span class="bg-navy badge">CONFIDENTIAL</span>
-            <p class="text-sm text-gray-400 mt-1">Date: 14 Dec 2025</p>
+        <div class="text-right hidden md:block">
+            <div class="text-xs text-gray-400">REPORT DATE</div>
+            <div class="font-mono font-bold">14 DEC 2025</div>
         </div>
     </div>
 
-    <!-- Candidate Profile Overview -->
-    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <!-- Profile Card -->
-        <div class="card md:col-span-2 flex flex-col md:flex-row gap-6">
-            <div class="flex-shrink-0">
-                <div class="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center text-4xl shadow-inner mx-auto md:mx-0">
-                    👨‍💼
-                </div>
-                <div class="text-center mt-4">
-                    <div class="font-bold text-xl">คุณสุเทพ</div>
-                    <div class="text-gray-500">อายุ 44-45 ปี</div>
-                </div>
-            </div>
-            <div class="flex-grow">
-                <h2 class="text-2xl font-bold text-gray-800">Suthep Heammarattanakorn</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <div>
-                        <p class="text-sm text-gray-500">Current Position</p>
-                        <p class="font-semibold">Senior Factory Executive</p>
-                        <p class="text-xs text-gray-400">ICT Manufacturing (Cosmetics)</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Experience</p>
-                        <p class="font-semibold">Factory Management / OEM</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Education</p>
-                        <p class="font-semibold">B.Sc. Environmental Tech</p>
-                        <p class="text-xs text-gray-400">Suan Dusit Rajabhat (GPA 2.46)</p>
-                    </div>
-                    <div>
-                        <p class="text-sm text-gray-500">Requested Salary</p>
-                        <p class="font-bold text-blue-600 text-lg">150,000 THB</p>
-                        <p class="text-xs text-red-400">(Current: 110k + 30k Allowance)</p>
-                    </div>
-                </div>
-            </div>
+    <!-- Executive KPI Dashboard -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="card p-4 flex flex-col justify-center items-center">
+            <div class="kpi-value text-blue-600">45</div>
+            <div class="kpi-label">Age (Maturity)</div>
         </div>
+        <div class="card p-4 flex flex-col justify-center items-center">
+            <div class="kpi-value text-red-500">1.25</div>
+            <div class="kpi-label">Avg. Tenure (Yrs) <span class="status-risk">RISK</span></div>
+        </div>
+        <div class="card p-4 flex flex-col justify-center items-center">
+            <div class="kpi-value text-green-600">100%</div>
+            <div class="kpi-label">Cert. Match</div>
+        </div>
+        <div class="card p-4 flex flex-col justify-center items-center">
+            <div class="kpi-value text-orange-500">7-10%</div>
+            <div class="kpi-label">Salary Growth Req.</div>
+        </div>
+    </div>
 
-        <!-- Key Metrics -->
-        <div class="card bg-gray-50 border-2 border-blue-100">
-            <h3 class="font-bold text-gray-700 mb-4 text-center">Executive Scorecard</h3>
-            <div class="space-y-4">
-                <div>
-                    <div class="flex justify-between text-sm mb-1">
-                        <span>ประสบการณ์ตรง (Industry Fit)</span>
-                        <span class="font-bold text-green-600">High</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                        <div class="bg-green-600 h-2.5 rounded-full" style="width: 85%"></div>
-                    </div>
+    <!-- Deep Dive Section -->
+    <div class="card bg-gray-50 border-blue-200 mb-6">
+        <h2 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4 flex items-center">
+            🕵️‍♂️ Deep Dive: Hidden Risks & Unspoken Truths
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- 1. The Missing History -->
+            <div class="deep-dive-card p-4 rounded-lg">
+                <div class="flex items-center mb-2">
+                    <span class="insight-tag tag-red">CRITICAL GAP</span>
+                    <h4 class="font-bold text-gray-700">The "Iceberg" Career History</h4>
                 </div>
-                <div>
-                    <div class="flex justify-between text-sm mb-1">
-                        <span>ความเสถียรในการทำงาน (Stability)</span>
-                        <span class="font-bold text-red-500">Concern</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                        <div class="bg-red-500 h-2.5 rounded-full" style="width: 40%"></div>
-                    </div>
+                <p class="text-sm text-gray-600 mb-2">ประวัติช่วง 2005-2023 หายไป (18 ปี) ระบุเพียง 2 ปีล่าสุด ต้องตรวจสอบเพิ่มด่วน</p>
+                <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden flex text-xs text-white text-center leading-4">
+                    <div class="bg-gray-400 w-3/4 flex items-center justify-center">❓ Unlisted (18 Years)</div>
+                    <div class="bg-blue-500 w-1/4 flex items-center justify-center">Listed (2 Yrs)</div>
                 </div>
-                <div>
-                    <div class="flex justify-between text-sm mb-1">
-                        <span>ทักษะภาษา (English)</span>
-                        <span class="font-bold text-yellow-500">Fair</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                        <div class="bg-yellow-500 h-2.5 rounded-full" style="width: 50%"></div>
-                    </div>
+            </div>
+            <!-- 2. Managerial DNA -->
+            <div class="deep-dive-card p-4 rounded-lg">
+                <div class="flex items-center mb-2">
+                    <span class="insight-tag tag-blue">PROFILE MATCH</span>
+                    <h4 class="font-bold text-gray-700">Compliance vs. Efficiency DNA</h4>
                 </div>
+                <p class="text-xs text-blue-800 mt-2 bg-blue-50 p-2 rounded">
+                    <strong>Insight:</strong> DNA คือ "ผู้คุมกฎ" (Safety/Audit) เหมาะกับการวางระบบพื้นฐาน แต่ไม่ใช่สาย "Strategy/Lean"
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- Main Analysis -->
-    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <!-- Professional Analysis -->
-        <div class="card">
-            <div class="section-title">📊 Professional Analysis</div>
+    <!-- 🔮 PREMIUM ASTRO-ANALYTICS -->
+    <div class="card astro-card mb-6">
+        <h2 class="text-xl font-bold text-white border-b border-indigo-400 pb-2 mb-4 flex items-center gap-2">
+            🔮 Deep Astro-Analytics (วิเคราะห์ดวงชะตาผู้บริหาร)
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             
-            <div class="mb-4">
-                <h4 class="font-bold text-green-700 flex items-center gap-2">✅ จุดแข็ง (Strengths)</h4>
-                <ul class="list-disc list-inside text-sm text-gray-700 mt-2 space-y-1">
-                    <li><strong>Direct OEM Experience:</strong> มีประสบการณ์ตรงในสายโรงงาน OEM (เครื่องสำอาง/อาหารเสริม) ซึ่งสอดคล้องกับธรรมชาติธุรกิจที่ต้องตอบสนองลูกค้าหลากหลาย</li>
-                    <li><strong>Hard Skills ครบเครื่อง:</strong> ถือใบ Certificate สำคัญสำหรับโรงงานครบ (จป.บริหาร, ผู้รับผิดชอบด้านพลังงาน, ISO 9001/22000, GMP, HACCP) ไม่ต้องส่งไปอบรมใหม่</li>
-                    <li><strong>วัยวุฒิเหมาะสม:</strong> อายุ 45 ปี อยู่ในวัยที่สุกงอมสำหรับการบริหารจัดการคน (People Management) และมีภาวะผู้นำ</li>
-                </ul>
+            <!-- Column 1: Core Identity -->
+            <div class="md:col-span-1 border-r border-indigo-700 pr-4">
+                <div class="text-center mb-4">
+                    <div class="text-5xl mb-2">🐓</div>
+                    <h3 class="text-lg font-bold text-yellow-400">Metal Rooster (ระกาทอง)</h3>
+                    <p class="text-xs text-indigo-200">Born: 1981 (Year of the Rooster)</p>
+                </div>
+                <div class="space-y-3 text-sm text-indigo-100">
+                    <p><strong>ธาตุประจำตัว:</strong> <span class="text-white font-bold">ทอง (Metal)</span> <br>แข็งแกร่ง, เด็ดขาด, ปากคม, รักความถูกต้อง</p>
+                    <p><strong>จุดเด่น (The Good):</strong> สู้งานหนัก (Hardworking), ตรงต่อเวลามาก, บริหารเงินและทรัพยากรเก่ง (Financial Acumen)</p>
+                    <p><strong>จุดตาย (The Bad):</strong> ปากไว (Blunt), ชอบจับผิด (Critical), ยอมหักไม่ยอมงอ (Rigid)</p>
+                </div>
             </div>
 
-            <div class="mb-8">
-                <h4 class="font-bold text-red-600 flex items-center gap-2 border-b border-red-200 pb-2 mb-2">⚠️ จุดที่น่ากังวล (Critical Concerns)</h4>
+            <!-- Column 2: Management Style -->
+            <div class="md:col-span-1 border-r border-indigo-700 pr-4">
+                <h4 class="text-sm font-bold text-indigo-300 mb-2 uppercase tracking-wider">Management & Conflict Style</h4>
+                <div class="prophecy-box mb-3">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span>☀️</span> <strong class="text-white">Sunday Born (วันอาทิตย์)</strong>
+                    </div>
+                    <p class="text-xs text-indigo-200">มีความเป็นผู้นำสูง (Natural Leader) แต่ <strong>Ego จัด</strong> ต้องการการยอมรับ ถ้าเจอลูกน้องดื้อ จะใช้อำนาจจัดการทันที (Authoritative)</p>
+                </div>
+                <div class="prophecy-box">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span>♍</span> <strong class="text-white">Virgo (ราศีกันย์)</strong>
+                    </div>
+                    <p class="text-xs text-indigo-200">เจ้าพ่อรายละเอียด (Micromanager) งานทุกชิ้นต้องผ่านตา ไม่ไว้ใจให้ใครทำแทนง่ายๆ นี่คือเหตุผลที่เขาอาจจะเหนื่อยและ Burnout ง่าย</p>
+                </div>
+            </div>
+
+            <!-- Column 3: 2025 Prediction & Feng Shui -->
+            <div class="md:col-span-1">
+                <h4 class="text-sm font-bold text-indigo-300 mb-2 uppercase tracking-wider">2025 Fortune & Feng Shui</h4>
+                <div class="bg-indigo-900/50 p-3 rounded-lg border border-indigo-500 mb-3">
+                    <p class="text-sm font-bold text-green-400">🎯 2025 (Year of Snake) Prediction</p>
+                    <p class="text-xs text-white mt-1">ปี 2025 (มะเส็ง) เป็นปี <strong>"ฮะ" (สมพงศ์)</strong> กับปีระกา (ไก่+งู+วัว = สามประสาน) เป็นจังหวะที่ดีที่สุดในการ <strong>"เปลี่ยนงาน"</strong> เพื่อเติบโต การย้ายมา NSL ปีนี้ถือว่าถูกโฉลก จะได้รับความช่วยเหลือจากผู้ใหญ่</p>
+                </div>
                 
-                <!-- Concern 1: Job Hopping -->
-                <div class="mb-3">
-                    <p class="text-sm font-semibold text-gray-800">1. Stability & Retention Risk (ความเสี่ยงเรื่องความยั่งยืน)</p>
-                    <p class="text-xs text-gray-600">ประวัติการทำงาน 2 ที่ล่าสุดสั้นมาก (ICT: ~1 ปี, Milott: 1.3 ปี) สะท้อนพฤติกรรม "Quick Exit" เมื่อเจอปัญหาหรือความไม่ชัดเจน อาจไม่อยู่ยาวเพื่อสร้างรากฐานให้องค์กร</p>
-                </div>
-
-                <!-- Concern 2: Location -->
-                <div class="mb-3">
-                    <p class="text-sm font-semibold text-gray-800">2. Location & Commute (ระยะทางและการเดินทาง) <span class="text-red-500 text-[10px] ml-1">NEW</span></p>
-                    <p class="text-xs text-gray-600">พักอยู่ <strong>"แพรกษาใหม่ สมุทรปราการ"</strong> แต่มาทำงาน <strong>"NSL บางบัวทอง นนทบุรี"</strong> ระยะทางไป-กลับกว่า 100-120 กม./วัน ผ่านจุดรถติดหนัก แม้จะมีรถส่วนตัว แต่ความล้าจากการเดินทาง (Commute Fatigue) เป็นปัจจัยหลักที่ทำให้คนลาออกภายใน 6 เดือนแรก</p>
-                </div>
-
-                <!-- Concern 3: Tech Stack -->
-                <div class="mb-3">
-                    <p class="text-sm font-semibold text-gray-800">3. Digital & ERP Competency (ทักษะด้านระบบ) <span class="text-red-500 text-[10px] ml-1">NEW</span></p>
-                    <p class="text-xs text-gray-600">ใน Resume ระบุทักษะคอมพิวเตอร์เพียง MS Office, AutoCAD, AI <strong>*ไม่มีการระบุถึงระบบ ERP, SAP หรือ Manufacturing Software*</strong> ซึ่งจำเป็นมากสำหรับ Factory Manager ยุคใหม่ที่ต้องดู Data Real-time หากองค์กรใช้ระบบซับซ้อน อาจต้องใช้เวลาสอนงานนาน</p>
-                </div>
-
-                <!-- Concern 4: English -->
-                <div class="mb-3">
-                    <p class="text-sm font-semibold text-gray-800">4. Language Barrier</p>
-                    <p class="text-xs text-gray-600">Self-assessment ระดับ "Fair" อาจจำกัดความสามารถในการสื่อสารกับ Supplier ต่างชาติ หรือการอ่าน Technical Manual ของเครื่องจักรใหม่ๆ</p>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Astrological & Personality Analysis -->
-        <div class="card star-bg relative overflow-hidden">
-            <div class="absolute top-0 right-0 opacity-10 text-9xl">🔮</div>
-            <h3 class="text-xl font-bold mb-4 text-white border-l-4 border-yellow-400 pl-3">💫 Astro-Analysis (มุมมองโหราศาสตร์)</h3>
-            
-            <div class="bg-white/10 backdrop-blur-md rounded-lg p-4 mb-4">
-                <div class="flex items-center gap-3 mb-2">
-                    <span class="text-2xl">📅</span>
+                <div class="text-xs space-y-2">
                     <div>
-                        <p class="text-xs text-blue-200">วันเกิด</p>
-                        <p class="font-bold text-white">20 กันยายน 2524 (วันอาทิตย์)</p>
+                        <span class="lucky-tag">Lucky Colors</span>
+                        <span class="text-indigo-200">ขาว, เงิน, ทอง (เสริมอำนาจ) / เหลือง, น้ำตาล (เสริมบริวาร)</span>
                     </div>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-2xl">♍</span>
                     <div>
-                        <p class="text-xs text-blue-200">ราศี (Zodiac)</p>
-                        <p class="font-bold text-white">กันย์ (Virgo) - นักจัดการจอมละเอียด</p>
+                        <span class="lucky-tag">Working Direction</span>
+                        <span class="text-indigo-200">หันหน้าโต๊ะไปทาง <strong>ทิศตะวันตกเฉียงเหนือ</strong> (เสริมบารมี)</span>
+                    </div>
+                    <div>
+                        <span class="lucky-tag">Compatibility</span>
+                        <span class="text-indigo-200">เข้ากันได้ดีกับ: ปีฉลู (วัว), ปีมะเส็ง (งู) / <strong>ระวัง: ปีเถาะ (กระต่าย)</strong></span>
                     </div>
                 </div>
             </div>
 
-            <div class="space-y-3 text-sm text-white/90">
-                <p><strong>🔥 บุคลิกภาพพื้นฐาน (ธาตุดิน):</strong> ชาวราศีกันย์เป็น Perfectionist โดยธรรมชาติ เหมาะมากกับงานโรงงานที่ต้องการความเป๊ะ (QA/QC/Standard) ชอบจับผิดจุดเล็กๆ น้อยๆ และมีความรับผิดชอบสูง</p>
-                <p><strong>🦁 พลังวันอาทิตย์:</strong> มีความเป็นผู้นำสูง (Ego) เชื่อมั่นในตัวเอง บางครั้งอาจจะ "ยอมหักไม่ยอมงอ" ซึ่งสอดคล้องกับเหตุผลที่ออกจากงานเก่าที่ระบุว่า "ลำดับการบริหารไม่ชัดเจน" (เขาต้องการความชัดเจนและอำนาจตัดสินใจ)</p>
-                <p><strong>⚡ ข้อควรระวังตามดวง:</strong> ปีนี้เป็นปีแห่งการเปลี่ยนแปลงของเขา (ย้ายงานบ่อย) ดวงบริวารอาจจะไม่ได้ดั่งใจ ต้องเหนื่อยทำเอง หรือต้องลงไปจี้งานลูกน้องถึงจะได้ผล</p>
-            </div>
         </div>
-
     </div>
 
-    <!-- Interview Strategy -->
-    <div class="max-w-5xl mx-auto card border-t-4 border-yellow-500">
-        <h3 class="section-title">💡 คำแนะนำสำหรับผู้สัมภาษณ์ (Interview Strategy)</h3>
-        <p class="text-gray-600 mb-4">เนื่องจากประวัติการทำงานช่วงหลังมีการเปลี่ยนงานไว ควรมุ่งเน้นคำถามเพื่อตรวจสอบทัศนคติและความอดทน (Grit)</p>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <h5 class="font-bold text-gray-800 mb-2">1. เจาะลึกเรื่องการลาออก (Leaving Reason)</h5>
-                <p class="text-sm text-gray-600">"ที่ระบุว่า 'ลำดับการบริหารไม่ชัดเจน' ที่เก่า ช่วยยกตัวอย่างสถานการณ์จริงได้ไหม? และถ้าที่นี่มีความซับซ้อนแบบนั้น คุณจะรับมืออย่างไร?"</p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- Column 1: Profile & Hard Data -->
+        <div class="md:col-span-1 space-y-6">
+            
+            <!-- Personal Info -->
+            <div class="card">
+                <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    👤 Candidate Profile
+                </h3>
+                <div class="space-y-3">
+                    <div class="table-row">
+                        <span class="text-gray-500">Nickname</span>
+                        <span class="font-medium">Daeng (แดง)</span>
+                    </div>
+                    <div class="table-row">
+                        <span class="text-gray-500">Status</span>
+                        <span class="font-medium">Married (2 Children)</span>
+                    </div>
+                    <div class="table-row">
+                        <span class="text-gray-500">Residence</span>
+                        <span class="font-medium">Phraeksa Mai, Samut Prakan</span>
+                    </div>
+                    <div class="table-row">
+                        <span class="text-gray-500">Education</span>
+                        <span class="font-medium">B.Sc. Env. Tech (GPA 2.46)</span>
+                    </div>
+                    <div class="table-row">
+                        <span class="text-gray-500">English</span>
+                        <span class="font-medium text-yellow-600">Fair (Self-Assessed)</span>
+                    </div>
+                </div>
             </div>
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <h5 class="font-bold text-gray-800 mb-2">2. ทดสอบภาษาอังกฤษ (English Test)</h5>
-                <p class="text-sm text-gray-600">"ลองให้อธิบายกระบวนการแก้ไขปัญหา (Root Cause Analysis) เป็นภาษาอังกฤษสั้นๆ" (เพื่อดูว่าระดับ Fair ใช้งานจริงได้แค่ไหน)</p>
-            </div>
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <h5 class="font-bold text-gray-800 mb-2">3. Commute Check (ตรวจสอบความพร้อมการเดินทาง)</h5>
-                <p class="text-sm text-gray-600">"บ้านพักอยู่สมุทรปราการ แต่โรงงานอยู่บางบัวทอง มีแผนการเดินทางอย่างไร? หรือมีแผนจะย้ายที่พักหรือไม่?" (เพื่อประเมินความเสี่ยง Retention)</p>
-            </div>
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <h5 class="font-bold text-gray-800 mb-2">4. Tech & ERP Skills</h5>
-                <p class="text-sm text-gray-600">"เคยใช้งานระบบ ERP หรือ SAP ในการวางแผนการผลิตหรือไม่? ถ้าไม่เคย พร้อมเรียนรู้และปรับตัวกับระบบใหม่แค่ไหน?"</p>
+
+            <!-- Logistics Analysis -->
+            <div class="card border-l-4 border-red-500">
+                <h3 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
+                    🚗 Logistics Risk Analysis
+                </h3>
+                <div class="text-sm space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Origin:</span>
+                        <span class="font-semibold">Phraeksa Mai (Samut Prakan)</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Dest:</span>
+                        <span class="font-semibold">NSL (Bang Bua Thong)</span>
+                    </div>
+                    <div class="bg-red-50 p-2 rounded text-xs text-red-700 mt-2">
+                        <strong>Impact:</strong> High risk of burnout (120km daily travel).
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Column 2 & 3: Detailed Analytics -->
+        <div class="md:col-span-2 space-y-6">
+            
+            <!-- Tenure Analysis -->
+            <div class="card">
+                <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">📉 Tenure Analysis (Last 2 Roles)</h3>
+                <div class="space-y-4">
+                    <!-- Job 1 -->
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="font-semibold">1. ICT Manufacturing (Current)</span>
+                            <span class="text-red-500 font-bold">~1.1 Years</span>
+                        </div>
+                        <div class="text-xs text-gray-400 mb-1">Nov 2024 - Dec 2025 (Present)</div>
+                        <div class="bar-bg"><div class="bar-fill bg-blue-500" style="width: 35%"></div></div>
+                    </div>
+                    <!-- Job 2 -->
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span class="font-semibold">2. Milott Laboratories</span>
+                            <span class="text-red-500 font-bold">1.3 Years</span>
+                        </div>
+                        <div class="text-xs text-gray-400 mb-1">Jul 2023 - Oct 2024</div>
+                        <div class="bar-bg"><div class="bar-fill bg-gray-400" style="width: 40%"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compensation Analysis -->
+            <div class="card">
+                <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">💰 Compensation Structure Analysis</h3>
+                <table class="w-full text-sm text-left text-gray-600">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-2">Component</th>
+                            <th class="px-4 py-2">Previous (Milott)</th>
+                            <th class="px-4 py-2">Current (ICT)</th>
+                            <th class="px-4 py-2 text-blue-600">Requested</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-gray-50 font-bold">
+                            <td class="px-4 py-2">Total Package</td>
+                            <td class="px-4 py-2">130,000</td>
+                            <td class="px-4 py-2">140,000</td>
+                            <td class="px-4 py-2 text-blue-600">150,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Family & Social Stability -->
+            <div class="card">
+                <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">🧬 Family & Social Stability (Background Check)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <p class="font-semibold text-gray-700">Family Status</p>
+                        <p class="text-gray-600">Stable Middle-Upper Class Background. Siblings hold management/business owner roles.</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-700">Spouse Profile</p>
+                        <p class="text-gray-600">Sales Head @ Siam Raj (Public Co.). Indicates dual-income household with high stability.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Recommendation -->
+    <div class="card border-t-4 border-blue-600 mt-2 bg-blue-50">
+        <h3 class="font-bold text-gray-800 mb-2">📢 Executive Recommendation</h3>
+        <p class="text-sm text-gray-700 mb-2">
+            ผู้สมัครมีความพร้อมสูงด้าน Hard Skills และวุฒิภาวะ แต่มีความเสี่ยงสูงด้าน <strong>Retention (การลาออก)</strong> จากปัจจัยระยะทาง (Distance) และประวัติการเปลี่ยนงาน (History).
+        </p>
+        <div class="flex gap-2">
+            <span class="badge bg-white text-blue-600 border border-blue-200 px-3 py-1 rounded text-xs font-bold">Action: Interview to Clarify Stability</span>
+            <span class="badge bg-white text-red-600 border border-red-200 px-3 py-1 rounded text-xs font-bold">Focus: "Why Leave?" & "Commute Plan"</span>
+        </div>
+    </div>
+
+    <!-- Detailed Data View Section -->
+    <div class="card mt-6">
+        <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4">📄 Full Candidate Details (Extracted)</h2>
+        
+        <!-- Work History Detail -->
+        <h4 class="section-header">🏢 Work History Details</h4>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left detail-table">
+                <thead>
+                    <tr>
+                        <th class="w-1/4">Period / Company</th>
+                        <th class="w-1/4">Position</th>
+                        <th class="w-1/5">Salary Structure</th>
+                        <th class="w-1/3">Reason for Leaving</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="font-bold">Nov 2024 - Present</div>
+                            <div class="text-sm text-gray-500">ICT Manufacturing</div>
+                            <div class="text-xs text-gray-400">(OEM Cosmetics)</div>
+                        </td>
+                        <td>
+                            <div class="font-semibold">Senior Factory Executive</div>
+                        </td>
+                        <td>
+                            <div>Base: 110,000</div>
+                            <div class="text-green-600">+Other: 30,000</div>
+                        </td>
+                        <td>
+                            <span class="italic text-gray-500">- (Current)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="font-bold">Jul 2023 - Oct 2024</div>
+                            <div class="text-sm text-gray-500">Milott Laboratories</div>
+                            <div class="text-xs text-gray-400">(OEM Cosmetics/Supplements)</div>
+                        </td>
+                        <td>
+                            <div class="font-semibold">Factory Manager</div>
+                        </td>
+                        <td>
+                            <div>Start: 100,000</div>
+                            <div class="text-green-600">+Other: 20,000</div>
+                        </td>
+                        <td class="text-red-600 font-medium">
+                            "ลำดับการบริหารที่ไม่ชัดเจน" (Unclear Management Structure)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Family Background -->
+        <h4 class="section-header">👨‍👩‍👧‍👦 Family Background</h4>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left detail-table">
+                <thead>
+                    <tr>
+                        <th>Relation</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Occupation / Position</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-semibold">Spouse</td>
+                        <td>Ms. Sujittra T.</td>
+                        <td>40</td>
+                        <td>Head of Sales @ Siam Raj PCL.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">Sibling 1</td>
+                        <td>Mr. Porntep H.</td>
+                        <td>49</td>
+                        <td>Business Owner (Air Cond.)</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">Sibling 2</td>
+                        <td>Ms. Pornpen H.</td>
+                        <td>47</td>
+                        <td>Purchasing Mgr @ Thai Sanko Eng.</td>
+                    </tr>
+                    <tr>
+                        <td class="font-semibold">Sibling 3</td>
+                        <td>Mr. Chaithep H.</td>
+                        <td>42</td>
+                        <td>IE Manager @ Seagater (Thailand)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
     <div class="text-center text-gray-400 text-xs mt-8 pb-8">
-        Powered by DSS NSL | Based on provided document "ใบสมัครงานรายเดือนNSL rev03 01.02.25.pdf"
+        Powered by DSS NSL | Data Source: Application Form Rev.03 (01.02.25)
     </div>
 
 </body>
