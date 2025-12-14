@@ -24,7 +24,7 @@
         
         /* New Styles for Detailed Table */
         .detail-table th { background-color: #f8fafc; color: #64748b; font-weight: 600; padding: 10px; text-align: left; font-size: 0.8rem; border-bottom: 2px solid #e2e8f0; }
-        .detail-table td { padding: 10px; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+        .detail-table td { padding: 10px; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; vertical-align: top; }
         .section-header { font-size: 1.1rem; font-weight: 700; color: #1e293b; border-left: 4px solid #3b82f6; padding-left: 10px; margin-bottom: 15px; margin-top: 10px; }
         
         /* Deep Dive Styles */
@@ -64,8 +64,8 @@
             <div class="kpi-label">Age (Maturity)</div>
         </div>
         <div class="card p-4 flex flex-col justify-center items-center">
-            <div class="kpi-value text-red-500">1.25</div>
-            <div class="kpi-label">Avg. Tenure (Yrs) <span class="status-risk">RISK</span></div>
+            <div class="kpi-value text-yellow-500">Mixed</div>
+            <div class="kpi-label">Stability Score (Tech vs Mgr)</div>
         </div>
         <div class="card p-4 flex flex-col justify-center items-center">
             <div class="kpi-value text-green-600">100%</div>
@@ -80,51 +80,66 @@
     <!-- Deep Dive Section -->
     <div class="card bg-gray-50 border-blue-200 mb-6">
         <h2 class="text-xl font-bold text-gray-800 border-b pb-2 mb-4 flex items-center">
-            🕵️‍♂️ Deep Dive: Hidden Risks & Unspoken Truths
+            🕵️‍♂️ Deep Dive: Hidden Risks & Unspoken Truths (Full Profile Edition)
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- 1. The Missing History -->
+            <!-- 1. The Managerial Stability Paradox -->
             <div class="deep-dive-card p-4 rounded-lg">
                 <div class="flex items-center mb-2">
-                    <span class="insight-tag tag-red">CRITICAL GAP</span>
-                    <h4 class="font-bold text-gray-700">The "Iceberg" Career History</h4>
+                    <span class="insight-tag tag-yellow">BEHAVIORAL PATTERN</span>
+                    <h4 class="font-bold text-gray-700">The "Managerial Stability" Paradox</h4>
                 </div>
-                <p class="text-sm text-gray-600 mb-2">ประวัติช่วง 2005-2023 หายไป (18 ปี) ระบุเพียง 2 ปีล่าสุด ต้องตรวจสอบเพิ่มด่วน</p>
-                <div class="w-full bg-gray-200 h-4 rounded-full overflow-hidden flex text-xs text-white text-center leading-4">
-                    <div class="bg-gray-400 w-3/4 flex items-center justify-center">❓ Unlisted (18 Years)</div>
-                    <div class="bg-blue-500 w-1/4 flex items-center justify-center">Listed (2 Yrs)</div>
+                <p class="text-sm text-gray-600 mb-2">จากประวัติการทำงานฉบับเต็ม พบรูปแบบที่น่าสนใจ:</p>
+                <ul class="text-xs space-y-2">
+                    <li class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                        <span><strong>2006-2016 (Engineer/Sup):</strong> อยู่ทนมาก (5 ปี/ที่) = อดทนต่องานหนักได้ดี</span>
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-red-500"></span>
+                        <span><strong>2017-Present (Manager):</strong> เปลี่ยนงานถี่ (1-2 ปี/ที่) = 4 ที่ใน 8 ปี</span>
+                    </li>
+                </ul>
+                <div class="bg-yellow-50 p-2 mt-2 text-xs text-yellow-800 rounded">
+                    <strong>Insight:</strong> เขาอาจติดกับดัก <strong>"Technical Trap"</strong> คือเก่งงานเทคนิคมาก แต่เมื่อขึ้นสู่ระดับบริหารที่ต้องรับแรงกดดันรอบด้าน (การเมือง/Strategy) อาจยังจัดการได้ไม่ดีพอ จึงเลือกที่จะเปลี่ยนงานเมื่อเจอปัญหา
                 </div>
             </div>
-            <!-- 2. Managerial DNA -->
+            
+            <!-- 2. True DNA: The Fixer -->
             <div class="deep-dive-card p-4 rounded-lg">
                 <div class="flex items-center mb-2">
-                    <span class="insight-tag tag-blue">PROFILE MATCH</span>
-                    <h4 class="font-bold text-gray-700">Compliance vs. Efficiency DNA</h4>
-                </div>
-                <p class="text-xs text-blue-800 mt-2 bg-blue-50 p-2 rounded">
-                    <strong>Insight:</strong> DNA คือ "ผู้คุมกฎ" (Safety/Audit) เหมาะกับการวางระบบพื้นฐาน แต่ไม่ใช่สาย "Strategy/Lean"
-                </p>
-            </div>
-            <!-- 3. Other Income Risk (UPDATED) -->
-            <div class="deep-dive-card p-4 rounded-lg border-l-4 border-yellow-500 md:col-span-2">
-                <div class="flex items-center mb-2">
-                    <span class="insight-tag tag-yellow">CONFLICT RISK</span>
-                    <h4 class="font-bold text-gray-700">Side Hustle & Focus Risk (ความเสี่ยงเรื่องงานนอก)</h4>
+                    <span class="insight-tag tag-blue">DNA MATCH</span>
+                    <h4 class="font-bold text-gray-700">True DNA: The Maintenance Fixer</h4>
                 </div>
                 <p class="text-sm text-gray-600 mb-2">
-                    รายได้อื่นๆ ที่สูงถึง 30,000 บาท/เดือน อาจไม่ใช่สวัสดิการปกติ แต่เป็นรายได้จาก <strong>"งานนอก" (Side Hustle)</strong> หรือธุรกิจส่วนตัว
+                    รากฐาน (Foundation) มาจาก <strong>Maintenance & Utility Engineer</strong> (ไฟฟ้า, เครื่องจักร, พลังงาน)
                 </p>
-                <div class="bg-white p-3 rounded border border-gray-200 text-xs">
-                    <strong class="text-red-600">⚠️ Key Concern:</strong>
-                    <p class="text-gray-600 mt-1">
-                        ประเด็นที่น่ากังวลคือ รายได้ส่วนนี้จะยังคงทำต่อไปหรือไม่เมื่อเริ่มงานใหม่ หากยังทำอยู่ <strong>จะส่งผลกระทบต่อเวลาทำงานหลัก (Working Hours) หรือสมาธิในการบริหารโรงงาน (Focus & Efficiency) หรือไม่?</strong> จำเป็นต้องสอบถามให้ชัดเจนเพื่อป้องกันปัญหา Conflict of Interest ในภายหลัง
-                    </p>
+                <p class="text-xs text-blue-800 mt-2 bg-blue-50 p-2 rounded">
+                    <strong>Implication:</strong> เขาจะทำได้ดีมากในการ <strong>"ลด Cost พลังงาน / ซ่อมเครื่องจักร / วางระบบ ISO"</strong> แต่ถ้า NSL คาดหวังเรื่อง <strong>"High-Level Production Strategy"</strong> หรือ <strong>"Lean Manufacturing"</strong> ขั้นสูง อาจจะไม่ตรงจุดแข็งที่สุดของเขา
+                </p>
+            </div>
+
+            <!-- 3. Language & Salary Check -->
+            <div class="deep-dive-card p-4 rounded-lg border-l-4 border-gray-300 md:col-span-2">
+                 <div class="flex items-center mb-2">
+                    <span class="insight-tag tag-green">VERIFICATION</span>
+                    <h4 class="font-bold text-gray-700">Cross-Check Findings</h4>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-xs">
+                    <div>
+                        <strong>English Skill:</strong>
+                        <p class="text-gray-500">Candidate: "Fair" vs Agency: "Good". <br>แนะให้ยึด "Fair" ไว้ก่อน และทดสอบจริงตอนสัมภาษณ์</p>
+                    </div>
+                    <div>
+                        <strong>Salary Request:</strong>
+                        <p class="text-gray-500">Current 110k + 30k (Fixed) = 140k<br>Request 150k. <span class="text-green-600 font-bold">Increase only ~7% (Total Package)</span>. ถือว่าสมเหตุสมผลมากในเชิงตัวเลขรวม (ถ้ายอมรับ 30k เป็นฐานได้)</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- AI Retention Prediction Section (UPDATED FOR AMATA & RELOCATION) -->
+    <!-- AI Retention Prediction Section (UPDATED) -->
     <div class="card bg-gradient-to-r from-slate-800 to-slate-900 text-white mb-6 border-none shadow-xl">
         <h2 class="text-xl font-bold border-b border-slate-600 pb-2 mb-4 flex items-center gap-2">
             🤖 AI Retention Prediction (ทำนายโอกาสการย้ายงาน)
@@ -158,8 +173,8 @@
                 <div class="flex items-start gap-3">
                     <span class="text-2xl">🔄</span>
                     <div>
-                        <strong class="text-red-400">Factor 3: Job Hopping History (Still a concern)</strong>
-                        <p class="text-xs text-slate-300">แม้เรื่องการเดินทางจะผ่าน แต่ประวัติการเปลี่ยนงานบ่อย (ทุก 1 ปีนิดๆ) ยังเป็นความเสี่ยงหลักที่ติดตัวผู้สมัคร ไม่เกี่ยวกับสถานที่ทำงาน ต้องเช็คทัศนคติเป็นหลัก</p>
+                        <strong class="text-red-400">Factor 3: Management Level Churn</strong>
+                        <p class="text-xs text-slate-300">ประวัติการเปลี่ยนงานบ่อยในช่วงเป็น Manager (2017-2024) เป็นจุดที่ต้องระวังที่สุด ต้องเช็คว่า "ทำไมเขาถึงไม่อยู่ที่ไหนนานเลย" ในช่วง 8 ปีหลังนี้</p>
                     </div>
                 </div>
             </div>
@@ -208,265 +223,70 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-        <!-- Column 1: Profile & Hard Data -->
-        <div class="md:col-span-1 space-y-6">
-            
-            <!-- Personal Info -->
-            <div class="card">
-                <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    👤 Candidate Profile
-                </h3>
-                <div class="space-y-3">
-                    <div class="table-row">
-                        <span class="text-gray-500">Nickname</span>
-                        <span class="font-medium">Daeng (แดง)</span>
-                    </div>
-                    <div class="table-row">
-                        <span class="text-gray-500">Status</span>
-                        <span class="font-medium">Married (2 Children)</span>
-                    </div>
-                    <div class="table-row">
-                        <span class="text-gray-500">Residence</span>
-                        <span class="font-medium">Phraeksa Mai, Samut Prakan</span>
-                    </div>
-                    <div class="table-row">
-                        <span class="text-gray-500">Education</span>
-                        <span class="font-medium">B.Sc. Env. Tech (GPA 2.46)</span>
-                    </div>
-                    <div class="table-row">
-                        <span class="text-gray-500">English</span>
-                        <span class="font-medium text-yellow-600">Fair (Self-Assessed)</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Logistics Analysis (UPDATED FOR AMATA) -->
-            <div class="card border-l-4 border-yellow-500">
-                <h3 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                    🚗 Logistics Analysis (Updated Location)
-                </h3>
-                <div class="text-sm space-y-2">
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Origin:</span>
-                        <span class="font-semibold">Phraeksa Mai (Samut Prakan)</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-gray-600">Dest:</span>
-                        <span class="font-bold text-blue-600">Amata City Chonburi</span>
-                    </div>
-                    <div class="mt-2 pt-2 border-t border-gray-100">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="text-xs text-gray-500">Distance (One-way)</span>
-                            <span class="font-bold text-gray-700">~45-50 km</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-gray-500">Est. Time (Expressway)</span>
-                            <span class="font-bold text-gray-700">45-60 Mins</span>
-                        </div>
-                    </div>
-                    <div class="bg-yellow-50 p-2 rounded text-xs text-yellow-800 mt-2">
-                        <strong>Impact:</strong> Moderate (Daily Commute). <br>
-                        <span class="text-green-600 font-bold">✅ Mitigation:</span> หากมีการ <strong>"เช่าหอพัก หรือ ย้ายที่อยู่"</strong> มาบริเวณใกล้เคียงอมตะนคร ข้อกังวลเรื่องระยะทางและค่าใช้จ่ายจะ <strong>"หมดไปทันที" (Eliminated)</strong>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Column 2 & 3: Detailed Analytics -->
-        <div class="md:col-span-2 space-y-6">
-            
-            <!-- Tenure Analysis -->
-            <div class="card">
-                <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">📉 Tenure Analysis (Last 2 Roles)</h3>
-                <div class="space-y-4">
-                    <!-- Job 1 -->
-                    <div>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="font-semibold">1. ICT Manufacturing (Current)</span>
-                            <span class="text-red-500 font-bold">~1.1 Years</span>
-                        </div>
-                        <div class="text-xs text-gray-400 mb-1">Nov 2024 - Dec 2025 (Present)</div>
-                        <div class="bar-bg"><div class="bar-fill bg-blue-500" style="width: 35%"></div></div>
-                    </div>
-                    <!-- Job 2 -->
-                    <div>
-                        <div class="flex justify-between text-sm mb-1">
-                            <span class="font-semibold">2. Milott Laboratories</span>
-                            <span class="text-red-500 font-bold">1.3 Years</span>
-                        </div>
-                        <div class="text-xs text-gray-400 mb-1">Jul 2023 - Oct 2024</div>
-                        <div class="bar-bg"><div class="bar-fill bg-gray-400" style="width: 40%"></div></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Compensation Analysis (UPDATED) -->
-            <div class="card">
-                <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">💰 Base Salary Analysis (Excluding Other Income)</h3>
-                
-                <table class="w-full text-sm text-left text-gray-600 mb-4">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                        <tr>
-                            <th class="px-4 py-2">Component</th>
-                            <th class="px-4 py-2">Previous (Milott)</th>
-                            <th class="px-4 py-2">Current (ICT)</th>
-                            <th class="px-4 py-2 text-blue-600">Requested</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b">
-                            <td class="px-4 py-2 font-medium">Base Salary</td>
-                            <td class="px-4 py-2">110,000</td>
-                            <td class="px-4 py-2">110,000</td>
-                            <td class="px-4 py-2 font-bold text-blue-600">150,000</td>
-                        </tr>
-                        <tr class="text-xs text-gray-400">
-                            <td class="px-4 py-2 font-medium italic">Other Income (Excluded)</td>
-                            <td class="px-4 py-2 italic">20,000</td>
-                            <td class="px-4 py-2 italic">30,000</td>
-                            <td class="px-4 py-2 italic">-</td>
-                        </tr>
-                        <tr class="bg-blue-50 font-bold text-blue-800">
-                            <td class="px-4 py-2">% Increase (Base vs Base)</td>
-                            <td class="px-4 py-2"></td>
-                            <td class="px-4 py-2"></td>
-                            <td class="px-4 py-2 text-red-600">+36.3%</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Family & Social Stability -->
-            <div class="card">
-                <h3 class="font-bold text-gray-800 mb-4 border-b pb-2">🧬 Family & Social Stability (Background Check)</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                    <div>
-                        <p class="font-semibold text-gray-700">Family Status</p>
-                        <p class="text-gray-600">Stable Middle-Upper Class Background. Siblings hold management/business owner roles.</p>
-                    </div>
-                    <div>
-                        <p class="font-semibold text-gray-700">Spouse Profile</p>
-                        <p class="text-gray-600">Sales Head @ Siam Raj (Public Co.). Indicates dual-income household with high stability.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Final Recommendation -->
-    <div class="card border-t-4 border-blue-600 mt-2 bg-blue-50">
-        <h3 class="font-bold text-gray-800 mb-2">📢 Executive Recommendation</h3>
-        <p class="text-sm text-gray-700 mb-2">
-            ผู้สมัครมีความพร้อมสูงด้าน Hard Skills และวุฒิภาวะ แต่มีความเสี่ยงสูงด้าน <strong>Retention (การลาออก)</strong> จากปัจจัยระยะทาง (Distance) และประวัติการเปลี่ยนงาน (History).
-        </p>
-        <div class="flex gap-2">
-            <span class="badge bg-white text-blue-600 border border-blue-200 px-3 py-1 rounded text-xs font-bold">Action: Interview to Clarify Stability</span>
-            <span class="badge bg-white text-red-600 border border-red-200 px-3 py-1 rounded text-xs font-bold">Focus: "Why Leave?" & "Commute Plan"</span>
-        </div>
-    </div>
-
     <!-- Detailed Data View Section -->
     <div class="card mt-6">
-        <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4">📄 Full Candidate Details (Extracted)</h2>
+        <h2 class="text-xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-4">📄 Full Work History (Consolidated)</h2>
         
-        <!-- Work History Detail -->
-        <h4 class="section-header">🏢 Work History Details</h4>
         <div class="overflow-x-auto">
             <table class="w-full text-left detail-table">
                 <thead>
                     <tr>
-                        <th class="w-1/4">Period / Company</th>
+                        <th class="w-1/5">Period</th>
+                        <th class="w-1/4">Company</th>
                         <th class="w-1/4">Position</th>
-                        <th class="w-1/5">Salary Structure</th>
-                        <th class="w-1/3">Reason for Leaving</th>
+                        <th class="w-1/4">Reason for Leaving / Note</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>
-                            <div class="font-bold">Nov 2024 - Present</div>
-                            <div class="text-sm text-gray-500">ICT Manufacturing</div>
-                            <div class="text-xs text-gray-400">(OEM Cosmetics)</div>
-                        </td>
-                        <td>
-                            <div class="font-semibold">Senior Factory Executive</div>
-                        </td>
-                        <td>
-                            <div>Base: 110,000</div>
-                            <div class="text-green-600">+Other: 30,000</div>
-                        </td>
-                        <td>
-                            <span class="italic text-gray-500">- (Current)</span>
-                        </td>
+                    <tr class="bg-blue-50">
+                        <td><strong>Nov 2024 - Present</strong><br><span class="text-xs text-gray-500">Current</span></td>
+                        <td>ICT Manufacturing</td>
+                        <td>Factory Manager</td>
+                        <td>-</td>
                     </tr>
                     <tr>
-                        <td>
-                            <div class="font-bold">Jul 2023 - Oct 2024</div>
-                            <div class="text-sm text-gray-500">Milott Laboratories</div>
-                            <div class="text-xs text-gray-400">(OEM Cosmetics/Supplements)</div>
-                        </td>
-                        <td>
-                            <div class="font-semibold">Factory Manager</div>
-                        </td>
-                        <td>
-                            <div>Start: 100,000</div>
-                            <div class="text-green-600">+Other: 20,000</div>
-                        </td>
-                        <td class="text-red-600 font-medium">
-                            "ลำดับการบริหารที่ไม่ชัดเจน" (Unclear Management Structure)
-                        </td>
+                        <td><strong>Jul 2023 - Oct 2024</strong><br><span class="text-xs text-gray-500">1 Yr 4 Mos</span></td>
+                        <td>Milott Laboratories</td>
+                        <td>Factory Manager</td>
+                        <td><span class="text-red-500 text-xs">"ลำดับการบริหารไม่ชัดเจน"</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jul 2021 - Jun 2023</strong><br><span class="text-xs text-gray-500">2 Yrs</span></td>
+                        <td>Aesthetic Zecret (At-Ze)</td>
+                        <td>Plant Manager</td>
+                        <td><span class="text-gray-500 text-xs">Cosmetics/Skincare</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>May 2019 - Apr 2021</strong><br><span class="text-xs text-gray-500">2 Yrs</span></td>
+                        <td>Saeng Charoen Grand</td>
+                        <td>Group Factory Mgr.</td>
+                        <td><span class="text-gray-500 text-xs">Textile/Garment</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Jan 2017 - Feb 2019</strong><br><span class="text-xs text-gray-500">2 Yrs 2 Mos</span></td>
+                        <td>Specialty Innovation</td>
+                        <td>Factory Manager</td>
+                        <td><span class="text-gray-500 text-xs">First Factory Mgr Role?</span></td>
+                    </tr>
+                    <tr class="bg-green-50">
+                        <td><strong>Aug 2011 - Dec 2016</strong><br><span class="text-xs text-green-700 font-bold">5 Yrs 5 Mos</span></td>
+                        <td>Thainisshin Technomic</td>
+                        <td>Supervisor Maint. Eng</td>
+                        <td><span class="text-green-700 text-xs">Stable Period</span></td>
+                    </tr>
+                    <tr class="bg-green-50">
+                        <td><strong>Jul 2006 - Jul 2011</strong><br><span class="text-xs text-green-700 font-bold">5 Yrs</span></td>
+                        <td>Y S Pund Co., Ltd</td>
+                        <td>Maint. Facility Eng</td>
+                        <td><span class="text-green-700 text-xs">Stable Period (Foundation)</span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-
-        <!-- Family Background -->
-        <h4 class="section-header">👨‍👩‍👧‍👦 Family Background</h4>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left detail-table">
-                <thead>
-                    <tr>
-                        <th>Relation</th>
-                        <th>Name</th>
-                        <th>Age</th>
-                        <th>Occupation / Position</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="font-semibold">Spouse</td>
-                        <td>Ms. Sujittra T.</td>
-                        <td>40</td>
-                        <td>Head of Sales @ Siam Raj PCL.</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">Sibling 1</td>
-                        <td>Mr. Porntep H.</td>
-                        <td>49</td>
-                        <td>Business Owner (Air Cond.)</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">Sibling 2</td>
-                        <td>Ms. Pornpen H.</td>
-                        <td>47</td>
-                        <td>Purchasing Mgr @ Thai Sanko Eng.</td>
-                    </tr>
-                    <tr>
-                        <td class="font-semibold">Sibling 3</td>
-                        <td>Mr. Chaithep H.</td>
-                        <td>42</td>
-                        <td>IE Manager @ Seagater (Thailand)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
     </div>
 
     <div class="text-center text-gray-400 text-xs mt-8 pb-8">
-        Powered by DSS NSL | Data Source: Application Form Rev.03 (01.02.25)
+        Powered by DSS NSL | Data Source: Q Hunter Report + Application Form
     </div>
 
 </body>
