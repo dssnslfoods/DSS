@@ -2,17 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=https://studio--studio-4548432275-9c52a.us-central1.hosted.app/">
-    
-    <title>Redirecting...</title>
-    
-    <script>
-        window.location.href = "https://studio--studio-4548432275-9c52a.us-central1.hosted.app/";
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Website</title>
+    <style>
+        /* This ensures the iframe takes up the whole screen without scrollbars on the outside */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border: none; /* Removes the default border around the iframe */
+        }
+    </style>
 </head>
 <body>
-    <p>If you are not redirected automatically, please click this link: 
-       <a href="https://studio--studio-4548432275-9c52a.us-central1.hosted.app/">Go to Site</a>
-    </p>
+    <iframe src="https://studio--studio-4548432275-9c52a.us-central1.hosted.app/">
+        <p>Your browser does not support iframes.</p>
+    </iframe>
 </body>
 </html>
