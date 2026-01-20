@@ -3,81 +3,97 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>IR Talk Registration</title>
+  <title>NSL IR Talk - LIFF Registration</title>
 
   <!-- LIFF SDK -->
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 0; background: #0b1220; color: #e7eefc; }
-    .wrap { max-width: 720px; margin: 0 auto; padding: 20px; }
-    .card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); border-radius: 16px; padding: 18px; }
-    h1 { font-size: 20px; margin: 0 0 10px; }
-    .muted { color: rgba(231,238,252,0.75); font-size: 13px; }
-    .row { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 14px; }
-    label { font-size: 13px; color: rgba(231,238,252,0.85); }
-    input, select, textarea {
-      width: 100%; box-sizing: border-box;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: #e7eefc;
-      padding: 12px 12px;
-      border-radius: 12px;
-      outline: none;
+    :root{
+      --bg:#0b1220;
+      --card:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.12);
+      --text:#e7eefc;
+      --muted:rgba(231,238,252,.75);
+      --blue:#3b82f6;
+      --slate:#334155;
+      --ok:rgba(34,197,94,.50);
+      --err:rgba(239,68,68,.55);
     }
-    input::placeholder { color: rgba(231,238,252,0.45); }
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .actions { display: flex; gap: 10px; align-items: center; margin-top: 14px; }
-    button {
-      border: 0; border-radius: 12px;
-      padding: 12px 14px;
-      background: #3b82f6; color: white; font-weight: 600;
-      cursor: pointer;
+    body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    .wrap{max-width:760px;margin:0 auto;padding:18px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px}
+    h1{margin:0 0 8px;font-size:20px}
+    .muted{color:var(--muted);font-size:13px;line-height:1.4}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid var(--border);font-size:12px}
+    .row{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
+    label{font-size:13px;color:rgba(231,238,252,.85)}
+    input{
+      width:100%;box-sizing:border-box;
+      padding:12px 12px;border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.08);
+      color:var(--text);outline:none;
     }
-    button:disabled { opacity: .5; cursor: not-allowed; }
-    .status {
-      margin-top: 12px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.06);
-      border: 1px dashed rgba(255,255,255,0.18);
-      font-size: 13px;
-      white-space: pre-wrap;
+    input::placeholder{color:rgba(231,238,252,.45)}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .pdpa{display:flex;gap:10px;align-items:flex-start;margin-top:6px}
+    .pdpa input{width:18px;height:18px;margin-top:2px}
+    .small{font-size:12px;color:var(--muted)}
+    .actions{display:flex;gap:10px;align-items:center;margin-top:10px}
+    button{
+      border:0;border-radius:12px;
+      padding:12px 14px;font-weight:700;
+      cursor:pointer;
+      color:white;
     }
-    .ok { border-color: rgba(34,197,94,0.45); }
-    .err { border-color: rgba(239,68,68,0.55); }
-    .badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 6px 10px; border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      font-size: 12px;
+    #submitBtn{background:var(--blue)}
+    #closeBtn{background:var(--slate)}
+    button:disabled{opacity:.5;cursor:not-allowed}
+    .status{
+      margin-top:10px;
+      padding:10px 12px;border-radius:12px;
+      background:rgba(255,255,255,.06);
+      border:1px dashed rgba(255,255,255,.18);
+      font-size:13px;white-space:pre-wrap;
     }
-    .pdpa { display: flex; gap: 10px; align-items: flex-start; margin-top: 6px; }
-    .pdpa input { width: 18px; height: 18px; margin-top: 2px; }
-    .small { font-size: 12px; color: rgba(231,238,252,0.75); }
-    a { color: #93c5fd; }
+    .status.ok{border-color:var(--ok)}
+    .status.err{border-color:var(--err)}
+    details{margin-top:12px}
+    summary{cursor:pointer;color:rgba(231,238,252,.85);font-size:13px}
+    pre{
+      margin:10px 0 0;
+      padding:10px 12px;
+      background:rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:12px;
+      overflow:auto;
+      font-size:12px;
+      color:rgba(231,238,252,.92)
+    }
+    a{color:#93c5fd}
   </style>
 </head>
 
 <body>
   <div class="wrap">
     <div class="card">
-      <h1>ลงทะเบียนเข้าร่วมประชุม (IR Talk)</h1>
+      <h1>ลงทะเบียนเข้าร่วม IR Talk (Online)</h1>
       <div class="muted">
-        กรุณากรอกข้อมูลให้ครบถ้วน ระบบจะส่งลิงก์ Microsoft Teams กลับผ่าน LINE อัตโนมัติ
+        กรุณากรอกข้อมูลให้ครบถ้วน จากนั้นระบบจะส่งลิงก์ Microsoft Teams กลับผ่าน LINE อัตโนมัติ
       </div>
 
-      <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-        <span class="badge" id="badgeInClient">LIFF: …</span>
-        <span class="badge" id="badgeLogin">Login: …</span>
-        <span class="badge" id="badgeProfile">Profile: …</span>
+      <div class="badges">
+        <span class="badge" id="badgeInClient">inClient: …</span>
+        <span class="badge" id="badgeLogin">loggedIn: …</span>
+        <span class="badge" id="badgeProfile">profile: …</span>
       </div>
 
       <div class="row">
         <div>
           <label>ชื่อ-นามสกุล *</label>
-          <input id="fullName" type="text" placeholder="เช่น จริยา ใจไม่ดี" required />
+          <input id="fullName" type="text" placeholder="เช่น จริยา ใจไม่ดี" />
         </div>
 
         <div class="grid2">
@@ -100,18 +116,21 @@
           <input id="pdpaConsent" type="checkbox" />
           <div>
             <label style="display:block;">ยินยอมให้เก็บและใช้ข้อมูลตาม PDPA *</label>
-            <div class="small">
-              ข้อมูลจะถูกใช้เพื่อการลงทะเบียนและติดต่อประสานงานการประชุมเท่านั้น
-            </div>
+            <div class="small">ข้อมูลจะใช้เพื่อการลงทะเบียนและติดต่อประสานงานการประชุมเท่านั้น</div>
           </div>
         </div>
 
         <div class="actions">
           <button id="submitBtn" disabled>ยืนยันการลงทะเบียน</button>
-          <button id="closeBtn" type="button" style="background:#334155;">ปิด</button>
+          <button id="closeBtn" type="button">ปิด</button>
         </div>
 
-        <div id="statusBox" class="status">กำลังเตรียม LIFF…</div>
+        <div id="statusBox" class="status">กำลังเริ่มต้น LIFF…</div>
+
+        <details>
+          <summary>Debug (สำหรับตรวจสอบ userId / profile)</summary>
+          <pre id="debugBox">กำลังโหลด…</pre>
+        </details>
       </div>
     </div>
   </div>
@@ -120,11 +139,11 @@
     /**********************
      * CONFIG (แก้ 3 ค่า)
      **********************/
-    const LIFF_ID = "2008928307-8xnpCPKG";
+    const LIFF_ID = "2008928307-8xnpCPKG"; // <-- ถ้าคุณมี LIFF ID แล้ว ใส่ตรงนี้ได้เลย
     const N8N_WEBHOOK_URL = "https://def2design.app.n8n.cloud/webhook/liff/register";
     const SHARED_SECRET = "nsl-ir-liff-2026-secret-9xAqP!";
 
-    // fixed metadata (optional)
+    // metadata
     const SOURCE = "LIFF-IR-TALK";
     const MEETING_TIME_TEXT = "10:00–12:00 น. (เวลาไทย)";
 
@@ -134,21 +153,24 @@
     let lineUserId = null;
     let displayName = null;
     let pictureUrl = null;
-    let isInClient = false;
 
     const $ = (id) => document.getElementById(id);
     const statusBox = $("statusBox");
+    const debugBox = $("debugBox");
     const submitBtn = $("submitBtn");
 
-    function setBadge(id, text) {
-      $(id).textContent = text;
-    }
+    function setBadge(id, text) { $(id).textContent = text; }
 
     function setStatus(text, type) {
       statusBox.textContent = text;
       statusBox.classList.remove("ok", "err");
       if (type === "ok") statusBox.classList.add("ok");
       if (type === "err") statusBox.classList.add("err");
+    }
+
+    function setDebug(obj) {
+      try { debugBox.textContent = JSON.stringify(obj, null, 2); }
+      catch { debugBox.textContent = String(obj); }
     }
 
     function canSubmit() {
@@ -166,37 +188,60 @@
     }
 
     async function initLiff() {
+      setStatus("กำลังเริ่มต้น LIFF…");
+      setDebug({ step: "init:start" });
+
       try {
-        setStatus("กำลังเริ่มต้น LIFF…");
         await liff.init({ liffId: LIFF_ID });
 
-        isInClient = liff.isInClient();
-        setBadge("badgeInClient", `LIFF in-client: ${isInClient ? "true" : "false"}`);
-
+        const inClient = liff.isInClient();
         const loggedIn = liff.isLoggedIn();
-        setBadge("badgeLogin", `Logged in: ${loggedIn ? "true" : "false"}`);
 
-        // ถ้าไม่ login ให้ login ก่อน (โดยเฉพาะเปิดนอก LINE)
+        setBadge("badgeInClient", `inClient: ${inClient}`);
+        setBadge("badgeLogin", `loggedIn: ${loggedIn}`);
+
+        setDebug({
+          step: "init:afterInit",
+          inClient,
+          loggedIn,
+          language: (liff.getLanguage && liff.getLanguage()) ? liff.getLanguage() : null,
+          os: (liff.getOS && liff.getOS()) ? liff.getOS() : null,
+          version: (liff.getVersion && liff.getVersion()) ? liff.getVersion() : null
+        });
+
+        // ถ้าไม่ login ให้ login ก่อน
         if (!loggedIn) {
-          setStatus("กำลังพาไปเข้าสู่ระบบ LINE (login) …");
-          liff.login(); // จะ redirect แล้วกลับมา
+          setStatus("กำลังเข้าสู่ระบบ LINE (login) …");
+          setDebug({ step: "init:loginRedirect" });
+          liff.login();
           return;
         }
 
         // ดึง profile
-        const profile = await liff.getProfile();
-        lineUserId = profile.userId || null;
-        displayName = profile.displayName || null;
-        pictureUrl = profile.pictureUrl || null;
+        let profile = null;
+        try {
+          profile = await liff.getProfile();
+        } catch (e) {
+          setStatus("getProfile() error ❌\n" + (e?.message || String(e)) + "\n\nตรวจสอบว่า LIFF scope มี profile", "err");
+          setDebug({ step: "init:getProfileError", error: e?.message || String(e) });
+          refreshSubmitState();
+          return;
+        }
 
-        setBadge("badgeProfile", lineUserId ? `Profile OK: ${displayName}` : "Profile: null");
+        lineUserId = profile?.userId || null;
+        displayName = profile?.displayName || null;
+        pictureUrl = profile?.pictureUrl || null;
+
+        setBadge("badgeProfile", lineUserId ? `profile: OK (${displayName})` : "profile: null");
+        setDebug({ step: "init:profile", profile });
 
         if (!lineUserId) {
           setStatus(
-            "ไม่สามารถดึง LINE userId ได้\n" +
-            "- กรุณาเปิดผ่านแอป LINE ด้วยลิงก์ LIFF (https://liff.line.me/...) \n" +
-            "- ตรวจสอบว่า LIFF app เปิด scope: profile\n" +
-            "- ลองปิดแล้วเปิดใหม่",
+            "ไม่พบ LINE userId ❌\n" +
+            "สาเหตุที่พบบ่อย:\n" +
+            "1) LIFF app ยังไม่ได้เปิด scope: profile\n" +
+            "2) Endpoint URL ชี้ผิด (ยังเป็นไฟล์เก่า)\n" +
+            "3) เปิดไม่ผ่าน liff.line.me\n",
             "err"
           );
           refreshSubmitState();
@@ -211,13 +256,10 @@
         );
 
         refreshSubmitState();
+
       } catch (err) {
-        console.error(err);
-        setStatus(
-          "เกิดข้อผิดพลาดในการเริ่มต้น LIFF\n" +
-          (err && err.message ? err.message : String(err)),
-          "err"
-        );
+        setStatus("LIFF init error ❌\n" + (err?.message || String(err)), "err");
+        setDebug({ step: "init:exception", error: err?.message || String(err) });
         refreshSubmitState();
       }
     }
@@ -232,8 +274,9 @@
         const company = $("company").value.trim();
         const pdpaConsent = $("pdpaConsent").checked;
 
+        // Guard
         if (!lineUserId) {
-          setStatus("ไม่พบ LINE userId กรุณารีเฟรชและเปิดผ่านแอป LINE", "err");
+          setStatus("ไม่พบ LINE userId กรุณาเปิดผ่าน LINE OA → ลิงก์ LIFF และตรวจ scope=profile", "err");
           refreshSubmitState();
           return;
         }
@@ -256,7 +299,7 @@
         setStatus("กำลังส่งข้อมูลไปยังระบบ…");
 
         const payload = {
-          // ส่งทั้ง userId และ lineUserId เพื่อความเข้ากันได้กับ n8n
+          // ✅ ส่งทั้ง userId และ lineUserId (กัน mismatch ฝั่ง n8n)
           userId: lineUserId,
           lineUserId: lineUserId,
           displayName,
@@ -270,10 +313,12 @@
 
           source: SOURCE,
           meetingTime: MEETING_TIME_TEXT,
-          isInClient: isInClient,
+          isInClient: (liff.isInClient && liff.isInClient()) ? true : false,
           language: (liff.getLanguage && liff.getLanguage()) ? liff.getLanguage() : null,
           timestamp: new Date().toISOString()
         };
+
+        setDebug({ step: "submit:payload", payload });
 
         const res = await fetch(N8N_WEBHOOK_URL, {
           method: "POST",
@@ -295,9 +340,15 @@
           throw new Error(msg);
         }
 
-        setStatus("ส่งข้อมูลสำเร็จ ✅\nระบบจะส่งลิงก์ประชุมกลับทาง LINE ให้คุณ", "ok");
+        setStatus(
+          "ส่งข้อมูลสำเร็จ ✅\n" +
+          "ระบบจะส่งลิงก์ประชุมกลับทาง LINE ให้คุณ",
+          "ok"
+        );
 
-        // ปิดหน้าต่าง LIFF หลัง 1.2 วินาที (ถ้าอยู่ใน LINE)
+        setDebug({ step: "submit:success", status: res.status, response: data ?? text });
+
+        // ปิดหน้าต่างใน LINE
         setTimeout(() => {
           try {
             if (liff && liff.isInClient && liff.isInClient()) {
@@ -307,22 +358,21 @@
         }, 1200);
 
       } catch (err) {
-        console.error(err);
         setStatus(
           "ส่งข้อมูลไม่สำเร็จ ❌\n" +
-          (err && err.message ? err.message : String(err)) +
-          "\n\n(ถ้ายังไม่หาย: ให้ดู Execution ใน n8n ว่าติดที่ node ไหน)",
+          (err?.message || String(err)) +
+          "\n\nให้ดู n8n Executions ว่าติดที่ node ไหน",
           "err"
         );
+        setDebug({ step: "submit:error", error: err?.message || String(err) });
         refreshSubmitState();
       }
     }
 
     // events
-    $("fullName").addEventListener("input", refreshSubmitState);
-    $("phone").addEventListener("input", refreshSubmitState);
-    $("email").addEventListener("input", refreshSubmitState);
-    $("company").addEventListener("input", refreshSubmitState);
+    ["fullName","phone","email","company"].forEach(id => {
+      $(id).addEventListener("input", refreshSubmitState);
+    });
     $("pdpaConsent").addEventListener("change", refreshSubmitState);
 
     $("submitBtn").addEventListener("click", (e) => {
@@ -334,12 +384,10 @@
       try {
         if (liff && liff.isInClient && liff.isInClient()) liff.closeWindow();
         else window.close();
-      } catch (_) {
-        // ignore
-      }
+      } catch (_) {}
     });
 
-    // init
+    // start
     initLiff();
   </script>
 </body>
