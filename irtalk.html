@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ลงทะเบียนประชุม</title>
+
+  <!-- LIFF SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+    :root { --bg:#0b1220; --card:#111a2e; --text:#e8eefc; --muted:#a9b6d6; --line:#223055; --btn:#2d6bff; --btn2:#2a3556; --danger:#ff4d4f; --ok:#21c07a; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans Thai", sans-serif; background:linear-gradient(180deg,#070b14, #0b1220); color:var(--text); }
+    .wrap { max-width: 560px; margin: 0 auto; padding: 18px; }
+    .card { background: rgba(17,26,46,.85); border: 1px solid rgba(34,48,85,.9); border-radius: 16px; padding: 18px; box-shadow: 0 10px 30px rgba(0,0,0,.35); backdrop-filter: blur(10px); }
+    h1 { font-size: 18px; margin: 0 0 6px; }
+    p { margin: 0 0 14px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .row { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 10px; }
+    label { font-size: 12px; color: var(--muted); }
+    input, textarea {
+      width: 100%; box-sizing: border-box;
+      background: rgba(10,16,31,.8); border: 1px solid rgba(34,48,85,.9);
+      color: var(--text); border-radius: 12px; padding: 12px 12px; outline: none;
+    }
+    input:focus, textarea:focus { border-color: rgba(45,107,255,.9); box-shadow: 0 0 0 3px rgba(45,107,255,.2); }
+    .hint { font-size: 12px; color: var(--muted); margin-top: 8px; }
+    .pill { display:inline-flex; align-items:center; gap:8px; font-size:12px; padding:8px 10px; border:1px solid rgba(34,48,85,.9); border-radius: 999px; background: rgba(10,16,31,.55); color: var(--muted); }
+    .pill b { color: var(--text); font-weight: 600; }
+    .actions { display:flex; gap:10px; margin-top: 14px; }
+    button {
+      flex:1; border:0; border-radius: 12px; padding: 12px 14px;
+      font-weight: 700; cursor:pointer; color: white; background: var(--btn);
+    }
+    button.secondary { background: var(--btn2); color: var(--text); }
+    button:disabled { opacity: .5; cursor:not-allowed; }
+    .status { margin-top: 12px; font-size: 13px; }
+    .status.ok { color: var(--ok); }
+    .status.err { color: var(--danger); }
+    .pdpa { display:flex; gap:10px; align-items:flex-start; margin-top: 10px; padding: 12px; border-radius: 12px; background: rgba(10,16,31,.55); border:1px solid rgba(34,48,85,.9); }
+    .pdpa input { width: 18px; height: 18px; margin-top: 2px; }
+    .small { font-size: 12px; color: var(--muted); line-height:1.45; }
+    .divider { height:1px; background: rgba(34,48,85,.9); margin: 14px 0; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 12px; color: var(--muted); word-break: break-all; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>แบบฟอร์มลงทะเบียนประชุม</h1>
+      <p>กรุณากรอกข้อมูลให้ครบถ้วน และกดยอมรับ PDPA ก่อนส่งข้อมูล</p>
+
+      <div class="pill">LINE User ID: <b id="userIdText">กำลังโหลด…</b></div>
+      <div class="hint">เวลาประชุม: <b>10:00–12:00 น. (เวลาไทย)</b> | ผ่าน <b>Microsoft Teams</b></div>
+
+      <div class="divider"></div>
+
+      <form id="regForm" class="row" autocomplete="on">
+        <div>
+          <label for="fullName">ชื่อ-นามสกุล *</label>
+          <input id="fullName" name="fullName" type="text" placeholder="เช่น Golf Arnon" required />
+        </div>
+
+        <div>
+          <label for="phone">เบอร์โทร</label>
+          <input id="phone" name="phone" type="tel" placeholder="เช่น 0812345678" inputmode="tel" />
+        </div>
+
+        <div>
+          <label for="email">อีเมล</label>
+          <input id="email" name="email" type="email" placeholder="เช่น golf@example.com" inputmode="email" />
+        </div>
+
+        <div>
+          <label for="company">บริษัท</label>
+          <input id="company" name="company" type="text" placeholder="เช่น NSL Foods" />
+        </div>
+
+        <div class="pdpa">
+          <input id="pdpaConsent" name="pdpaConsent" type="checkbox" />
+          <div class="small">
+            <b>ยินยอมให้เก็บและใช้ข้อมูลส่วนบุคคล</b><br/>
+            ข้อมูลจะถูกใช้เพื่อการลงทะเบียนและการติดต่อประสานงานเกี่ยวกับการประชุมเท่านั้น
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="submitBtn" type="submit" disabled>ยืนยันลงทะเบียน</button>
+          <button id="closeBtn" type="button" class="secondary">ปิด</button>
+        </div>
+
+        <div id="status" class="status"></div>
+        <div id="debug" class="mono" style="display:none;"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    /***********************
+     * CONFIG (EDIT THESE)
+     ***********************/
+    const LIFF_ID = "YOUR_LIFF_ID_HERE";
+    const N8N_WEBHOOK_URL = "https://YOUR-N8N-DOMAIN/webhook/liff/register"; // e.g. https://n8n.yourdomain.com/webhook/liff/register
+    const SHARED_SECRET = "YOUR_LIFF_SHARED_SECRET"; // must match n8n env LIFF_SHARED_SECRET
+
+    /***********************
+     * UI helpers
+     ***********************/
+    const el = (id) => document.getElementById(id);
+    const statusEl = el("status");
+    const debugEl  = el("debug");
+    const userIdTextEl = el("userIdText");
+    const submitBtn = el("submitBtn");
+
+    function setStatus(message, type) {
+      statusEl.textContent = message || "";
+      statusEl.className = "status" + (type ? ` ${type}` : "");
+    }
+    function showDebug(obj) {
+      // toggle if you want to see payload
+      // debugEl.style.display = "block";
+      debugEl.textContent = JSON.stringify(obj, null, 2);
+    }
+
+    /***********************
+     * LIFF init + userId
+     ***********************/
+    let lineUserId = "";
+    async function initLIFF() {
+      try {
+        await liff.init({ liffId: LIFF_ID });
+
+        if (!liff.isLoggedIn()) {
+          liff.login();
+          return;
+        }
+
+        const profile = await liff.getProfile();
+        lineUserId = profile.userId || "";
+        userIdTextEl.textContent = lineUserId ? lineUserId : "ไม่พบ userId";
+
+        // Prefill name if displayName exists and fullName empty
+        if (!el("fullName").value && profile.displayName) {
+          el("fullName").value = profile.displayName;
+        }
+
+        setStatus("", "");
+      } catch (err) {
+        console.error(err);
+        userIdTextEl.textContent = "โหลดไม่สำเร็จ";
+        setStatus("ไม่สามารถเริ่มต้น LIFF ได้ โปรดตรวจสอบ LIFF ID และการตั้งค่าใน LINE Developers", "err");
+      }
+    }
+
+    /***********************
+     * Form validation
+     ***********************/
+    function validateForm() {
+      const fullName = el("fullName").value.trim();
+      const phone = el("phone").value.trim();
+      const email = el("email").value.trim();
+      const consent = el("pdpaConsent").checked;
+
+      if (!lineUserId) return { ok:false, msg:"ยังไม่พบ LINE userId กรุณาลองใหม่" };
+      if (!fullName) return { ok:false, msg:"กรุณากรอกชื่อ-นามสกุล" };
+      if (!consent) return { ok:false, msg:"กรุณายอมรับ PDPA ก่อนส่งข้อมูล" };
+      if (!phone && !email) return { ok:false, msg:"กรุณากรอกเบอร์โทรหรืออีเมลอย่างน้อย 1 ช่อง" };
+
+      // basic phone cleanup (optional)
+      if (phone && phone.length < 8) return { ok:false, msg:"เบอร์โทรไม่ถูกต้อง" };
+
+      return { ok:true };
+    }
+
+    // Enable submit only when PDPA checked (and LIFF loaded)
+    function updateSubmitState() {
+      const consent = el("pdpaConsent").checked;
+      submitBtn.disabled = !consent || !lineUserId;
+    }
+
+    el("pdpaConsent").addEventListener("change", updateSubmitState);
+
+    /***********************
+     * Submit to n8n
+     ***********************/
+    async function submitToN8N(payload) {
+      const res = await fetch(N8N_WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-shared-secret": SHARED_SECRET
+        },
+        body: JSON.stringify(payload)
+      });
+
+      let data = null;
+      try { data = await res.json(); } catch (_) {}
+
+      if (!res.ok) {
+        const msg = (data && (data.error || data.message)) ? (data.error || data.message) : `ส่งข้อมูลไม่สำเร็จ (${res.status})`;
+        throw new Error(msg);
+      }
+      return data;
+    }
+
+    el("regForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      setStatus("", "");
+
+      const check = validateForm();
+      if (!check.ok) {
+        setStatus(check.msg, "err");
+        return;
+      }
+
+      const payload = {
+        userId: lineUserId,
+        fullName: el("fullName").value.trim(),
+        phone: el("phone").value.trim(),
+        email: el("email").value.trim(),
+        company: el("company").value.trim(),
+        pdpaConsent: el("pdpaConsent").checked,
+        timestamp: new Date().toISOString()
+      };
+
+      showDebug(payload);
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "กำลังส่ง...";
+
+      try {
+        const result = await submitToN8N(payload);
+        setStatus("ส่งข้อมูลสำเร็จ ✅ ระบบได้ส่งรายละเอียดประชุมไปให้ทาง LINE แล้ว", "ok");
+
+        // Optionally close LIFF after success
+        setTimeout(() => {
+          if (window.liff && liff.isInClient()) liff.closeWindow();
+        }, 1200);
+
+      } catch (err) {
+        console.error(err);
+        setStatus(err.message || "เกิดข้อผิดพลาด กรุณาลองใหม่", "err");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "ยืนยันลงทะเบียน";
+        updateSubmitState();
+      }
+    });
+
+    el("closeBtn").addEventListener("click", () => {
+      if (window.liff && liff.isInClient()) {
+        liff.closeWindow();
+      } else {
+        window.close();
+      }
+    });
+
+    // Start
+    initLIFF().then(updateSubmitState);
+  </script>
+</body>
+</html>
