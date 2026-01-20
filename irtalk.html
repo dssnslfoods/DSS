@@ -3,541 +3,278 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>IR TALK Online event</title>
+  <title>IR Talk Registration (LIFF)</title>
 
   <!-- LIFF SDK -->
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
   <style>
-    :root{
-      /* Color balance: Orange 70% / Blue 15% / Green 15% */
-      --bg-deep:#070b16;
-      --card:#0b1224;
-      --text:#f6f7ff;
-      --muted:#c8cbe0;
-      --border:rgba(255,255,255,.14);
-
-      --orange:#ff7a18;
-      --orange2:#ffb03a;
-
-      --blue:#2f6bff;
-      --green:#2dd477;
-
-      --shadow: 0 22px 70px rgba(0,0,0,.58);
-      --ring: 0 0 0 4px rgba(255,122,24,.16);
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 0; background: #0b1220; color: #e7eefc; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 20px; }
+    .card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.10); border-radius: 16px; padding: 18px; }
+    h1 { font-size: 20px; margin: 0 0 10px; }
+    .muted { color: rgba(231,238,252,0.75); font-size: 13px; }
+    .row { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 14px; }
+    label { font-size: 13px; color: rgba(231,238,252,0.85); }
+    input, select, textarea {
+      width: 100%; box-sizing: border-box;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #e7eefc;
+      padding: 12px 12px;
+      border-radius: 12px;
+      outline: none;
     }
-
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans Thai", "Noto Sans";
-      color:var(--text);
-      background:
-        radial-gradient(1050px 680px at 18% 12%, rgba(255,122,24,.42), transparent 62%), /* orange dominant */
-        radial-gradient(900px 620px at 86% 6%, rgba(47,107,255,.22), transparent 58%),  /* blue */
-        radial-gradient(900px 620px at 78% 78%, rgba(45,212,119,.22), transparent 58%), /* green */
-        linear-gradient(180deg, #070b16 0%, #040711 100%);
-      padding:22px;
+    input::placeholder { color: rgba(231,238,252,0.45); }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .actions { display: flex; gap: 10px; align-items: center; margin-top: 14px; }
+    button {
+      border: 0; border-radius: 12px;
+      padding: 12px 14px;
+      background: #3b82f6; color: white; font-weight: 600;
+      cursor: pointer;
     }
-
-    .wrap{max-width:860px;margin:0 auto}
-    .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
-      border:1px solid var(--border);
-      border-radius:24px;
-      padding:20px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
-      position:relative;
-      overflow:hidden;
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    .status {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      border: 1px dashed rgba(255,255,255,0.18);
+      font-size: 13px;
+      white-space: pre-wrap;
     }
-
-    /* subtle glow stripe */
-    .card:before{
-      content:"";
-      position:absolute;inset:-2px -2px auto -2px;height:140px;
-      background: radial-gradient(600px 140px at 35% 40%, rgba(255,122,24,.55), transparent 70%);
-      pointer-events:none;
-      opacity:.9;
+    .ok { border-color: rgba(34,197,94,0.45); }
+    .err { border-color: rgba(239,68,68,0.55); }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 10px; border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 12px;
     }
-
-    header{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-      margin-bottom:10px;
-      position:relative;
-      z-index:1;
-    }
-
-    .brand{
-      display:flex;gap:12px;align-items:center;
-      min-width:260px;
-    }
-
-    .logo{
-      width:46px;height:46px;border-radius:16px;
-      background: linear-gradient(135deg, rgba(255,122,24,1), rgba(255,176,58,1));
-      box-shadow: 0 14px 34px rgba(0,0,0,.40);
-      position:relative;
-    }
-    .logo:after{
-      content:"";
-      position:absolute;inset:10px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.28);
-      opacity:.7;
-    }
-
-    h1{
-      margin:0;
-      font-size:20px;
-      letter-spacing:.2px;
-      line-height:1.25;
-    }
-    .sub{
-      margin:6px 0 0;
-      color:rgba(255,255,255,.82);
-      line-height:1.55;
-      font-size:13px;
-    }
-
-    .event{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      margin-top:10px;
-      position:relative;
-      z-index:1;
-    }
-
-    .tag{
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.20);
-      font-size:12.5px;
-      color:#f3f5ff;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-
-    .tag.orange{border-color:rgba(255,122,24,.35); background:rgba(255,122,24,.10)}
-    .tag.blue{border-color:rgba(47,107,255,.35); background:rgba(47,107,255,.10)}
-    .tag.green{border-color:rgba(45,212,119,.35); background:rgba(45,212,119,.10)}
-
-    .meta{
-      display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;
-      position:relative;z-index:1;
-    }
-
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 10px;border-radius:999px;
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.14);
-      font-size:12.5px;
-      color:#f2f4ff;
-    }
-    .pill strong{color:#ffffff}
-
-    .divider{height:1px;background:rgba(255,255,255,.14);margin:14px 0;position:relative;z-index:1}
-
-    form{
-      display:grid;
-      gap:12px;
-      margin-top:12px;
-      position:relative;
-      z-index:1;
-    }
-
-    .row{display:grid;gap:7px}
-    label{font-size:12.5px;color:rgba(255,255,255,.88)}
-    .req{color:#ffd0b0;margin-left:6px}
-
-    input{
-      width:100%;
-      padding:12px 12px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.22);
-      color:var(--text);
-      outline:none;
-      font-size:15px;
-    }
-    input:focus{
-      border-color: rgba(255,122,24,.55);
-      box-shadow: var(--ring);
-    }
-
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:12px;
-    }
-    @media(min-width:760px){
-      .grid2{grid-template-columns: 1fr 1fr;}
-    }
-
-    .pdpa{
-      margin-top:2px;
-      padding:12px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.20);
-    }
-    .pdpa-line{display:flex;gap:10px;align-items:flex-start}
-    .pdpa input[type="checkbox"]{width:18px;height:18px;margin-top:2px;accent-color: var(--orange)}
-    .pdpa p{margin:0;color:rgba(255,255,255,.78);font-size:12.8px;line-height:1.55}
-
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:2px;
-    }
-
-    button{
-      border:0;
-      border-radius:16px;
-      padding:12px 14px;
-      font-size:15px;
-      cursor:pointer;
-      transition:.15s ease;
-      user-select:none;
-    }
-
-    .btn-primary{
-      background: linear-gradient(135deg, rgba(255,122,24,1), rgba(255,176,58,1));
-      color:#1a0b00;
-      font-weight:900;
-      box-shadow: 0 14px 34px rgba(0,0,0,.35);
-    }
-    .btn-primary:hover{transform: translateY(-1px)}
-    .btn-primary:disabled{opacity:.58;cursor:not-allowed;filter:grayscale(18%);transform:none}
-
-    .btn-ghost{
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.14);
-      color:var(--text);
-    }
-    .btn-ghost:hover{border-color:rgba(255,122,24,.28)}
-
-    .status{
-      min-height:18px;
-      font-size:12.8px;
-      color:rgba(255,255,255,.78);
-      line-height:1.45;
-    }
-    .status.ok{color:#b9ffd2}
-    .status.err{color:#ffb4b4}
-
-    .tiny{font-size:12px;color:rgba(255,255,255,.70);margin-top:8px}
-
-    /* Modal */
-    .backdrop{
-      position:fixed;inset:0;
-      background: rgba(0,0,0,.64);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:16px;
-      z-index:9999;
-    }
-    .modal{
-      width:min(640px,100%);
-      border-radius:24px;
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-      border:1px solid rgba(255,255,255,.16);
-      box-shadow: 0 26px 90px rgba(0,0,0,.65);
-      padding:18px;
-      backdrop-filter: blur(12px);
-      position:relative;
-      overflow:hidden;
-    }
-    .modal:before{
-      content:"";
-      position:absolute;inset:-2px -2px auto -2px;height:140px;
-      background:
-        radial-gradient(600px 140px at 35% 40%, rgba(255,122,24,.55), transparent 70%),
-        radial-gradient(420px 120px at 75% 40%, rgba(47,107,255,.18), transparent 70%),
-        radial-gradient(420px 120px at 92% 70%, rgba(45,212,119,.18), transparent 70%);
-      pointer-events:none;
-      opacity:.9;
-    }
-    .modal > *{position:relative;z-index:1}
-
-    .modal h2{margin:0 0 8px;font-size:18px}
-    .modal p{margin:0 0 12px;color:rgba(255,255,255,.82);line-height:1.6;font-size:13px}
-
-    .linkbox{
-      margin:10px 0 0;
-      padding:12px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.16);
-      background: rgba(0,0,0,.22);
-      word-break:break-all;
-      font-size:13px;
-      color:#f2f4ff;
-    }
-    .linkbox a{color:#ffe1c8;text-decoration:underline}
-    .modal .actions{justify-content:flex-end;margin-top:12px}
-
-    .btn-teams{
-      background: linear-gradient(135deg, rgba(47,107,255,1), rgba(255,122,24,.88));
-      color:#061029;
-      font-weight:900;
-    }
-    .btn-teams:hover{transform: translateY(-1px)}
+    .pdpa { display: flex; gap: 10px; align-items: flex-start; margin-top: 6px; }
+    .pdpa input { width: 18px; height: 18px; margin-top: 2px; }
+    .small { font-size: 12px; color: rgba(231,238,252,0.75); }
+    a { color: #93c5fd; }
   </style>
 </head>
 
 <body>
   <div class="wrap">
     <div class="card">
-      <header>
-        <div class="brand">
-          <div class="logo" aria-hidden="true"></div>
-          <div>
-            <h1>IR TALK Online event</h1>
-            <p class="sub">
-              กรุณากรอกข้อมูลให้ครบถ้วน ระบบจะใช้ข้อมูลเพื่อการลงทะเบียนและการติดต่อประสานงานเกี่ยวกับกิจกรรมเท่านั้น
-            </p>
-          </div>
-        </div>
-      </header>
-
-      <div class="event">
-        <div class="tag orange">🧡 ขั้นตอน: ลงทะเบียน → รับลิงก์ประชุม</div>
-        <div class="tag blue">💙 ช่องทาง: Microsoft Teams</div>
-        <div class="tag green">💚 ข้อมูลปลอดภัย: Shared Secret</div>
+      <h1>ลงทะเบียนเข้าร่วมประชุม (IR Talk)</h1>
+      <div class="muted">
+        กรุณากรอกข้อมูลให้ครบถ้วน ระบบจะส่งลิงก์ Microsoft Teams กลับผ่าน LINE อัตโนมัติ
       </div>
 
-      <div class="meta">
-        <div class="pill"><strong>LINE User ID:</strong> <span id="lineUserId">กำลังเชื่อมต่อ…</span></div>
-        <div class="pill"><strong>สถานะ:</strong> <span id="liffStatus">กำลังโหลด</span></div>
+      <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+        <span class="badge" id="badgeInClient">LIFF: …</span>
+        <span class="badge" id="badgeLogin">Login: …</span>
+        <span class="badge" id="badgeProfile">Profile: …</span>
       </div>
 
-      <div class="divider"></div>
-
-      <form id="regForm" autocomplete="on">
-        <div class="row">
-          <label for="fullName">ชื่อ-นามสกุล<span class="req">*</span></label>
-          <input id="fullName" name="fullName" required placeholder="เช่น นายสมชาย ใจดี" />
+      <div class="row">
+        <div>
+          <label>ชื่อ-นามสกุล *</label>
+          <input id="fullName" type="text" placeholder="เช่น จริยา ใจไม่ดี" required />
         </div>
 
         <div class="grid2">
-          <div class="row">
-            <label for="phone">เบอร์โทร</label>
-            <input id="phone" name="phone" inputmode="tel" placeholder="เช่น 08x-xxx-xxxx" />
+          <div>
+            <label>เบอร์โทร</label>
+            <input id="phone" type="tel" placeholder="เช่น 0812345678" />
           </div>
-
-          <div class="row">
-            <label for="email">อีเมล</label>
-            <input id="email" name="email" inputmode="email" type="email" placeholder="name@example.com" />
+          <div>
+            <label>อีเมล</label>
+            <input id="email" type="email" placeholder="เช่น name@company.com" />
           </div>
         </div>
 
-        <div class="row">
-          <label for="company">บริษัท</label>
-          <input id="company" name="company" placeholder="เช่น บริษัท/กองทุน/สถาบัน" />
+        <div>
+          <label>บริษัท</label>
+          <input id="company" type="text" placeholder="เช่น NSL" />
         </div>
 
         <div class="pdpa">
-          <div class="pdpa-line">
-            <input id="pdpa" type="checkbox" />
-            <div>
-              <label for="pdpa" style="cursor:pointer">ยินยอมให้เก็บและใช้ข้อมูลส่วนบุคคล (PDPA Consent)</label>
-              <p>
-                ข้อมูลจะถูกใช้เพื่อการลงทะเบียน การจัดทำรายชื่อผู้เข้าร่วม และการติดต่อเกี่ยวกับกิจกรรมเท่านั้น
-              </p>
+          <input id="pdpaConsent" type="checkbox" />
+          <div>
+            <label style="display:block;">ยินยอมให้เก็บและใช้ข้อมูลตาม PDPA *</label>
+            <div class="small">
+              ข้อมูลจะถูกใช้เพื่อการลงทะเบียนและติดต่อประสานงานการประชุมเท่านั้น
             </div>
           </div>
         </div>
 
         <div class="actions">
-          <button id="submitBtn" class="btn-primary" type="submit" disabled>ยืนยันลงทะเบียน</button>
-          <button id="closeBtn" class="btn-ghost" type="button">ปิด</button>
+          <button id="submitBtn" disabled>ยืนยันการลงทะเบียน</button>
+          <button id="closeBtn" type="button" style="background:#334155;">ปิด</button>
         </div>
 
-        <div id="status" class="status" role="status" aria-live="polite"></div>
-      </form>
-
-      <p class="tiny">
-        แนะนำ: เปิดฟอร์มผ่าน LINE เพื่อใช้งานได้สมบูรณ์ (หากเปิดจากเบราว์เซอร์ทั่วไป ระบบอาจพาไป Login LINE ก่อน)
-      </p>
-    </div>
-  </div>
-
-  <!-- Success Modal -->
-  <div class="backdrop" id="backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal">
-      <h2 id="modalTitle">ลงทะเบียนสำเร็จ</h2>
-      <p id="modalMsg">
-        ขอบคุณครับ ระบบได้รับข้อมูลลงทะเบียนแล้ว กรุณากดปุ่มด้านล่างเพื่อเข้าประชุมในวันงาน
-      </p>
-
-      <div class="linkbox">
-        <div style="font-weight:900;margin-bottom:6px;">ลิงก์เข้าประชุม Microsoft Teams (วันงาน)</div>
-        <div id="teamsLinkText"></div>
+        <div id="statusBox" class="status">กำลังเตรียม LIFF…</div>
       </div>
-
-      <div class="actions">
-        <button class="btn-teams" id="joinTeamsBtn" type="button">🔗 เข้าประชุม Microsoft Teams</button>
-        <button class="btn-primary" id="modalCloseBtn" type="button">ปิด</button>
-      </div>
-
-      <p class="tiny">แนะนำ: หากมีแอป Microsoft Teams บนอุปกรณ์ จะช่วยให้การเชื่อมต่อเสถียรกว่า</p>
     </div>
   </div>
 
   <script>
-    // =========================
-    // CONFIG
-    // =========================
-    const LIFF_ID = "2008928307-8xnpCPKG";
+    /**********************
+     * CONFIG (แก้ 3 ค่า)
+     **********************/
+    const LIFF_ID = "PUT_YOUR_LIFF_ID_HERE";
     const N8N_WEBHOOK_URL = "https://def2design.app.n8n.cloud/webhook/liff/register";
+    const SHARED_SECRET = "PUT_YOUR_SHARED_SECRET_HERE";
 
-    // ✅ ใช้ค่าเดียวกับใน n8n (IF node - Check Shared Secret)
-    const SHARED_SECRET = "nsl-ir-liff-2026-secret-9xAqP!";
+    // fixed metadata (optional)
+    const SOURCE = "LIFF-IR-TALK";
+    const MEETING_TIME_TEXT = "10:00–12:00 น. (เวลาไทย)";
 
-    const TEAMS_MEETING_URL =
-      "https://teams.microsoft.com/meet/46284082130059?p=JSZyeiKXRfc9cu3oIn";
+    /**********************
+     * STATE
+     **********************/
+    let lineUserId = null;
+    let displayName = null;
+    let pictureUrl = null;
+    let isInClient = false;
 
-    // =========================
-    // DOM helpers
-    // =========================
     const $ = (id) => document.getElementById(id);
+    const statusBox = $("statusBox");
     const submitBtn = $("submitBtn");
-    const statusEl = $("status");
-    const pdpa = $("pdpa");
-    const lineUserIdEl = $("lineUserId");
-    const liffStatusEl = $("liffStatus");
-    const backdrop = $("backdrop");
-    const teamsLinkText = $("teamsLinkText");
 
-    let liffProfile = null;
-    let isSubmitting = false;
-
-    function setStatus(msg, type) {
-      statusEl.textContent = msg || "";
-      statusEl.className = "status" + (type ? (" " + type) : "");
+    function setBadge(id, text) {
+      $(id).textContent = text;
     }
 
-    function openModal() {
-      teamsLinkText.innerHTML =
-        '<a href="' + TEAMS_MEETING_URL + '" target="_blank" rel="noopener noreferrer">' +
-        TEAMS_MEETING_URL + '</a>';
-      backdrop.style.display = "flex";
-    }
-    function closeModal() {
-      backdrop.style.display = "none";
+    function setStatus(text, type) {
+      statusBox.textContent = text;
+      statusBox.classList.remove("ok", "err");
+      if (type === "ok") statusBox.classList.add("ok");
+      if (type === "err") statusBox.classList.add("err");
     }
 
-    function safeCloseLiff() {
-      try {
-        if (window.liff && liff.isInClient()) liff.closeWindow();
-        else window.close();
-      } catch(e) {
-        window.location.href = "about:blank";
-      }
-    }
-
-    // PDPA gate
-    pdpa.addEventListener("change", () => {
-      submitBtn.disabled = !pdpa.checked || isSubmitting;
-      if (!pdpa.checked) setStatus("กรุณากดยอมรับ PDPA ก่อนส่งข้อมูล", "");
-      else setStatus("", "");
-    });
-
-    $("closeBtn").addEventListener("click", safeCloseLiff);
-    $("modalCloseBtn").addEventListener("click", () => { closeModal(); safeCloseLiff(); });
-
-    $("joinTeamsBtn").addEventListener("click", () => {
-      window.open(TEAMS_MEETING_URL, "_blank", "noopener,noreferrer");
-    });
-
-    // =========================
-    // LIFF init
-    // =========================
-    async function initLiff() {
-      setStatus("กำลังเชื่อมต่อ LINE…", "");
-      liffStatusEl.textContent = "กำลังเชื่อมต่อ…";
-
-      try {
-        await liff.init({ liffId: LIFF_ID });
-
-        if (!liff.isLoggedIn()) {
-          liffStatusEl.textContent = "ต้อง Login LINE";
-          setStatus("กำลังพาไป Login LINE…", "");
-          liff.login();
-          return;
-        }
-
-        liffProfile = await liff.getProfile();
-        lineUserIdEl.textContent = liffProfile?.userId || "-";
-        liffStatusEl.textContent = "พร้อมใช้งาน";
-        setStatus("", "ok");
-
-      } catch (err) {
-        console.error(err);
-        lineUserIdEl.textContent = "-";
-        liffStatusEl.textContent = "เชื่อมต่อไม่สำเร็จ";
-        setStatus("ไม่สามารถเชื่อมต่อ LIFF ได้ กรุณาลองใหม่ หรือเปิดผ่าน LINE", "err");
-      }
-    }
-
-    // =========================
-    // Submit
-    // =========================
-    $("regForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      if (isSubmitting) return;
-
+    function canSubmit() {
       const fullName = $("fullName").value.trim();
       const phone = $("phone").value.trim();
       const email = $("email").value.trim();
-      const company = $("company").value.trim();
+      const pdpa = $("pdpaConsent").checked;
 
-      if (!fullName) return setStatus("กรุณากรอกชื่อ-นามสกุล", "err");
-      if (!pdpa.checked) return setStatus("กรุณากดยอมรับ PDPA ก่อนส่งข้อมูล", "err");
+      // ต้องมี userId + fullName + pdpa + phone/email อย่างน้อย 1
+      return !!lineUserId && !!fullName && pdpa && (!!phone || !!email);
+    }
 
-      isSubmitting = true;
-      submitBtn.disabled = true;
-      const originalText = submitBtn.textContent;
-      submitBtn.textContent = "กำลังส่งข้อมูล…";
-      setStatus("", "");
+    function refreshSubmitState() {
+      submitBtn.disabled = !canSubmit();
+    }
 
-      const payload = {
-        source: "LIFF-IR-TALK",
-        timestamp: new Date().toISOString(),
-
-        // form fields
-        fullName,
-        phone,
-        email,
-        company,
-        pdpaConsent: true,
-
-        // line profile
-        lineUserId: liffProfile?.userId || null,
-        displayName: liffProfile?.displayName || null,
-        pictureUrl: liffProfile?.pictureUrl || null,
-
-        // meeting link (for downstream email/line confirm)
-        teamsMeetingUrl: TEAMS_MEETING_URL,
-
-        // context
-        isInClient: (window.liff ? liff.isInClient() : null),
-        language: (window.liff ? liff.getLanguage() : null),
-        os: (window.liff ? liff.getOS() : null)
-      };
-
+    async function initLiff() {
       try {
+        setStatus("กำลังเริ่มต้น LIFF…");
+        await liff.init({ liffId: LIFF_ID });
+
+        isInClient = liff.isInClient();
+        setBadge("badgeInClient", `LIFF in-client: ${isInClient ? "true" : "false"}`);
+
+        const loggedIn = liff.isLoggedIn();
+        setBadge("badgeLogin", `Logged in: ${loggedIn ? "true" : "false"}`);
+
+        // ถ้าไม่ login ให้ login ก่อน (โดยเฉพาะเปิดนอก LINE)
+        if (!loggedIn) {
+          setStatus("กำลังพาไปเข้าสู่ระบบ LINE (login) …");
+          liff.login(); // จะ redirect แล้วกลับมา
+          return;
+        }
+
+        // ดึง profile
+        const profile = await liff.getProfile();
+        lineUserId = profile.userId || null;
+        displayName = profile.displayName || null;
+        pictureUrl = profile.pictureUrl || null;
+
+        setBadge("badgeProfile", lineUserId ? `Profile OK: ${displayName}` : "Profile: null");
+
+        if (!lineUserId) {
+          setStatus(
+            "ไม่สามารถดึง LINE userId ได้\n" +
+            "- กรุณาเปิดผ่านแอป LINE ด้วยลิงก์ LIFF (https://liff.line.me/...) \n" +
+            "- ตรวจสอบว่า LIFF app เปิด scope: profile\n" +
+            "- ลองปิดแล้วเปิดใหม่",
+            "err"
+          );
+          refreshSubmitState();
+          return;
+        }
+
+        setStatus(
+          "เชื่อมต่อสำเร็จ ✅\n" +
+          `ผู้ใช้: ${displayName}\n` +
+          "กรอกแบบฟอร์มแล้วกดยืนยันได้เลย",
+          "ok"
+        );
+
+        refreshSubmitState();
+      } catch (err) {
+        console.error(err);
+        setStatus(
+          "เกิดข้อผิดพลาดในการเริ่มต้น LIFF\n" +
+          (err && err.message ? err.message : String(err)),
+          "err"
+        );
+        refreshSubmitState();
+      }
+    }
+
+    async function submitForm() {
+      try {
+        submitBtn.disabled = true;
+
+        const fullName = $("fullName").value.trim();
+        const phone = $("phone").value.trim();
+        const email = $("email").value.trim();
+        const company = $("company").value.trim();
+        const pdpaConsent = $("pdpaConsent").checked;
+
+        if (!lineUserId) {
+          setStatus("ไม่พบ LINE userId กรุณารีเฟรชและเปิดผ่านแอป LINE", "err");
+          refreshSubmitState();
+          return;
+        }
+        if (!fullName) {
+          setStatus("กรุณากรอกชื่อ-นามสกุล", "err");
+          refreshSubmitState();
+          return;
+        }
+        if (!pdpaConsent) {
+          setStatus("กรุณายินยอม PDPA ก่อนส่งข้อมูล", "err");
+          refreshSubmitState();
+          return;
+        }
+        if (!phone && !email) {
+          setStatus("กรุณาระบุเบอร์โทรหรืออีเมลอย่างน้อย 1 อย่าง", "err");
+          refreshSubmitState();
+          return;
+        }
+
+        setStatus("กำลังส่งข้อมูลไปยังระบบ…");
+
+        const payload = {
+          // ส่งทั้ง userId และ lineUserId เพื่อความเข้ากันได้กับ n8n
+          userId: lineUserId,
+          lineUserId: lineUserId,
+          displayName,
+          pictureUrl,
+
+          fullName,
+          phone,
+          email,
+          company,
+          pdpaConsent,
+
+          source: SOURCE,
+          meetingTime: MEETING_TIME_TEXT,
+          isInClient: isInClient,
+          language: (liff.getLanguage && liff.getLanguage()) ? liff.getLanguage() : null,
+          timestamp: new Date().toISOString()
+        };
+
         const res = await fetch(N8N_WEBHOOK_URL, {
           method: "POST",
           headers: {
@@ -547,27 +284,62 @@
           body: JSON.stringify(payload)
         });
 
+        const text = await res.text();
+        let data = null;
+        try { data = JSON.parse(text); } catch (_) {}
+
         if (!res.ok) {
-          const t = await res.text().catch(() => "");
-          throw new Error("Webhook error: " + res.status + " " + t);
+          const msg =
+            (data && (data.error || data.message)) ? (data.error || data.message)
+            : (text || `HTTP ${res.status}`);
+          throw new Error(msg);
         }
 
-        setStatus("ส่งข้อมูลสำเร็จ", "ok");
-        openModal();
+        setStatus("ส่งข้อมูลสำเร็จ ✅\nระบบจะส่งลิงก์ประชุมกลับทาง LINE ให้คุณ", "ok");
+
+        // ปิดหน้าต่าง LIFF หลัง 1.2 วินาที (ถ้าอยู่ใน LINE)
+        setTimeout(() => {
+          try {
+            if (liff && liff.isInClient && liff.isInClient()) {
+              liff.closeWindow();
+            }
+          } catch (_) {}
+        }, 1200);
 
       } catch (err) {
         console.error(err);
-        setStatus("ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่อีกครั้ง", "err");
-        isSubmitting = false;
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = !pdpa.checked ? true : false;
-        return;
-      } finally {
-        submitBtn.textContent = originalText;
+        setStatus(
+          "ส่งข้อมูลไม่สำเร็จ ❌\n" +
+          (err && err.message ? err.message : String(err)) +
+          "\n\n(ถ้ายังไม่หาย: ให้ดู Execution ใน n8n ว่าติดที่ node ไหน)",
+          "err"
+        );
+        refreshSubmitState();
+      }
+    }
+
+    // events
+    $("fullName").addEventListener("input", refreshSubmitState);
+    $("phone").addEventListener("input", refreshSubmitState);
+    $("email").addEventListener("input", refreshSubmitState);
+    $("company").addEventListener("input", refreshSubmitState);
+    $("pdpaConsent").addEventListener("change", refreshSubmitState);
+
+    $("submitBtn").addEventListener("click", (e) => {
+      e.preventDefault();
+      submitForm();
+    });
+
+    $("closeBtn").addEventListener("click", () => {
+      try {
+        if (liff && liff.isInClient && liff.isInClient()) liff.closeWindow();
+        else window.close();
+      } catch (_) {
+        // ignore
       }
     });
 
-    // boot
+    // init
     initLiff();
   </script>
 </body>
